@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/text.css">
+    <link rel="stylesheet" href="./css/cadastro.css">
+    <title>Login</title>
+</head>
+
+<body>
+    <header class="header">
+        <ul class="header_navbar">
+            <li class="header_navbar_list menu-text">
+                <a class="menu-text" href="./index.html">Home</a>
+            </li>
+            <li class="header_navbar_list menu-text">
+                <a class="menu-text" href="./login.html">Login</a>
+            </li>
+            <li class="header_navbar_list menu-text">
+                <a class="menu-text" href="./cadastro.html">Cadastro</a>
+            </li>
+        </ul>
+    </header>
+    <section class="cadastro">
+        <div class="cadastro-div cadastro-text">
+            <div class="cadastro-img">
+                <h1>Cadastro</h1>
+                <img src="./assets/img/pc.png">
+                <button>Entrar</button>
+                <p>
+                    <a style="text-decoration: underline;
+                    font-weight: 700;" href="./login.html">
+                        Já tenho conta</a>
+                </p>
+            </div>
+            <div class="cadastro-content">
+                <form class="cadastro-form">
+                    <div class="cadastro-form-campos">
+                        <p>Nome completo</p>
+                        <input type="text" />
+                    </div>
+                    <div class="cadastro-form-campos">
+                        <p>Usuário</p>
+                        <input type="text" />
+                    </div>
+                    <div class="cadastro-form-campos">
+                        <p>E-mail</p>
+                        <input type="text" />
+                    </div>
+                    <div class="cadastro-form-campos">
+                        <p>Gênero</p>
+                        <select class="cadastro-form-campos">
+                            <option value="0">Selecione...</option>
+                            <option value="1">Feminino</option>
+                            <option value="2">Masculino</option>
+                            <option value="3">Outros</option>
+                        </select>
+                    </div>
+                    <div class="cadastro-form-campos">
+                        <p>Idade</p>
+                        <input type="number" />
+                    </div>
+                    <div class="cadastro-form-campos">
+                        <p>Senha</p>
+                        <input type="number" />
+                    </div>
+                    <div class="cadastro-form-campos">
+                        <p>Confirmar senha</p>
+                        <input type="password" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

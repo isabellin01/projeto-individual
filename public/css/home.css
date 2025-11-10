@@ -1,0 +1,136 @@
+/*!HEADER*/
+.header {
+    z-index: 10;
+    position: sticky;
+    top: 0;
+    left: 0;
+    padding: 50px 50px;
+    background-color: #62187B;
+    background-position: center;
+    background-size: cover;
+    background-blend-mode: multiply;
+    box-shadow: 0 4px 30px rgb(8, 10, 12,0.6);
+}
+
+.header_navbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.header_navbar_list {
+    margin-left: 50px;
+}
+
+/*!HERO*/
+.hero {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    min-height: 80vh;
+    background-image: linear-gradient(to top, #650E82, #F2E1F8);
+    padding: 50px 50px;
+}
+
+.hero-img {
+    width: 500px;
+}
+
+@media (max-width: 1440px) {
+    .hero-img {
+        width: 400px;
+    }
+}
+
+/*!SECTION1*/
+.section1 {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 60vh;
+    background-color: #650E82;
+    padding: 50px 50px;
+}
+
+.section1-content {
+    width: 50vw;
+    margin-left: 20px;
+}
+
+.section1-img {
+    width: 400px;
+}
+
+@media (max-width: 1440px) {
+    .section1-img {
+        width: 300px;
+    }
+
+    .section1-content p {
+        width: 50vw;
+    }
+}
+
+/*!SECTION2*/
+.section2 {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 60vh;
+    background-color: #fff;
+    padding: 50px 50px;
+}
+
+.section2-content {
+    width: 50vw;
+    margin-right: 20px;
+}
+
+.section2-img {
+    width: 400px;
+}
+
+@media (max-width: 1440px) {
+    .section2-img {
+        width: 200px;
+    }
+
+    .section2-content {
+        width: 60vw;
+    }
+}
+
+/*!SECTION3*/
+.section3 {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    min-height: 60vh;
+    background-image: url(../assets/img/back1.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top;
+}
+
+/*!SECTION4*/
+.section4 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    background-image: linear-gradient(to top, #650E82, #B189BF);
+}
+
+.section4-ranking-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: center;
+}
+
+.section4-ranking-list-item {
+    display: flex;
+}
