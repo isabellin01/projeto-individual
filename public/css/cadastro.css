@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh;
+    height: 100vh;
 }
 
 .cadastro-div {
@@ -11,7 +11,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 90vh;
+    height: 100vh;
     width: 70vw;
     box-shadow: 8px 8px 5px 1px rgb(8, 10, 12, 0.4);
 }
