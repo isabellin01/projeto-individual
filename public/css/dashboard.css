@@ -1,0 +1,13 @@
+.social{
+    margin-left: 200px;
+    display: flex;
+}
+
+.social-div1 {
+    width: 65%;
+}
+
+.social-div2 {
+    width: 35%;
+}
+
