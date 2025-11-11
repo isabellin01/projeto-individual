@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/text.css">
     <link rel="stylesheet" href="./css/slide.css">
-    <link rel="stylesheet" href="./css/dashboard.css">
+    <link rel="stylesheet" href="./css/forum.css">
 </head>
 
 <body>
@@ -19,68 +19,97 @@
         <ul class="slide-header">
             <li class="slide-header-item">
                 <img src="./assets/img/postar.svg">
-                <a href="./dashboard.html">Publicar</a>
+                <a href="./forum.html">Publicar</a>
             </li>
             <li class="slide-header-item">
                 <img src="./assets/img/loopsocial.svg">
-                <a href="./dashboard.html">Loop()Social</a>
+                <a href="./forum.html">Loop()Social</a>
             </li>
             <li class="slide-header-item">
                 <img src="./assets/img/dashboard.svg">
-                <a href="./dashboard.html">Dashboard</a>
+                <a href="./forum.html">Dashboard</a>
             </li>
             <li class="slide-header-item">
                 <img src="./assets/img/saida.svg">
-                <a href="./dashboard.html">Sair</a>
+                <a href="./forum.html">Sair</a>
             </li>
         </ul>
     </header>
 
-    <section class="social">
+    <section class="social social-text">
         <div class="social-div1">
             <div class="social-capa">
-                <h1>Bem-vindo à nossa comunidade Loop()</h1>
-                <p>Onde a troca de experiências é constante</p>
+                <div class="social-capa-content">
+                    <h1>Bem-vindo à nossa comunidade Loop()</h1>
+                    <p>Onde a troca de experiências é constante</p>
+                </div>
+                <div class="social-capa-img">
+                    <img src="./assets/img/pc.png">
+                </div>
+            </div>
+            <div class="social-filter">
+                <ul class="social-filter-list">
+                    <li>Relevantes</li>
+                    <li>Recentes</li>
+                </ul>
             </div>
             <div class="social-feed">
-                <ul>
-                    <li>
+                <ul class="social-post">
+                    <li class="social-post-user">
                         <div class="feed-user" style="display: flex;">
-                            <p>Isabel Lin</p>
+                            <span>Isabel Lin</span>
                             <span>@bebellin</span>
                             <span>14h</span>
                         </div>
                         <p>Gente, como usa a web data viz?</p>
                         <div class="feed-infos" style="display: flex;">
-                            <span>#javascript #nodejs #api</span>
-                            <span>21 likes</span>
-                            <span>7 comentários</span>
+                            <div class="feed-infos-tag">
+                                <span>#javascript #nodejs #api</span>
+                            </div>
+                            <div class="feed-infos-users">
+                                <img src="./assets/img/like.svg">
+                                <span>21 likes</span>
+                                <img src="./assets/img/comentarios.svg">
+                                <span>7 comentários</span>
+                            </div>
                         </div>
                     </li>
-                    <li>
+                    <li class="social-post-user">
                         <div class="feed-user" style="display: flex;">
-                            <p>Isabel Lin</p>
+                            <span>Isabel Lin</span>
                             <span>@bebellin</span>
                             <span>14h</span>
                         </div>
                         <p>Gente, como usa a web data viz?</p>
                         <div class="feed-infos" style="display: flex;">
-                            <span>#javascript #nodejs #api</span>
-                            <span>21 likes</span>
-                            <span>7 comentários</span>
+                            <div class="feed-infos-tag">
+                                <span>#javascript #nodejs #api</span>
+                            </div>
+                            <div class="feed-infos-users">
+                                <img src="./assets/img/like.svg">
+                                <span>21 likes</span>
+                                <img src="./assets/img/comentarios.svg">
+                                <span>7 comentários</span>
+                            </div>
                         </div>
                     </li>
-                    <li>
+                    <li class="social-post-user">
                         <div class="feed-user" style="display: flex;">
-                            <p>Isabel Lin</p>
+                            <span>Isabel Lin</span>
                             <span>@bebellin</span>
                             <span>14h</span>
                         </div>
                         <p>Gente, como usa a web data viz?</p>
                         <div class="feed-infos" style="display: flex;">
-                            <span>#javascript #nodejs #api</span>
-                            <span>21 likes</span>
-                            <span>7 comentários</span>
+                            <div class="feed-infos-tag">
+                                <span>#javascript #nodejs #api</span>
+                            </div>
+                            <div class="feed-infos-users">
+                                <img src="./assets/img/like.svg">
+                                <span>21 likes</span>
+                                <img src="./assets/img/comentarios.svg">
+                                <span>7 comentários</span>
+                            </div>
                         </div>
                     </li>
                 </ul>
@@ -88,9 +117,11 @@
         </div>
         <div class="social-div2">
             <div class="social-ranking">
-                <h3>Tags populares</h3>
-                <p>Discussões mais comentadas do momento em toda comunidade</p>
-                <ul>
+                <div class="social-ranking-content">
+                    <h3>Tags populares</h3>
+                    <p>Discussões mais comentadas do momento</p>
+                </div>
+                <ul class="social-ranking-content">
                     <li>
                         <p>#javascript</p>
                         <span>20 publicações</span>
@@ -107,18 +138,18 @@
             </div>
             <div class="social-news">
                 <h3>O que está acontecendo essa semana?</h3>
-                <ul>
-                    <li>
+                <ul class="social-news-list">
+                    <li class="social-news-item">
                         <img src="https://placehold.co/150x100">
-                        <p>Título de notícia</p>
+                        <p>Queda da AWS derruba parte da internet e causa caos nas empresas</p>
                     </li>
-                    <li>
+                    <li class="social-news-item">
                         <img src="https://placehold.co/150x100">
-                        <p>Título de notícia</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, voluptatum?</p>
                     </li>
-                    <li>
+                    <li class="social-news-item">
                         <img src="https://placehold.co/150x100">
-                        <p>Título de notícia</p>
+                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing.</p>
                     </li>
                 </ul>
             </div>

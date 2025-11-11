@@ -40,7 +40,8 @@
 .section2-text,
 .section3-text,
 .login-text,
-.cadastro-text {
+.cadastro-text,
+.social-text {
     color: #650E82;
 }
 
@@ -55,7 +56,9 @@
 }
 
 /*!SECTION3*/
-.section3-text h3 {
+.section3-text h3,
+.social-ranking h3,
+.social-news h3{
     font-size: 25px;
     font-weight: 500;
     margin-bottom: 10px;
@@ -65,3 +68,11 @@
     font-size: 18px;
 }
 
+.social-ranking-content span {
+    font-size: 15px;
+    font-weight: 200;
+}
+
+.social-ranking h3{
+    margin-bottom: 0px;
+}
