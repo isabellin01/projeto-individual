@@ -12,11 +12,12 @@
 }
 
 .slide span {
-    margin: 120px 0;
+    margin: 2rem;
     width: 50%;
 }
 
 .slide-header {
+    margin: 3rem 0;
     width: 80%;
 }
 
@@ -30,15 +31,20 @@
     border: 2px solid #650E82;
     border-radius: 10px;
 }
+.slide-header li:nth-child(1):hover{
+    background-color: #650E82;
+    border: 2px solid #650E82;
+    color: #fff;
+    border-radius: 10px;
+}
 
 .slide-header-item {
     margin-bottom: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 60px;
 }
 
 .slide-header-item img {
-    width: 30px;
+    width: 1.5rem;
 }
