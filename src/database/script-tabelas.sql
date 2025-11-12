@@ -6,9 +6,9 @@
 comandos para mysql server
 */
 
-CREATE DATABASE loopsocial;
+CREATE DATABASE aquatech;
 
-USE loopsocial;
+USE aquatech;
 
 CREATE TABLE empresa (
 	id INT PRIMARY KEY AUTO_INCREMENT,
