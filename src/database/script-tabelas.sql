@@ -66,40 +66,41 @@ insert into aquario (descricao, fk_empresa) values ('Aquário de Peixe-dourado',
 -----------------------------------------
 create database loopsocial;
 USE loopsocial;
+select * from usuario;
 CREATE TABLE Usuario (
-    idUsuario INT PRIMARY KEY AUTO_INCREMENT,
-    nomeCompleto VARCHAR(50),
-    usuario VARCHAR(50),
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50),
+    user VARCHAR(50),
     email VARCHAR(50),
     genero CHAR(1),
     idade INT,
     senha VARCHAR(50)
 );
 CREATE TABLE Post (
-    idPost INT PRIMARY KEY AUTO_INCREMENT,
-    fkUsuario INT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_usuario INT,
     texto VARCHAR(300),
     datahora DATETIME,
     resolvido TINYINT,
-    FOREIGN KEY (fkUsuario) REFERENCES Usuario (idUsuario)
+    FOREIGN KEY (id_usuario) REFERENCES Usuario (id)
 );
 CREATE TABLE RespostaPost (
     idRespostaPub INT PRIMARY KEY AUTO_INCREMENT,
-    fkPost INT,
-    fkUsuario INT,
+    id_post INT,
+    id_usuario INT,
     texto VARCHAR(300),
     auxiliou TINYINT,
-    FOREIGN KEY (fkPost) REFERENCES Post (idPost),
-    FOREIGN KEY (fkUsuario) REFERENCES Usuario (idUsuario)
+    FOREIGN KEY (id_post) REFERENCES Post (id),
+    FOREIGN KEY (id_usuario) REFERENCES Usuario (id)
 );
-CREATE TABLE Tags (
-    idTags INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE Tag (
+    id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(45)
 );
 CREATE TABLE TagPost (
-    fkPublicacao INT,
-    fkTags INT,
-    CONSTRAINT pkComposta PRIMARY KEY (fkPublicacao, fkTags),
-    FOREIGN KEY (fkPublicacao) REFERENCES Post (idPost),
-    FOREIGN KEY (fkTags) REFERENCES Tags (idTags)
+    id_publicacao INT,
+    id_tag INT,
+    CONSTRAINT pkComposta PRIMARY KEY (id_publicacao, id_tag),
+    FOREIGN KEY (id_publicacao) REFERENCES Post (id),
+    FOREIGN KEY (id_tag) REFERENCES Tag (id)
 );

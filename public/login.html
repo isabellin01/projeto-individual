@@ -6,11 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AquaTech | Login</title>
+    <title>Loop()Social | Login</title>
 
     <script src="./js/sessao.js"></script>
 
-    <link rel="stylesheet" href="./css/estilo.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/text.css">
+    <link rel="stylesheet" href="./css/login.css">
     <link rel="icon" href="./assets/icon/favicon2.ico">
     <link rel="preconnect" href="https://fonts.gstatic.com">
 </head>
@@ -19,67 +22,56 @@
 
     <!--Header-->
 
-    <div class="header">
-        <div class="container">
-            <h1 class="titulo">AquaTech</h1>
-            <ul class="navbar">
-                <li>
-                    <a href="index.html">Inicial</a>
-                </li>
-                <li>
-                    <a href="simulador.html">Simulador</a>
-                </li>
-                <li>|</li>
-                <li class="agora">
-                    <a href="#">Login</a>
-                </li>
-                <li>
-                    <a href="cadastro.html">Cadastro</a>
-                </li>
-            </ul>
+    <header class="header">
+        <ul class="header_navbar">
+            <li class="header_navbar_list menu-text">
+                <a class="menu-text" href="./index.html">Home</a>
+            </li>
+            <li class="header_navbar_list menu-text">
+                <a class="menu-text" href="./login.html">Login</a>
+            </li>
+            <li class="header_navbar_list menu-text">
+                <a class="menu-text" href="./cadastro.html">Cadastro</a>
+            </li>
+        </ul>
+    </header>
+
+    <div class="alerta_erro">
+        <div class="card_erro" id="cardErro">
+            <span id="mensagem_erro"></span>
         </div>
     </div>
 
-
-    <div class="login">
-        <div class="alerta_erro">
-            <div class="card_erro" id="cardErro">
-                <span id="mensagem_erro"></span>
-            </div>
-        </div>
-        <div class="container">
-            <div class="card card-login">
-                <h2>Olá de volta!</h2>
-                <div class="formulario">
-                    <div class="campo">
-                        <span>E-mail:</span>
-                        <input id="email_input" type="text" placeholder="Login">
+    <section class="login">
+        <div class="login-div">
+            <div class="login-content login-text">
+                <h1>Login</h1>
+                <p>Não tem conta?
+                    <a style="text-decoration: underline;
+                    font-weight: 700;" href="./cadastro.html">
+                        Cadastre uma conta nova</a>
+                </p>
+                <form class="login-form">
+                    <div class="login-form-campos">
+                        <p class="login-form-campos-user">Usuário</p>
+                        <input type="text" id="user_input" />
                     </div>
-                    <div class="campo">
-                        <span>Senha:</span>
-                        <input id="senha_input" type="password" placeholder="******">
+                    <div class="login-form-campos">
+                        <p>Senha</p>
+                        <input type="password" id="senha_input" class="login-form-campos-psswd" />
                     </div>
-                    <button class="botao" onclick="entrar()">Entrar</button>
-                </div>
-
-                <div id="div_aguardar" class="loading-div">
-                    <img src="./assets/circle-loading.gif" id="loading-gif">
-                </div>
-
-                <div id="div_erros_login"></div>
+                    <button class="button" onclick="entrar()">Login</button>
+                </form>
             </div>
+            <div class="login-img">
+                <img src="./assets/imgs/pc.png">
+            </div>
+            <div id="div_aguardar" class="loading-div">
+                <img src="./assets/circle-loading.gif" id="loading-gif">
+            </div>
+            <div id="div_erros_login"></div>
         </div>
-    </div>
-
-    <!--footer inicio-->
-    <div class="footer">
-        <div class="container">
-            <h4>Feito com amor por aluno &hearts; SPTech &copy; 2023</h4>
-            <span class="version">v1.0.0</span>
-        </div>
-    </div>
-    <!--footer fim-->
-
+    </section>
 </body>
 
 </html>
@@ -89,11 +81,10 @@
 
     function entrar() {
         aguardar();
-
-        var emailVar = email_input.value;
+        var userVar = user_input.value;
         var senhaVar = senha_input.value;
 
-        if (emailVar == "" || senhaVar == "") {
+        if (userVar == "" || senhaVar == "") {
             cardErro.style.display = "block"
             mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
             finalizarAguardar();
@@ -103,7 +94,7 @@
             setInterval(sumirMensagem, 5000)
         }
 
-        console.log("FORM LOGIN: ", emailVar);
+        console.log("FORM LOGIN: ", userVar);
         console.log("FORM SENHA: ", senhaVar);
 
         fetch("/usuarios/autenticar", {
@@ -112,7 +103,7 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                emailServer: emailVar,
+                userServer: userVar,
                 senhaServer: senhaVar
             })
         }).then(function (resposta) {
@@ -124,10 +115,10 @@
                 resposta.json().then(json => {
                     console.log(json);
                     console.log(JSON.stringify(json));
-                    sessionStorage.EMAIL_USUARIO = json.email;
-                    sessionStorage.NOME_USUARIO = json.nome;
                     sessionStorage.ID_USUARIO = json.id;
-                    sessionStorage.AQUARIOS = JSON.stringify(json.aquarios)
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.USER_USUARIO = json.user;
+                    sessionStorage.EMAIL_USUARIO = json.email;
 
                     setTimeout(function () {
                         window.location = "./dashboard/cards.html";
