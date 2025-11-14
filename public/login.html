@@ -36,12 +36,12 @@
         </ul>
     </header>
 
+
     <div class="alerta_erro">
         <div class="card_erro" id="cardErro">
             <span id="mensagem_erro"></span>
         </div>
     </div>
-
     <section class="login">
         <div class="login-div">
             <div class="login-content login-text">
@@ -51,17 +51,25 @@
                     font-weight: 700;" href="./cadastro.html">
                         Cadastre uma conta nova</a>
                 </p>
-                <form class="login-form">
+
+                <div class="login-form">
                     <div class="login-form-campos">
-                        <p class="login-form-campos-user">Usuário</p>
-                        <input type="text" id="user_input" />
+                        <p class="login-form-campos-user">E-mail</p>
+                        <input type="text" id="email_input" placeholder="email@email.com" />
                     </div>
                     <div class="login-form-campos">
                         <p>Senha</p>
-                        <input type="password" id="senha_input" class="login-form-campos-psswd" />
+                        <input type="password" id="senha_input" class="login-form-campos-psswd"
+                            placeholder="**********" />
                     </div>
-                    <button class="button" onclick="entrar()">Login</button>
-                </form>
+                    <button class="button" onclick="entrar()">Entrar</button>
+                </div>
+
+                <div id="div_aguardar" class="loading-div">
+                    <img src="./assets/circle-loading.gif" id="loading-gif">
+                </div>
+
+                <div id="div_erros_login" style="display: flex; justify-content: center; margin-top: 15px;"></div>
             </div>
             <div class="login-img">
                 <img src="./assets/imgs/pc.png">
@@ -69,22 +77,21 @@
             <div id="div_aguardar" class="loading-div">
                 <img src="./assets/circle-loading.gif" id="loading-gif">
             </div>
-            <div id="div_erros_login"></div>
         </div>
     </section>
+
 </body>
 
 </html>
 
 <script>
-
-
     function entrar() {
         aguardar();
-        var userVar = user_input.value;
+
+        var emailVar = email_input.value;
         var senhaVar = senha_input.value;
 
-        if (userVar == "" || senhaVar == "") {
+        if (emailVar == "" || senhaVar == "") {
             cardErro.style.display = "block"
             mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
             finalizarAguardar();
@@ -94,7 +101,7 @@
             setInterval(sumirMensagem, 5000)
         }
 
-        console.log("FORM LOGIN: ", userVar);
+        console.log("FORM LOGIN: ", emailVar);
         console.log("FORM SENHA: ", senhaVar);
 
         fetch("/usuarios/autenticar", {
@@ -103,7 +110,7 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                userServer: userVar,
+                emailServer: emailVar,
                 senhaServer: senhaVar
             })
         }).then(function (resposta) {
@@ -115,10 +122,10 @@
                 resposta.json().then(json => {
                     console.log(json);
                     console.log(JSON.stringify(json));
-                    sessionStorage.ID_USUARIO = json.id;
-                    sessionStorage.NOME_USUARIO = json.nome;
-                    sessionStorage.USER_USUARIO = json.user;
                     sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.ID_USUARIO = json.id;
+                    // sessionStorage.AQUARIOS = JSON.stringify(json.aquarios)
 
                     setTimeout(function () {
                         window.location = "./dashboard/cards.html";
