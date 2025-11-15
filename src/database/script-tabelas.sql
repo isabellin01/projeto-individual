@@ -32,15 +32,9 @@ CREATE TABLE RespostaPost (
 
 CREATE TABLE Tag (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(45)
-);
-
-CREATE TABLE TagPost (
-    id_publicacao INT,
-    id_tag INT,
-    CONSTRAINT pkComposta PRIMARY KEY (id_publicacao, id_tag),
-    FOREIGN KEY (id_publicacao) REFERENCES Post (id),
-    FOREIGN KEY (id_tag) REFERENCES Tag (id)
+    id_post INT,
+    nome VARCHAR(45),
+    FOREIGN KEY (id_post) REFERENCES Post(id)
 );
 
 INSERT INTO Usuario (nome, user, email, genero, idade, senha) VALUES
@@ -72,53 +66,30 @@ INSERT INTO RespostaPost (id_post, id_usuario, texto, auxiliou) VALUES
 (5, 3, 'Nunca armazene senha em texto puro.', 1);
 
 
-INSERT INTO Tag (nome) VALUES
-('mysql'),
-('sql'),
-('performance'),
-('nodejs'),
-('seguranca'),
-('backend'),
-('join');
+INSERT INTO Tag (id_post, nome) VALUES
+(1, 'mysql'),
+(1, 'sql'),
+(2, 'seguranca'),
+(2, 'mysql'),
+(3, 'seguranca'),
+(4, 'mysql'),
+(5, 'join');
 
+SELECT t.nome, count(t.nome)
+	FROM tag t
+    GROUP BY t.nome ORDER BY count(t.nome) DESC, t.nome ASC;
 
--- Post 1
-INSERT INTO TagPost (id_publicacao, id_tag) VALUES
--- Post 1
-(1, 1),
-(1, 2),
-(1, 7),
--- Post 2
-(2, 1),
-(2, 7),
--- Post 3
-(3, 2),
-(3, 3),
--- Post 4
-(4, 7),
-(4, 2),
--- Post 5
-(5, 4),
-(5, 5),
-(5, 6);
-
--- select c.nome nome_curso,
--- count(a.id) total_aluno
--- from curso c join aluno a on a.fkcurso = c.id
--- group by nome_curso;
-
-select * from Usuario;
-        SELECT
-            p.id AS idPost,
-            p.texto AS textoPost,
-            p.datahora,
-            p.resolvido,
-            u.id AS idUser,
-            u.nome AS nomeUsuario,
-            u.user AS userUsuario,
-			(SELECT COUNT(*)
-			FROM RespostaPost rp
-			WHERE rp.id_post = p.id) AS quantidadeResp
-        FROM Post p
-        INNER JOIN Usuario u ON u.id = p.id_usuario
-        ORDER BY p.datahora DESC;
+SELECT
+	p.id AS idPost,
+	p.texto AS textoPost,
+	p.datahora,
+	p.resolvido,
+	u.id AS idUser,
+	u.nome AS nomeUsuario,
+	u.user AS userUsuario,
+	(SELECT COUNT(*)
+	FROM RespostaPost rp
+	WHERE rp.id_post = p.id) AS quantidadeResp
+FROM Post p
+INNER JOIN Usuario u ON u.id = p.id_usuario
+ORDER BY p.datahora DESC;

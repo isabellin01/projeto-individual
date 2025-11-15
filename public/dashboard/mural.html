@@ -23,11 +23,12 @@
 <body onload="validarSessao(), atualizarFeed(), rankingTag()">
 
     <header class="slide">
-        <span id="b_usuario">Isabel</span>
+        <span id="b_usuario"></span>
         <ul class="slide-header">
             <li class="slide-header-item">
-                <img src="../assets/imgs/postar.svg">
-                <a href="./forum.html">Publicar</a>
+                <button href="./forum.html" onclick="exibir()">
+                    <img src="../assets/imgs/postar.svg">Publicar
+                </button>
             </li>
             <li class="slide-header-item">
                 <img src="../assets/imgs/loopsocial.svg">
@@ -44,33 +45,20 @@
         </ul>
     </header>
 
-    <div class="dash-right">
-        <div class="avisos">
-            <div class="container">
-                <h1>Publicar um aviso</h1>
-                <div class="div-form">
-                    <form id="form_postagem" method="post" onsubmit="return publicar()">
-                        <label>
-                            Título:
-                            <br>
-                            <input name="titulo" id="titulo" maxlength="100" type="text">
-                        </label>
-                        <br>
-                        <br>
-                        <label>
-                            Descrição (máximo de 250 caracteres):
-                            <br>
-                            <textarea name="descricao" id="textarea_descricao" maxlength="250" rows="5"></textarea>
-                        </label>
-                        <br>
-                        <br>
-                        <button>Enviar</button>
-                    </form>
-                </div>
+    <div class="publicar" id="publicar_div" style="display: none;">
+        <div class="publicarmensagem">
+            <div id="publicarinfos" class="publicarinfos">
+                <span class="publicar_usuario" id="postUsuario"></span>
+                <button onclick="fechar()">x</button>
             </div>
+            <label>Descrição (máximo de 300 caracteres)</label>
+            <textarea class="textarea-descricao" id="textarea_descricao" maxlength="300"
+                placeholder="Escreva sua dúvida"></textarea>
+            <label>Tag (máximo um tag)</label>
+            <textarea class="textarea-tag" id="textarea_tag" maxlength="30" placeholder="#exemplo"></textarea>
+            <button onclick="publicar()">Enviar</button>
         </div>
     </div>
-
 
     <section class="social social-text">
         <div class="social-div1">
@@ -101,18 +89,6 @@
                     <p>Discussões mais comentadas do momento</p>
                 </div>
                 <ul class="social-ranking-content" id="social_ranking_content">
-                    <!-- <li>
-                        <p>#javascript</p>
-                        <span>20 publicações</span>
-                    </li>
-                    <li>
-                        <p>#inteligenciaartificial</p>
-                        <span>18 publicações</span>
-                    </li>
-                    <li>
-                        <p>#carreira</p>
-                        <span>15 publicações</span>
-                    </li> -->
                 </ul>
             </div>
             <div class="social-news">
@@ -140,17 +116,14 @@
 
 <script>
     b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
-
-    function limparFormulario() {
-        document.getElementById("form_postagem").reset();
-    }
+    postUsuario.innerHTML = sessionStorage.NOME_USUARIO;
 
     function publicar() {
         var idUsuario = sessionStorage.ID_USUARIO;
 
         var corpo = {
-            titulo: form_postagem.titulo.value,
-            descricao: form_postagem.descricao.value
+            descricao: textarea_descricao.value,
+            tag: textarea_tag.value
         }
 
         fetch(`/avisos/publicar/${idUsuario}`, {
@@ -160,13 +133,15 @@
             },
             body: JSON.stringify(corpo)
         }).then(function (resposta) {
-
             console.log("resposta: ", resposta);
-
+            var idPost = resultadoPost.insertId;
             if (resposta.ok) {
-                window.alert("Post realizado com sucesso pelo usuario de ID: " + idUsuario + "!");
-                window.location = "/dashboard/mural.html";
-                limparFormulario();
+                if (insertTag(corpo) == true) {
+                    window.alert("Post realizado com sucesso pelo usuario de ID: " + idUsuario + "!");
+                    window.location = "/dashboard/mural.html";
+                } else {
+                    window.alert("Insert não foi realizado");
+                }
             } else if (resposta.status == 404) {
                 window.alert("Deu 404!");
             } else {
@@ -175,17 +150,39 @@
         }).catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
         });
-
         return false;
 
     }
 
-    function editar(idAviso) {
-        sessionStorage.ID_POSTAGEM_EDITANDO = idAviso;
-        console.log("cliquei em editar - " + idAviso);
-        window.alert("Você será redirecionado à página de edição do aviso de id número: " + idAviso);
-        window.location = "/dashboard/edicao-aviso.html"
+    function insertTag(corpo) {
+        // INSERT DO TAG
+        fetch(`/avisos/inserttag`, {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(corpo)
+        }).then(function (resposta) {
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                return true;
+            } else if (resposta.status == 404) {
+                window.alert("Deu 404!");
+            } else {
+                throw ("Houve um erro ao tentar realizar o insert! Código da resposta: " + resposta.status);
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
     }
+
+    // function editar(idAviso) {
+    //     sessionStorage.ID_POSTAGEM_EDITANDO = idAviso;
+    //     console.log("cliquei em editar - " + idAviso);
+    //     window.alert("Você será redirecionado à página de edição do aviso de id número: " + idAviso);
+    //     window.location = "/dashboard/edicao-aviso.html"
+    // }
 
     function deletar(idAviso) {
         console.log("Criar função de apagar post escolhido - ID" + idAviso);
@@ -222,7 +219,6 @@
 
                 resposta.json().then(function (resposta) {
                     console.log("Dados recebidos: ", JSON.stringify(resposta));
-
                     var feed = document.getElementById("social-post");
                     for (let i = 0; i < resposta.length; i++) {
                         var publicacao = resposta[i];
@@ -286,10 +282,10 @@
         fetch("/avisos/rankingTag").then(function (resposta) {
             if (resposta.ok) {
                 if (resposta.status == 204) {
-                    var feed = document.getElementById("social_ranking_content");
+                    var feedRanking = document.getElementById("social_ranking_content");
                     var mensagem = document.createElement("span");
                     mensagem.innerHTML = "Nenhum resultado encontrado."
-                    feed.appendChild(mensagem);
+                    feedRanking.appendChild(mensagem);
                     throw "Nenhum resultado encontrado!!";
                 }
 
@@ -297,54 +293,20 @@
                     console.log("Dados recebidos: ", JSON.stringify(resposta));
 
                     var feedRanking = document.getElementById("social_ranking_content");
-                    for (let i = 0; i < resposta.length; i++) {
-                        var publicacao = resposta[i];
+                    for (let i = 0; i < 3; i++) {
+                        var rankingList = resposta[i];
+                        console.log(rankingList)
 
-                        // var SocialPostUser = document.createElement("li");
-                        // var userInfos = document.createElement("div");
-                        // var spanNome = document.createElement("span"); //
-                        // var spanUser = document.createElement("span"); //
-                        // var spanData = document.createElement("span"); //
-                        // var textoP = document.createElement("p"); //
-                        // var postInfos = document.createElement("div");
-                        // // var postInfosTags = document.createElement("div");
-                        // // var spanTags = document.createElement("span"); //
-                        // var EngjInfos = document.createElement("div");
-                        // var EngjInfosImg1 = document.createElement("img"); //
-                        // var EngjInfosResolv = document.createElement("span"); //
-                        // var EngjInfosImg2 = document.createElement("img"); //
-                        // var EngjInfosRepost = document.createElement("span"); //
+                        var rankingItem = document.createElement("li");
+                        var rankingName = document.createElement("p");
+                        var rankingNumber = document.createElement("span");
 
-                        // spanNome.innerHTML = publicacao.nomeUsuario;
-                        // spanUser.innerHTML = '@' + publicacao.userUsuario;
-                        // spanData.innerHTML = arrumarData(publicacao.datahora)
-                        // textoP.innerHTML = publicacao.textoPost;
-                        // EngjInfosImg1.src = `../assets/imgs/check.svg`;
-                        // EngjInfosResolv.innerHTML = check(publicacao.resolvido);
-                        // EngjInfosImg2.src = `../assets/imgs/comentarios.svg`;
-                        // EngjInfosRepost.innerHTML = publicacao.quantidadeResp;
+                        rankingName.innerHTML = `#${rankingList.nome}`;
+                        rankingNumber.innerHTML = `${rankingList.qtdtag} publicações`;
 
-                        // SocialPostUser.className = "social-post-user" // social-post-user
-                        // userInfos.className = "user-infos" // feed-user
-                        // postInfos.className = "post-infos" // feed-infos
-                        // EngjInfos.className = "engj-infos" // feed-infos-users
-
-                        // EngjInfos.appendChild(EngjInfosImg1);
-                        // EngjInfos.appendChild(EngjInfosResolv);
-                        // EngjInfos.appendChild(EngjInfosImg2);
-                        // EngjInfos.appendChild(EngjInfosRepost);
-
-                        // postInfos.appendChild(EngjInfos);
-
-                        // userInfos.appendChild(spanNome);
-                        // userInfos.appendChild(spanUser);
-                        // userInfos.appendChild(spanData);
-
-                        // SocialPostUser.appendChild(userInfos);
-                        // SocialPostUser.appendChild(textoP);
-                        // SocialPostUser.appendChild(postInfos);
-
-                        // feed.appendChild(SocialPostUser);
+                        rankingItem.appendChild(rankingName);
+                        rankingItem.appendChild(rankingNumber);
+                        feedRanking.appendChild(rankingItem);
                     }
                 });
             } else {
@@ -362,12 +324,17 @@
             return `Com dúvida`;
         }
     }
-    //"2025-01-15T22:00:00.000Z"
     function arrumarData(datahora) {
         let dataNova = `${datahora[11]}${datahora[12]}${datahora[13]}${datahora[14]}${datahora[15]}
                         ${datahora[8]}${datahora[9]}/${datahora[5]}${datahora[6]}/${datahora[2]}${datahora[3]}
                         `;
         return dataNova;
+    }
+    function fechar() {
+        publicar_div.style.display = 'none';
+    }
+    function exibir() {
+        publicar_div.style.display = 'flex';
     }
 
 </script>
