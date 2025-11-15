@@ -65,7 +65,7 @@ body {
     width: 100%;
 }
 
-.social-post-user {
+.social_post_user {
     text-align: left;
     background-color: #650E82;
     padding: 20px;
@@ -81,7 +81,7 @@ body {
     margin-right: 5px;
 }
 
-.social-post-user p {
+.social_post_user p {
     color: #fff;
     margin: 20px 0;
 }

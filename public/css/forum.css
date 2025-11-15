@@ -35,7 +35,7 @@ body {
     align-items: center;
     justify-content: space-evenly;
     margin-bottom: 25px;
-    box-shadow: 2.5px 2.5px 6px 1px rgb(8, 10, 12,0.4);
+    box-shadow: 2.5px 2.5px 6px 1px rgb(8, 10, 12, 0.4);
 }
 
 .social-capa-content {
@@ -58,7 +58,7 @@ body {
     width: 90%;
     padding: 30px 40px;
     border-top-left-radius: 0;
-    box-shadow: 2.5px 2.5px 6px 1px rgb(8, 10, 12,0.4);
+    box-shadow: 2.5px 2.5px 6px 1px rgb(8, 10, 12, 0.4);
 }
 
 .social-post {
@@ -73,36 +73,37 @@ body {
     margin: 20px 0;
 }
 
-.feed-user span:nth-child(1) {
+.user-infos span:nth-child(1) {
     color: #fff;
 }
 
-.feed-user span {
+.user-infos span {
     margin-right: 5px;
 }
 
 .social-post-user p {
     color: #fff;
     margin: 20px 0;
+    text-align: left;
 }
 
-.feed-infos {
+.post-infos {
     display: flex;
     justify-content: space-between;
 }
 
-.feed-infos-users {
+.engj-infos {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.feed-infos-users img {
+.engj-infos img {
     width: 18px;
     margin-left: 5px;
 }
 
-.feed-infos-users span {
+.engj-infos span {
     margin-left: 5px;
 }
 
@@ -141,7 +142,7 @@ body {
     width: 90%;
     padding: 30px 40px;
     margin-bottom: 25px;
-    box-shadow: 2.5px 2.5px 6px 1px rgb(8, 10, 12,0.4);
+    box-shadow: 2.5px 2.5px 6px 1px rgb(8, 10, 12, 0.4);
 }
 
 .social-ranking-title {
@@ -177,10 +178,10 @@ body {
     border-radius: 5px;
     width: 90%;
     padding: 30px 40px;
-    box-shadow: 2.5px 2.5px 6px 1px rgb(8, 10, 12,0.4);
+    box-shadow: 2.5px 2.5px 6px 1px rgb(8, 10, 12, 0.4);
 }
 
-.social-news h3{
+.social-news h3 {
     padding: 5px;
     border-bottom: 2px solid #C2ADCA;
 }
@@ -189,12 +190,12 @@ body {
     width: 100%;
 }
 
-.social-news-item{
+.social-news-item {
     width: 100%;
     border-bottom: 2px solid #C2ADCA;
 }
 
-.social-news-item p{
+.social-news-item p {
     margin-bottom: 15px;
 }
 

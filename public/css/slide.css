@@ -25,6 +25,7 @@
     text-decoration: none;
     margin-left: 5px;
     cursor: pointer;
+    color: #650E82;
 }
 
 .slide-header li:nth-child(1) {

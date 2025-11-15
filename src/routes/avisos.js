@@ -7,6 +7,10 @@ router.get("/listar", function (req, res) {
     avisoController.listar(req, res);
 });
 
+router.get("/rankingTag", function (req, res) {
+    avisoController.rankingTag(req, res);
+});
+
 router.get("/listar/:idUsuario", function (req, res) {
     avisoController.listarPorUsuario(req, res);
 });

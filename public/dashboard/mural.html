@@ -8,22 +8,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loop()Social | Cadastro</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/text.css">
     <link rel="stylesheet" href="../css/slide.css">
     <link rel="stylesheet" href="../css/forum.css">
     <link rel="stylesheet" href="../css/dashboards.css">
-    <link rel="stylesheet" href="../css/estilo.css" />
     <script src="../js/sessao.js"></script>
     <script src="./../js/alerta.js"></script>
-
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
 </head>
 
-<body onload="validarSessao(), atualizarFeed()">
+<body onload="validarSessao(), atualizarFeed(), rankingTag()">
 
     <header class="slide">
         <span id="b_usuario">Isabel</span>
@@ -70,46 +67,73 @@
                         <button>Enviar</button>
                     </form>
                 </div>
-                <h1>Mural de Avisos</h1>
-                <div class="div-results">
-                    <div id="feed_container" class="feed-container">
-                    </div>
-                </div>
-
-                <div class="social-filter">
-                    <ul class="social-filter-list">
-                        <li>Relevantes</li>
-                        <li>Recentes</li>
-                    </ul>
-                </div>
-                <div class="social-feed">
-                    <ul class="social-post" id="social-post">
-                        <!-- <li class="social-post-user">
-                            <div class="feed-user" style="display: flex;">
-                                <span>Isabel Lin</span>
-                                <span>@bebellin</span>
-                                <span>14h</span>
-                            </div>
-                            <p>Gente, como usa a web data viz?</p>
-                            <div class="feed-infos" style="display: flex;">
-                                <div class="feed-infos-tag">
-                                    <span>#javascript #nodejs #api</span>
-                                </div>
-                                <div class="feed-infos-users">
-                                    <img src="../assets/img/like.svg">
-                                    <span>21 likes</span>
-                                    <img src="../assets/img/comentarios.svg">
-                                    <span>7 comentários</span>
-                                </div>
-                            </div>
-                        </li> -->
-                    </ul>
-                </div>
             </div>
         </div>
     </div>
-    </div>
 
+
+    <section class="social social-text">
+        <div class="social-div1">
+            <div class="social-capa">
+                <div class="social-capa-content">
+                    <h1>Bem-vindo à nossa comunidade Loop()</h1>
+                    <p>Onde a troca de experiências é constante</p>
+                </div>
+                <div class="social-capa-img">
+                    <img src="../assets/imgs/pc.png">
+                </div>
+            </div>
+            <div class="social-filter">
+                <ul class="social-filter-list">
+                    <li>Relevantes</li>
+                    <li>Recentes</li>
+                </ul>
+            </div>
+            <div class="social-feed">
+                <ul class="social-post" id="social-post">
+                </ul>
+            </div>
+        </div>
+        <div class="social-div2">
+            <div class="social-ranking">
+                <div>
+                    <h3>Tags populares</h3>
+                    <p>Discussões mais comentadas do momento</p>
+                </div>
+                <ul class="social-ranking-content" id="social_ranking_content">
+                    <!-- <li>
+                        <p>#javascript</p>
+                        <span>20 publicações</span>
+                    </li>
+                    <li>
+                        <p>#inteligenciaartificial</p>
+                        <span>18 publicações</span>
+                    </li>
+                    <li>
+                        <p>#carreira</p>
+                        <span>15 publicações</span>
+                    </li> -->
+                </ul>
+            </div>
+            <div class="social-news">
+                <h3>O que está acontecendo essa semana?</h3>
+                <ul class="social-news-list">
+                    <li class="social-news-item">
+                        <img src="https://placehold.co/150x100">
+                        <p>Queda da AWS derruba parte da internet e causa caos nas empresas</p>
+                    </li>
+                    <li class="social-news-item">
+                        <img src="https://placehold.co/150x100">
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, voluptatum?</p>
+                    </li>
+                    <li class="social-news-item">
+                        <img src="https://placehold.co/150x100">
+                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
 </body>
 
 </html>
@@ -143,7 +167,6 @@
                 window.alert("Post realizado com sucesso pelo usuario de ID: " + idUsuario + "!");
                 window.location = "/dashboard/mural.html";
                 limparFormulario();
-                finalizarAguardar();
             } else if (resposta.status == 404) {
                 window.alert("Deu 404!");
             } else {
@@ -151,7 +174,6 @@
             }
         }).catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
-            finalizarAguardar();
         });
 
         return false;
@@ -163,7 +185,6 @@
         console.log("cliquei em editar - " + idAviso);
         window.alert("Você será redirecionado à página de edição do aviso de id número: " + idAviso);
         window.location = "/dashboard/edicao-aviso.html"
-
     }
 
     function deletar(idAviso) {
@@ -203,63 +224,150 @@
                     console.log("Dados recebidos: ", JSON.stringify(resposta));
 
                     var feed = document.getElementById("social-post");
-                    feed.innerHTML = "";
                     for (let i = 0; i < resposta.length; i++) {
                         var publicacao = resposta[i];
 
-                        // criando e manipulando elementos do HTML via JavaScript
-                        var divPublicacao = document.createElement("div");
-                        var spanID = document.createElement("span");
-                        var spanTitulo = document.createElement("span");
-                        var spanNome = document.createElement("span");
-                        var divDescricao = document.createElement("div");
-                        var divButtons = document.createElement("div");
-                        var btnEditar = document.createElement("button");
-                        var btnDeletar = document.createElement("button");
+                        var SocialPostUser = document.createElement("li");
+                        var userInfos = document.createElement("div");
+                        var spanNome = document.createElement("span"); //
+                        var spanUser = document.createElement("span"); //
+                        var spanData = document.createElement("span"); //
+                        var textoP = document.createElement("p"); //
+                        var postInfos = document.createElement("div");
+                        // var postInfosTags = document.createElement("div");
+                        // var spanTags = document.createElement("span"); //
+                        var EngjInfos = document.createElement("div");
+                        var EngjInfosImg1 = document.createElement("img"); //
+                        var EngjInfosResolv = document.createElement("span"); //
+                        var EngjInfosImg2 = document.createElement("img"); //
+                        var EngjInfosRepost = document.createElement("span"); //
 
+                        spanNome.innerHTML = publicacao.nomeUsuario;
+                        spanUser.innerHTML = '@' + publicacao.userUsuario;
+                        spanData.innerHTML = arrumarData(publicacao.datahora)
+                        textoP.innerHTML = publicacao.textoPost;
+                        EngjInfosImg1.src = `../assets/imgs/check.svg`;
+                        EngjInfosResolv.innerHTML = check(publicacao.resolvido);
+                        EngjInfosImg2.src = `../assets/imgs/comentarios.svg`;
+                        EngjInfosRepost.innerHTML = publicacao.quantidadeResp;
 
-                        spanID.innerHTML = "ID: <b>" + publicacao.idAviso + "</b>";
-                        spanTitulo.innerHTML = "Título: <b>" + publicacao.titulo + "</b>";
-                        spanNome.innerHTML = "Autor: <b>" + publicacao.nome + "</b>";
-                        divDescricao.innerHTML = "Descrição: <b>" + publicacao.descricao + "</b>";
-                        btnEditar.innerHTML = "Editar";
-                        btnDeletar.innerHTML = "Deletar";
+                        SocialPostUser.className = "social-post-user" // social-post-user
+                        userInfos.className = "user-infos" // feed-user
+                        postInfos.className = "post-infos" // feed-infos
+                        EngjInfos.className = "engj-infos" // feed-infos-users
 
-                        divPublicacao.className = "publicacao";
-                        spanTitulo.id = "inputNumero" + publicacao.idAviso;
-                        spanNome.className = "publicacao-nome";
-                        spanTitulo.className = "publicacao-titulo";
-                        divDescricao.className = "publicacao-descricao";
+                        EngjInfos.appendChild(EngjInfosImg1);
+                        EngjInfos.appendChild(EngjInfosResolv);
+                        EngjInfos.appendChild(EngjInfosImg2);
+                        EngjInfos.appendChild(EngjInfosRepost);
 
-                        divButtons.className = "div-buttons"
+                        postInfos.appendChild(EngjInfos);
 
-                        btnEditar.className = "publicacao-btn-editar"
-                        btnEditar.id = "btnEditar" + publicacao.idAviso;
-                        btnEditar.setAttribute("onclick", `editar(${publicacao.idAviso})`);
+                        userInfos.appendChild(spanNome);
+                        userInfos.appendChild(spanUser);
+                        userInfos.appendChild(spanData);
 
-                        btnDeletar.className = "publicacao-btn-editar"
-                        btnDeletar.id = "btnDeletar" + publicacao.idAviso;
-                        btnDeletar.setAttribute("onclick", `deletar(${publicacao.idAviso})`);
+                        SocialPostUser.appendChild(userInfos);
+                        SocialPostUser.appendChild(textoP);
+                        SocialPostUser.appendChild(postInfos);
 
-                        divPublicacao.appendChild(spanID);
-                        divPublicacao.appendChild(spanNome);
-                        divPublicacao.appendChild(spanTitulo);
-                        divPublicacao.appendChild(divDescricao);
-                        divPublicacao.appendChild(divButtons);
-                        divButtons.appendChild(btnEditar);
-                        divButtons.appendChild(btnDeletar);
-                        feed.appendChild(divPublicacao);
+                        feed.appendChild(SocialPostUser);
                     }
-
-                    finalizarAguardar();
                 });
             } else {
                 throw ('Houve um erro na API!');
             }
         }).catch(function (resposta) {
             console.error(resposta);
-            finalizarAguardar();
         });
+    }
+
+    function rankingTag() {
+        fetch("/avisos/rankingTag").then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) {
+                    var feed = document.getElementById("social_ranking_content");
+                    var mensagem = document.createElement("span");
+                    mensagem.innerHTML = "Nenhum resultado encontrado."
+                    feed.appendChild(mensagem);
+                    throw "Nenhum resultado encontrado!!";
+                }
+
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+                    var feedRanking = document.getElementById("social_ranking_content");
+                    for (let i = 0; i < resposta.length; i++) {
+                        var publicacao = resposta[i];
+
+                        // var SocialPostUser = document.createElement("li");
+                        // var userInfos = document.createElement("div");
+                        // var spanNome = document.createElement("span"); //
+                        // var spanUser = document.createElement("span"); //
+                        // var spanData = document.createElement("span"); //
+                        // var textoP = document.createElement("p"); //
+                        // var postInfos = document.createElement("div");
+                        // // var postInfosTags = document.createElement("div");
+                        // // var spanTags = document.createElement("span"); //
+                        // var EngjInfos = document.createElement("div");
+                        // var EngjInfosImg1 = document.createElement("img"); //
+                        // var EngjInfosResolv = document.createElement("span"); //
+                        // var EngjInfosImg2 = document.createElement("img"); //
+                        // var EngjInfosRepost = document.createElement("span"); //
+
+                        // spanNome.innerHTML = publicacao.nomeUsuario;
+                        // spanUser.innerHTML = '@' + publicacao.userUsuario;
+                        // spanData.innerHTML = arrumarData(publicacao.datahora)
+                        // textoP.innerHTML = publicacao.textoPost;
+                        // EngjInfosImg1.src = `../assets/imgs/check.svg`;
+                        // EngjInfosResolv.innerHTML = check(publicacao.resolvido);
+                        // EngjInfosImg2.src = `../assets/imgs/comentarios.svg`;
+                        // EngjInfosRepost.innerHTML = publicacao.quantidadeResp;
+
+                        // SocialPostUser.className = "social-post-user" // social-post-user
+                        // userInfos.className = "user-infos" // feed-user
+                        // postInfos.className = "post-infos" // feed-infos
+                        // EngjInfos.className = "engj-infos" // feed-infos-users
+
+                        // EngjInfos.appendChild(EngjInfosImg1);
+                        // EngjInfos.appendChild(EngjInfosResolv);
+                        // EngjInfos.appendChild(EngjInfosImg2);
+                        // EngjInfos.appendChild(EngjInfosRepost);
+
+                        // postInfos.appendChild(EngjInfos);
+
+                        // userInfos.appendChild(spanNome);
+                        // userInfos.appendChild(spanUser);
+                        // userInfos.appendChild(spanData);
+
+                        // SocialPostUser.appendChild(userInfos);
+                        // SocialPostUser.appendChild(textoP);
+                        // SocialPostUser.appendChild(postInfos);
+
+                        // feed.appendChild(SocialPostUser);
+                    }
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+        });
+    }
+
+    function check(num) {
+        if (num == 1) {
+            return `Resolvido`;
+        } else {
+            return `Com dúvida`;
+        }
+    }
+    //"2025-01-15T22:00:00.000Z"
+    function arrumarData(datahora) {
+        let dataNova = `${datahora[11]}${datahora[12]}${datahora[13]}${datahora[14]}${datahora[15]}
+                        ${datahora[8]}${datahora[9]}/${datahora[5]}${datahora[6]}/${datahora[2]}${datahora[3]}
+                        `;
+        return dataNova;
     }
 
 </script>

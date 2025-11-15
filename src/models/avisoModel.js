@@ -3,20 +3,31 @@ var database = require("../database/config");
 function listar() {
     console.log("ACESSEI O AVISO  MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar()");
     var instrucaoSql = `
-        SELECT 
+        SELECT
             p.id AS idPost,
             p.texto AS textoPost,
             p.datahora,
             p.resolvido,
             u.id AS idUser,
-            u.nome,
-            u.user,
-            rp.idRespostaPub AS idResposta,
-            rp.texto AS textoResposta,
-            rp.auxiliou
-        FROM RespostaPost rp
-        INNER JOIN Post p ON p.id = rp.id_post
-        INNER JOIN Usuario u ON u.id = rp.id_usuario;
+            u.nome AS nomeUsuario,
+            u.user AS userUsuario,
+			(SELECT COUNT(*)
+			FROM RespostaPost rp
+			WHERE rp.id_post = p.id) AS quantidadeResp
+        FROM Post p
+        INNER JOIN Usuario u ON u.id = p.id_usuario
+        ORDER BY p.datahora DESC;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function rankingTag() {
+    console.log("ACESSEI O AVISO  MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function rankingTag()");
+    var instrucaoSql = `
+        SELECT t.nome AS Tags, count(t.nome) AS qtdTags
+        FROM tagpost tg JOIN tag t ON t.id = tg.id_tag
+        GROUP BY t.nome ORDER BY count(t.nome) DESC;
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
@@ -93,6 +104,7 @@ function deletar(idAviso) {
 
 module.exports = {
     listar,
+    rankingTag,
     listarPorUsuario,
     pesquisarDescricao,
     publicar,
