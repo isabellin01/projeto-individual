@@ -117,6 +117,7 @@
 <script>
     b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
     postUsuario.innerHTML = sessionStorage.NOME_USUARIO;
+    let idAtual = 0;
 
     function publicar() {
         var idUsuario = sessionStorage.ID_USUARIO;
@@ -134,14 +135,10 @@
             body: JSON.stringify(corpo)
         }).then(function (resposta) {
             console.log("resposta: ", resposta);
-            var idPost = resultadoPost.insertId;
             if (resposta.ok) {
-                if (insertTag(corpo) == true) {
-                    window.alert("Post realizado com sucesso pelo usuario de ID: " + idUsuario + "!");
-                    window.location = "/dashboard/mural.html";
-                } else {
-                    window.alert("Insert não foi realizado");
-                }
+                insertTag(corpo);
+                window.alert("Post realizado com sucesso pelo usuario de ID: " + idUsuario + "!");
+                window.location = "/dashboard/mural.html";
             } else if (resposta.status == 404) {
                 window.alert("Deu 404!");
             } else {
@@ -151,17 +148,18 @@
             console.log(`#ERRO: ${resposta}`);
         });
         return false;
-
     }
 
     function insertTag(corpo) {
-        // INSERT DO TAG
         fetch(`/avisos/inserttag`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(corpo)
+            body: JSON.stringify({
+                ...corpo,
+                idAtual: idAtual
+            })
         }).then(function (resposta) {
             console.log("resposta: ", resposta);
 
@@ -192,7 +190,6 @@
                 "Content-Type": "application/json"
             }
         }).then(function (resposta) {
-
             if (resposta.ok) {
                 window.alert("Post deletado com sucesso pelo usuario de email: " + sessionStorage.getItem("EMAIL_USUARIO") + "!");
                 window.location = "/dashboard/mural.html"
@@ -219,6 +216,7 @@
 
                 resposta.json().then(function (resposta) {
                     console.log("Dados recebidos: ", JSON.stringify(resposta));
+                    idAtual = resposta[0].idPost;
                     var feed = document.getElementById("social-post");
                     for (let i = 0; i < resposta.length; i++) {
                         var publicacao = resposta[i];

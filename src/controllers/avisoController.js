@@ -101,11 +101,14 @@ function publicar(req, res) {
 
 function insertTag(req, res) {
     var nomeTag = req.body.tag;
+    var idPost = req.body.idAtual;
 
     if (nomeTag == undefined) {
         res.status(400).send("A descrição está indefinido!");
+    } else if (idPost == undefined) {
+        res.status(400).send("A idPost está indefinido!");
     } else {
-        avisoModel.insertTag(nomeTag)
+        avisoModel.insertTag(nomeTag, idPost)
             .then(
                 function (resultado) {
                     res.json(resultado);
