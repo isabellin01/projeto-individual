@@ -14,10 +14,10 @@
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/text.css">
     <link rel="stylesheet" href="../css/slide.css">
+    <link rel="stylesheet" href="../css/publicar.css">
     <link rel="stylesheet" href="../css/forum.css">
-    <link rel="stylesheet" href="../css/dashboards.css">
     <script src="../js/sessao.js"></script>
-    <script src="./../js/alerta.js"></script>
+    <script src="./../js/publicar.js"></script>
 </head>
 
 <body onload="validarSessao(), atualizarFeed(), rankingTag()">
@@ -32,7 +32,7 @@
             </li>
             <li class="slide-header-item">
                 <img src="../assets/imgs/loopsocial.svg">
-                <a href="./forum.html">Loop()Social</a>
+                <a href="./mural.html">Loop()Social</a>
             </li>
             <li class="slide-header-item">
                 <img src="../assets/imgs/dashboard.svg">
@@ -117,43 +117,39 @@
 <script>
     b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
     postUsuario.innerHTML = sessionStorage.NOME_USUARIO;
+    
     // let idAtual = 0;
 
-    // function limparFormulario() {
-    //     document.getElementById("textarea_descricao").value = '';
-    //     document.getElementById("textarea_tag").value = '';
+    // function publicar() {
+    //     var idUsuario = sessionStorage.ID_USUARIO;
+
+    //     var corpo = {
+    //         descricao: textarea_descricao.value,
+    //         tag: textarea_tag.value
+    //     }
+
+    //     fetch(`/avisos/publicar/${idUsuario}`, {
+    //         method: "post",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify(corpo)
+    //     }).then(function (resposta) {
+    //         console.log("resposta: ", resposta);
+    //         if (resposta.ok) {
+    //             // insertTag(corpo.tag);
+    //             window.alert("Post realizado com sucesso pelo usuario de ID: " + idUsuario + "!");
+    //             window.location = "/dashboard/mural.html";
+    //         } else if (resposta.status == 404) {
+    //             window.alert("Deu 404!");
+    //         } else {
+    //             throw ("Houve um erro ao tentar realizar a postagem! Código da resposta: " + resposta.status);
+    //         }
+    //     }).catch(function (resposta) {
+    //         console.log(`#ERRO: ${resposta}`);
+    //     });
+    //     return false;
     // }
-
-    function publicar() {
-        var idUsuario = sessionStorage.ID_USUARIO;
-
-        var corpo = {
-            descricao: textarea_descricao.value,
-            tag: textarea_tag.value
-        }
-
-        fetch(`/avisos/publicar/${idUsuario}`, {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(corpo)
-        }).then(function (resposta) {
-            console.log("resposta: ", resposta);
-            if (resposta.ok) {
-                // insertTag(corpo.tag);
-                window.alert("Post realizado com sucesso pelo usuario de ID: " + idUsuario + "!");
-                window.location = "/dashboard/mural.html";
-            } else if (resposta.status == 404) {
-                window.alert("Deu 404!");
-            } else {
-                throw ("Houve um erro ao tentar realizar a postagem! Código da resposta: " + resposta.status);
-            }
-        }).catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
-        });
-        return false;
-    }
 
     function atualizarFeed() {
         var idUsuario = sessionStorage.ID_USUARIO;
@@ -451,11 +447,11 @@
                         `;
         return dataNova;
     }
-    function fechar() {
-        publicar_div.style.display = 'none';
-    }
-    function exibir() {
-        publicar_div.style.display = 'flex';
-    }
+    // function fechar() {
+    //     publicar_div.style.display = 'none';
+    // }
+    // function exibir() {
+    //     publicar_div.style.display = 'flex';
+    // }
 
 </script>
