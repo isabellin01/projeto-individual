@@ -7,6 +7,10 @@ router.get("/listar", function (req, res) {
     avisoController.listar(req, res);
 });
 
+router.get("/listarduvida", function (req, res) {
+    avisoController.listarduvida(req, res);
+});
+
 router.get("/rankingTag", function (req, res) {
     avisoController.rankingTag(req, res);
 });
@@ -23,13 +27,13 @@ router.post("/publicar/:idUsuario", function (req, res) {
     avisoController.publicar(req, res);
 });
 
-router.post("/inserttag", function (req, res) {
-    avisoController.insertTag(req, res);
-});
-
-// router.put("/editar/:idAviso", function (req, res) {
-//     avisoController.editar(req, res);
+// router.post("/inserttag", function (req, res) {
+//     avisoController.insertTag(req, res);
 // });
+
+router.put("/mudarStatus/:botaoId", function (req, res) {
+    avisoController.mudarStatus(req, res);
+});
 
 // router.delete("/deletar/:idAviso", function (req, res) {
 //     avisoController.deletar(req, res);

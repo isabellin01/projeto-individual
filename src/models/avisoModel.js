@@ -11,12 +11,37 @@ function listar() {
             u.id AS idUser,
             u.nome AS nomeUsuario,
             u.user AS userUsuario,
-			(SELECT COUNT(*)
-			FROM RespostaPost rp
-			WHERE rp.id_post = p.id) AS quantidadeResp
+            p.tag AS nomeTag,
+            (SELECT COUNT(*)
+            FROM RespostaPost rp
+            WHERE rp.id_post = p.id) AS quantidadeResp
         FROM Post p
         INNER JOIN Usuario u ON u.id = p.id_usuario
-        ORDER BY p.datahora DESC;
+        ORDER BY p.datahora DESC LIMIT 10;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function listarduvida() {
+    console.log("ACESSEI O AVISO  MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar()");
+    var instrucaoSql = `
+        SELECT
+            p.id AS idPost,
+            p.texto AS textoPost,
+            p.datahora,
+            p.resolvido,
+            u.id AS idUser,
+            u.nome AS nomeUsuario,
+            u.user AS userUsuario,
+            p.tag AS nomeTag,
+            (SELECT COUNT(*)
+            FROM RespostaPost rp
+            WHERE rp.id_post = p.id) AS quantidadeResp
+        FROM Post p
+        INNER JOIN Usuario u ON u.id = p.id_usuario
+        WHERE p.resolvido = 0 ORDER BY p.datahora DESC
+        LIMIT 10;
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
@@ -25,11 +50,9 @@ function listar() {
 function rankingTag() {
     console.log("ACESSEI O AVISO  MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function rankingTag()");
     var instrucaoSql = `
-        SELECT t.nome AS nome,
-        count(t.nome) AS qtdtag
-            FROM tag t
-            GROUP BY t.nome
-            ORDER BY count(t.nome) DESC, t.nome ASC;
+        SELECT tag AS nome, count(tag) AS qtdtag
+        FROM post GROUP BY tag
+        ORDER BY count(tag) DESC, tag ASC LIMIT 3;
         `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
@@ -77,32 +100,32 @@ function rankingTag() {
 //     return database.executar(instrucaoSql);
 // }
 
-function publicar(descricao, idUsuario) {
-    console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function publicar(): ", descricao, idUsuario);
+function publicar(descricao, idUsuario, tagNome) {
+    console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function publicar(): ", descricao, idUsuario, tagNome);
     var instrucaoSql = `
-        INSERT INTO Post (id_usuario, texto, datahora, resolvido) VALUES ('${idUsuario}', '${descricao}', Now(), 0);
+        INSERT INTO Post (id_usuario, texto, datahora, resolvido, tag) VALUES ('${idUsuario}', '${descricao}', Now(), 0, '${tagNome}');
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-function insertTag(nomeTag, idPost) {
-    console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function insertTag(): ", nomeTag, idPost);
-    var instrucaoSql = `
-        INSERT INTO Tag (id_post, nome) VALUES ('${idPost}','${nomeTag}');
-    `;
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
-}
-
-// function editar(novaDescricao, idAviso) {
-//     console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function editar(): ", novaDescricao, idAviso);
+// function insertTag(nomeTag, idPost) {
+//     console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function insertTag(): ", nomeTag, idPost);
 //     var instrucaoSql = `
-//         UPDATE aviso SET descricao = '${novaDescricao}' WHERE id = ${idAviso};
+//         INSERT INTO Tag (id_post, nome) VALUES ('${idPost}','${nomeTag}');
 //     `;
 //     console.log("Executando a instrução SQL: \n" + instrucaoSql);
 //     return database.executar(instrucaoSql);
 // }
+
+function mudarStatus(botaoId, botaoStatus) {
+    console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function editar(): ", botaoId, botaoStatus);
+    var instrucaoSql = `
+        UPDATE Post SET resolvido = '${botaoStatus}' WHERE id = ${botaoId};
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
 
 // function deletar(idAviso) {
 //     console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function deletar():", idAviso);
@@ -115,11 +138,13 @@ function insertTag(nomeTag, idPost) {
 
 module.exports = {
     listar,
+    listarduvida,
     rankingTag,
     // listarPorUsuario,
     // pesquisarTag,
     publicar,
-    insertTag
+    // insertTag,
+    mudarStatus
     // editar,
     // deletar
 }

@@ -43,7 +43,7 @@ body {
 }
 
 .social-capa-img img {
-    width: 150px;
+    width: 180px;
 }
 
 /*!FEED*/
@@ -88,8 +88,10 @@ body {
 }
 
 .post-infos {
+    width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .engj-infos {
@@ -99,7 +101,7 @@ body {
 }
 
 .engj-infos img {
-    width: 18px;
+    width: 20px;
     margin-left: 5px;
 }
 
@@ -118,18 +120,32 @@ body {
     display: flex;
 }
 
-.social-filter-list li {
+.social-filter-list button{
     background-color: #650E82;
+    color: #fff;
+    font-size: 16px;
     padding: 6px 12px;
     border-top-left-radius: 9px;
     border-top-right-radius: 9px;
+    margin-right: 0.5px;
+    border: none;
+    transition: all 0.1s ease-in-out;
 }
 
-.social-filter-list li:nth-child(1) {
+.social-filter-list button:hover{
+    background-color: #ffffff;
+    color: #650E82;
+}
+
+.social-filter-list button:active {
+    transform: translateY(2px);
+}
+
+/* .social-filter-list li:nth-child(1) {
     margin-right: 1px;
     background-color: #fff;
     color: #650E82;
-}
+} */
 
 /*!RANKING*/
 .social-ranking {
@@ -218,7 +234,7 @@ body {
     align-items: center;
 }
 
-.publicarinfos{
+.publicarinfos {
     width: 95%;
     display: flex;
     align-items: center;
@@ -262,7 +278,8 @@ body {
     resize: none;
 }
 
-.publicarmensagem button{
+.publicarmensagem button,
+.statusButton {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -278,15 +295,21 @@ body {
     text-decoration: none;
 }
 
-.publicarmensagem button:hover {
+.publicarmensagem button,
+.statusButton:hover {
     background-color: #650E82;
     color: #fff;
 }
 
-.publicarmensagem button:active {
+.publicarmensagem button,
+.statusButton:active {
     transform: translateY(2px);
 }
 
 .publicarmensagem textarea:focus {
     outline: none;
+}
+
+.statusButton {
+    margin-left: 5px;
 }

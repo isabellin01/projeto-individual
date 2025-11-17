@@ -14,6 +14,20 @@ function listar(req, res) {
     });
 }
 
+function listarduvida(req, res) {
+    avisoModel.listarduvida().then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os avisos: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 function rankingTag(req, res) {
     avisoModel.rankingTag().then(function (resultado) {
         if (resultado.length > 0) {
@@ -77,13 +91,14 @@ function rankingTag(req, res) {
 function publicar(req, res) {
     var descricao = req.body.descricao;
     var idUsuario = req.params.idUsuario;
+    var tagNome = req.body.tag;
 
     if (descricao == undefined) {
         res.status(400).send("A descrição está indefinido!");
     } else if (idUsuario == undefined) {
         res.status(400).send("A tag está indefinida!");
     } else {
-        avisoModel.publicar(descricao, idUsuario)
+        avisoModel.publicar(descricao, idUsuario, tagNome)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -99,50 +114,49 @@ function publicar(req, res) {
     }
 }
 
-function insertTag(req, res) {
-    var nomeTag = req.body.tag;
-    var idPost = req.body.idAtual;
+// function insertTag(req, res) {
+//     var nomeTag = req.body.tag;
+//     var idPost = req.body.idAtualizado;
 
-    if (nomeTag == undefined) {
-        res.status(400).send("A descrição está indefinido!");
-    } else if (idPost == undefined) {
-        res.status(400).send("A idPost está indefinido!");
-    } else {
-        avisoModel.insertTag(nomeTag, idPost)
-            .then(
-                function (resultado) {
-                    res.json(resultado);
-                }
-            )
-            .catch(
-                function (erro) {
-                    console.log(erro);
-                    console.log("Houve um erro ao realizar o post: ", erro.sqlMessage);
-                    res.status(500).json(erro.sqlMessage);
-                }
-            );
-    }
-}
-
-// function editar(req, res) {
-//     var novaDescricao = req.body.descricao;
-//     var idAviso = req.params.idAviso;
-
-//     avisoModel.editar(novaDescricao, idAviso)
-//         .then(
-//             function (resultado) {
-//                 res.json(resultado);
-//             }
-//         )
-//         .catch(
-//             function (erro) {
-//                 console.log(erro);
-//                 console.log("Houve um erro ao realizar o post: ", erro.sqlMessage);
-//                 res.status(500).json(erro.sqlMessage);
-//             }
-//         );
-
+//     if (nomeTag == undefined) {
+//         res.status(400).send("A descrição está indefinido!");
+//     } else if (idPost == undefined) {
+//         res.status(400).send("A idPost está indefinido!");
+//     } else {
+//         avisoModel.insertTag(nomeTag, idPost)
+//             .then(
+//                 function (resultado) {
+//                     res.json(resultado);
+//                 }
+//             )
+//             .catch(
+//                 function (erro) {
+//                     console.log(erro);
+//                     console.log("Houve um erro ao realizar o post: ", erro.sqlMessage);
+//                     res.status(500).json(erro.sqlMessage);
+//                 }
+//             );
+//     }
 // }
+
+function mudarStatus(req, res) {
+    var botaoId = req.params.botaoId;
+    var botaoStatus = req.body.botaoStatus;
+
+    avisoModel.mudarStatus(botaoId, botaoStatus)
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        )
+        .catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao mudar o status do botão: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
 
 // function deletar(req, res) {
 //     var idAviso = req.params.idAviso;
@@ -164,11 +178,13 @@ function insertTag(req, res) {
 
 module.exports = {
     listar,
+    listarduvida,
     rankingTag,
     // listarPorUsuario,
     // pesquisarTag,
     publicar,
-    insertTag
+    // insertTag,
+    mudarStatus
     // editar,
     // deletar
 }
