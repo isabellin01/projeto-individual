@@ -52,7 +52,7 @@ function rankingTag() {
     var instrucaoSql = `
         SELECT tag AS nome, count(tag) AS qtdtag
         FROM post GROUP BY tag
-        ORDER BY count(tag) DESC, tag ASC LIMIT 3;
+        ORDER BY count(tag) DESC, tag ASC;
         `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);

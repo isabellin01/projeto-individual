@@ -199,7 +199,6 @@
                         EngjInfosImg2.src = `../assets/imgs/comentarios.svg`;
                         EngjInfosRepost.innerHTML = publicacao.quantidadeResp;
 
-                        // console.log(publicacao)
                         SocialPostUser.className = "social-post-user" // social-post-user
                         userInfos.className = "user-infos" // feed-user
                         postInfos.className = "post-infos" // feed-infos
@@ -412,7 +411,7 @@
                     // console.log("Dados recebidos: ", JSON.stringify(resposta));
 
                     var feedRanking = document.getElementById("social_ranking_content");
-                    for (let i = 0; i < resposta.length; i++) {
+                    for (let i = 0; i < 3; i++) {
                         var rankingList = resposta[i];
                         var rankingItem = document.createElement("li");
                         var rankingName = document.createElement("p");

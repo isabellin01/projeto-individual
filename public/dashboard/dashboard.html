@@ -23,7 +23,7 @@
     <!-- scripts do Chart.js - 2022-1 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!--FONT AWESOME-->
-    <!-- <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script> -->
+    <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -90,20 +90,34 @@
             <p class="dash-titles">Últimas 24 horas - engajamento</p>
             <ul class="dash-kpis">
                 <li class="dash-kpis-item">
-                    <span class="dash-kpi-title">Total post</span>
-                    <span class="dash-kpi-number" id=""></span>
+                    <span class="dash-kpi-title">Total de dúvidas</span>
+                    <span class="dash-kpi-number" id="kpi_totalduvida"></span>
                 </li>
                 <li class="dash-kpis-item">
-                    <span class="dash-kpi-title">Total respostas</span>
-                    <span class="dash-kpi-number"></span>
+                    <span class="dash-kpi-title">Total de publicações</span>
+                    <span class="dash-kpi-number" id="kpi_totalpost"></span>
                 </li>
                 <li class="dash-kpis-item">
-                    <span class="dash-kpi-title">Total curtidas</span>
-                    <span class="dash-kpi-number"></span>
+                    <span class="dash-kpi-title">Dúvidas por publicações</span>
+                    <span class="dash-kpi-number" id="kpi_duvidasporpost"></span>
                 </li>
-                <li class="dash-kpis-item">
+                <!-- <li class="dash-kpis-item">
                     <span class="dash-kpi-title">Novos usuários</span>
                     <span class="dash-kpi-number"></span>
+                </li> -->
+            </ul>
+        </div>
+        <div class="dash-divs">
+            <p class="dash-titles">Todos os tempos</p>
+            <ul class="dash-kpis">
+                <li class="dash-kpis-item">
+                    <canvas id="myChartCanvas_rankingTags"></canvas>
+                </li>
+                <li class="dash-kpis-item">
+                    <canvas id="myChartCanvas_gender"></canvas>
+                </li>
+                <li class="dash-kpis-item">
+                    <!-- <canvas id="barra-horizontal"></canvas> -->
                 </li>
             </ul>
         </div>
@@ -111,24 +125,10 @@
             <p class="dash-titles">Todos os tempos</p>
             <ul class="dash-kpis">
                 <li class="dash-kpis-item">
-                    <canvas id="barra-vertical"></canvas>
+                    <!-- <canvas id="barra-vertical"></canvas> -->
                 </li>
                 <li class="dash-kpis-item">
-                    <canvas id="pizza"></canvas>
-                </li>
-                <li class="dash-kpis-item">
-                    <canvas id="barra-horizontal"></canvas>
-                </li>
-            </ul>
-        </div>
-        <div class="dash-divs">
-            <p class="dash-titles">Todos os tempos</p>
-            <ul class="dash-kpis">
-                <li class="dash-kpis-item">
-                    <canvas id="barra-vertical"></canvas>
-                </li>
-                <li class="dash-kpis-item">
-                    <canvas id="pizza"></canvas>
+                    <!-- <canvas id="pizza"></canvas> -->
                 </li>
             </ul>
         </div>
@@ -147,7 +147,7 @@
 
     window.onload = obterDadosGrafico();
 
-    // function exibirGraficos() {
+    // function exibirAquariosDoUsuario() {
     //     var aquarios = JSON.parse(sessionStorage.AQUARIOS);
     //     aquarios.forEach(item => {
     //         document.getElementById("btnAquario").innerHTML += `
@@ -167,6 +167,7 @@
     //                 </div>
     //             </div>
     //         `
+
     //         obterDadosGrafico(item.id)
     //     });
 
@@ -251,28 +252,19 @@
     // Configura o gráfico (cores, tipo, etc), materializa-o na página e, 
     // A função *plotarGrafico* também invoca a função *atualizarGrafico*
     function plotarGrafico(resposta) {
-
         console.log('iniciando plotagem do gráfico...');
-
         // Criando estrutura para plotar gráfico - labels
-        let labels = [];
+        let labels1 = [], labels2 = [];
 
         // Criando estrutura para plotar gráfico - dados
-        let dados = {
-            labels: labels,
+        let dados1 = {
+            labels: labels1,
             datasets: [{
-                label: 'Umidade',
+                label: 'Tag',
                 data: [],
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1
-            },
-            {
-                label: 'Temperatura',
-                data: [],
-                fill: false,
-                borderColor: 'rgb(199, 52, 52)',
-                tension: 0.1
+                fill: true,
+                backgroundColor: 'rgba(101, 14, 130)',
+                tension: 0.1,
             }]
         };
 
@@ -280,35 +272,122 @@
         console.log('Estes dados foram recebidos pela funcao "obterDadosGrafico" e passados para "plotarGrafico":')
         console.log(resposta)
 
+        //Dados para utilizar:
+        let totalUser = resposta[0].totalUser;
+        let totalPost = resposta[0].totalPost;
+        let totalDuvidas = 0;
+        let totalUserEngj = []; // Todos os usuários que postaram algo
+        let totalUserPost = []; // Quantidade total de post por usuário
+        let totalGenero = [];
+        let contadorF = 0;
+        let contadorM = 0;
+        let totalIdade = [];
+        let totalTag = [];
+
         // Inserindo valores recebidos em estrutura para plotar o gráfico
         for (i = 0; i < resposta.length; i++) {
             var registro = resposta[i];
-            labels.push(registro.momento_grafico);
-            dados.datasets[0].data.push(registro.umidade);
-            dados.datasets[1].data.push(registro.temperatura);
+            if (totalUserEngj.includes(resposta[i].userId) == false) {
+                totalUserEngj.push(resposta[i].userId);
+                totalUserPost.push({
+                    idUser: resposta[i].userId,
+                    qtdPost: resposta[i].totalPostDoUsuario
+                });
+            }
+            if (resposta[i].postResolvido == 0) {
+                totalDuvidas++;
+            }
+            totalGenero.push(resposta[i].userGenero);
+            if (resposta[i].userGenero = 'F') {
+                contadorF++;
+            } else {
+                contadorM++;
+            }
+            totalIdade.push(resposta[i].userIdade);
+            totalTag.push(resposta[i].postTag);
         }
+        console.log(contadorF, contadorM)
 
-        console.log('----------------------------------------------')
-        console.log('O gráfico será plotado com os respectivos valores:')
-        console.log('Labels:')
-        console.log(labels)
-        console.log('Dados:')
-        console.log(dados.datasets)
-        console.log('----------------------------------------------')
+        kpi_totalduvida.innerHTML = `${totalDuvidas}`;
+        kpi_totalpost.innerHTML = `${totalPost}`;
+        kpi_duvidasporpost.innerHTML = `${((totalDuvidas / totalPost) * 100).toFixed(2)}%`;
 
-        // Criando estrutura para plotar gráfico - config
-        const config = {
-            type: 'line',
-            data: dados,
+        //GRÁFICO DOS TAGS
+        fetch("/avisos/rankingTag").then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) {
+                    throw "Nenhum resultado encontrado!!";
+                }
+                resposta.json().then(function (resposta) {
+                    for (let i = 0; i < 8; i++) {
+                        var rankingList = resposta[i];
+                        labels1.push(rankingList.nome);
+                        dados1.datasets[0].data.push(rankingList.qtdtag);
+                    }
+                    const config = {
+                        type: 'bar',
+                        data: dados1,
+                        options: {
+                            indexAxis: 'y',
+                        }
+                    };
+                    let myChart1 = new Chart(
+                        document.getElementById(`myChartCanvas_rankingTags`),
+                        config
+                    );
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+        });
+        //GRÁFICO DO GÊNERO
+        let dados2 = {
+            labels: ['Feminino', 'Masculino'],
+            datasets: [{
+                label: 'Gênero',
+                data: [contadorF, contadorM],
+                fill: true,
+                backgroundColor: ['rgba(101, 14, 130)', 'rgba(154, 241, 125)'],
+                tension: 0.1,
+            }]
         };
-
-        // Adicionando gráfico criado em div na tela
-        let myChart = new Chart(
-            document.getElementById(`myChartCanvas${idAquario}`),
-            config
+        // dados2.datasets[0].data.push(contadorM);
+        const config2 = {
+            type: 'doughnut',
+            data: dados2
+        };
+        let myChart2 = new Chart(
+            document.getElementById(`myChartCanvas_gender`),
+            config2
         );
 
-        setTimeout(() => atualizarGrafico(idAquario, dados, myChart), 2000);
+        // labels.push(registro.momento_grafico);
+        // dados.datasets[0].data.push(registro.umidade);
+        // dados.datasets[1].data.push(registro.temperatura);
+
+        // console.log('----------------------------------------------')
+        // console.log('O gráfico será plotado com os respectivos valores:')
+        // console.log('Labels:')
+        // console.log(labels)
+        // console.log('Dados:')
+        // console.log(dados.datasets)
+        // console.log('----------------------------------------------')
+
+        // Criando estrutura para plotar gráfico - config
+        // const config = {
+        //     type: 'bar',
+        //     data: dados,
+        // };
+
+        // // Adicionando gráfico criado em div na tela
+        // let myChart1 = new Chart(
+        //     document.getElementById(`myChartCanvas_rankingTags`),
+        //     config
+        // );
+
+        // setTimeout(() => atualizarGrafico(dados, myChart1), 2000);
     }
 
 
@@ -330,7 +409,6 @@
 
                     let avisoCaptura = document.getElementById(`avisoCaptura${idAquario}`)
                     avisoCaptura.innerHTML = ""
-
 
                     if (novoRegistro[0].momento_grafico == dados.labels[dados.labels.length - 1]) {
                         console.log("---------------------------------------------------------------")
