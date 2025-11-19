@@ -4,7 +4,6 @@ function obterDadosUser() {
     var instrucaoSql = `
         SELECT nome AS nomeCompleto, user, email, idade, genero FROM Usuario;
         `;
-
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }

@@ -1,4 +1,5 @@
-.publicar {
+.publicar,
+.abrirdetalhes {
     background-color: rgba(0, 0, 0, 0.7);
     height: 100vh;
     width: 100vw;
@@ -9,18 +10,12 @@
     align-items: center;
 }
 
-.publicarinfos {
-    width: 95%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
 .publicar_usuario {
     color: #fff;
 }
 
-.publicarmensagem {
+.publicarmensagem,
+.verdetalhes {
     background-color: #650E82;
     display: flex;
     flex-direction: column;
@@ -30,6 +25,13 @@
     width: 60vw;
     border-radius: 10px;
     padding: 10px;
+}
+
+.publicarinfos {
+    width: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .publicarmensagem label {
@@ -53,7 +55,7 @@
     resize: none;
 }
 
-.publicarmensagem button {
+.publicarmensagem button, .verdetalhes button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -80,4 +82,9 @@
 
 .publicarmensagem textarea:focus {
     outline: none;
+}
+
+.postdono{
+    width: 100%;
+    background-color: #fff;
 }

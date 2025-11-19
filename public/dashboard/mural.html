@@ -60,6 +60,28 @@
         </div>
     </div>
 
+    <div id="abrirdetalhes" class="abrirdetalhes">
+        <div id="verdetalhes" class="verdetalhes">
+            <button onclick="fechar()">x</button>
+            <div class="postdono">
+                <li class="social-post-user">
+                    <div class="user-infos">
+                        <span>nomeUsuario</span>
+                        <span>@usuario</span>
+                        <span>datahora</span>
+                    </div>
+                    <p>Texto</p>
+                    <div class="post-infos">
+                        <span>tag</span>
+                    </div>
+                </li>
+            </div>
+            <div class="postinfos">
+
+            </div>
+        </div>
+    </div>
+
     <section class="social social-text">
         <div class="social-div1">
             <div class="social-capa">
@@ -229,7 +251,10 @@
                     throw "Nenhum resultado encontrado!!";
                 }
                 resposta.json().then(function (resposta) {
-                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+                    // console.log("Dados recebidos: ", JSON.stringify(resposta));
+                    if (resposta[0].idResp == null) {
+                        console.log("Nenhuma resposta")
+                    }
                 });
             } else {
                 throw ('Houve um erro na API!');
