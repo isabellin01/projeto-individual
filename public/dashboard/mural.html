@@ -120,7 +120,6 @@
 
     function atualizarFeed() {
         var idUsuario = sessionStorage.ID_USUARIO;
-
         fetch("/avisos/listar").then(function (resposta) {
             if (resposta.ok) {
                 if (resposta.status == 204) {
@@ -142,8 +141,10 @@
                         var spanNome = document.createElement("span"); //
                         var spanUser = document.createElement("span"); //
                         var spanData = document.createElement("span"); //
+                        var infobutton = document.createElement("button"); //
                         var textoP = document.createElement("p"); //
                         var postInfos = document.createElement("div");
+
 
                         var TagInfos = document.createElement("div"); //
                         var TagName = document.createElement("span");
@@ -157,6 +158,7 @@
                         spanNome.innerHTML = publicacao.nomeUsuario;
                         spanUser.innerHTML = '@' + publicacao.userUsuario;
                         spanData.innerHTML = arrumarData(publicacao.datahora)
+                        infobutton.innerHTML = `+Detalhes`
                         textoP.innerHTML = publicacao.textoPost;
                         TagName.innerHTML = `#${publicacao.nomeTag}`;
                         EngjInfosImg1.src = `../assets/imgs/check.svg`;
@@ -169,6 +171,14 @@
                         postInfos.className = "post-infos" // feed-infos
                         EngjInfos.className = "engj-infos" // feed-infos-users
                         EngjInfos.id = "EngjInfos";
+                        infobutton.className = 'infobutton';
+
+                        //CONFIGURANDO BOTÕES
+                        let idBotao = publicacao.idPost;
+                        infobutton.id = `btninfo_${idBotao}`
+                        infobutton.onclick = function () {
+                            detalhes(idBotao, publicacao);
+                        };
 
                         TagInfos.appendChild(TagName);
                         EngjInfos.appendChild(EngjInfosImg1);
@@ -182,6 +192,7 @@
                         userInfos.appendChild(spanNome);
                         userInfos.appendChild(spanUser);
                         userInfos.appendChild(spanData);
+                        userInfos.appendChild(infobutton);
 
                         SocialPostUser.appendChild(userInfos);
                         SocialPostUser.appendChild(textoP);
@@ -192,8 +203,8 @@
                         if (idUsuario == publicacao.idUser) {
                             let idParam = publicacao.idPost;
                             let statusParam = publicacao.resolvido;
-                            botaoDiv = document.createElement("button"),
-                                botaoDiv.id = `btn_${idParam}`
+                            botaoDiv = document.createElement("button");
+                            botaoDiv.id = `btn_${idParam}`
                             botaoDiv.className = 'statusButton';
                             botaoDiv.innerHTML = `${check(statusParam)}`;
                             botaoDiv.onclick = function () {
@@ -202,6 +213,23 @@
                             EngjInfos.appendChild(botaoDiv);
                         }
                     }
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+        });
+    }
+
+    function detalhes(idBotao, publicacao) {
+        fetch(`/avisos/detalhes/${idBotao}`).then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) {
+                    throw "Nenhum resultado encontrado!!";
+                }
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
                 });
             } else {
                 throw ('Houve um erro na API!');

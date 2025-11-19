@@ -41,6 +41,22 @@ function rankingTag(req, res) {
         res.status(500).json(erro.sqlMessage);
     });
 }
+//detalhes/:idBotao
+function detalhes(req, res) {
+    let idBotao = req.params.idBotao;
+
+    avisoModel.detalhes(idBotao).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar mais detalhes do post: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
 
 // function listarPorUsuario(req, res) {
 //     var idUsuario = req.params.idUsuario;
@@ -182,6 +198,7 @@ module.exports = {
     rankingTag,
     // listarPorUsuario,
     // pesquisarTag,
+    detalhes,
     publicar,
     // insertTag,
     mudarStatus

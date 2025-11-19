@@ -94,7 +94,7 @@
                     <span class="dash-kpi-number" id="kpi_totalduvida"></span>
                 </li>
                 <li class="dash-kpis-item">
-                    <span class="dash-kpi-title">Total de posts</span>
+                    <span class="dash-kpi-title">Total de publicações</span>
                     <span class="dash-kpi-number" id="kpi_totalpost"></span>
                 </li>
                 <li class="dash-kpis-item">
@@ -334,7 +334,7 @@
             //QUANTIDADE TOTAL DE CADA GÊNERO
             if (userInfos.genero == 'F') {
                 grupoGeneros.totalFem++
-            } else if (userInfos.genero == 'H') {
+            } else if (userInfos.genero == 'H' || userInfos.genero == 'M') {
                 grupoGeneros.totalMasc++
             } else {
                 grupoGeneros.totalOut++

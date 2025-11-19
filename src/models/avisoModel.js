@@ -58,26 +58,21 @@ function rankingTag() {
     return database.executar(instrucaoSql);
 }
 
-// function pesquisarTag(texto) {
-//     console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function pesquisarTag()");
-//     var instrucaoSql = `
-//         SELECT 
-//             a.id AS idAviso,
-//             a.titulo,
-//             a.descricao,
-//             a.fk_usuario,
-//             u.id AS idUsuario,
-//             u.nome,
-//             u.email,
-//             u.senha
-//         FROM aviso a
-//             INNER JOIN usuario u
-//                 ON a.fk_usuario = u.id
-//         WHERE a.descricao LIKE '${texto}';
-//     `;
-//     console.log("Executando a instrução SQL: \n" + instrucaoSql);
-//     return database.executar(instrucaoSql);
-// }
+function detalhes(idBotao) {
+    console.log("ACESSEI O AVISO  MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function rankingTag()", idBotao);
+    var instrucaoSql = `
+        SELECT 
+            rp.idRespostaPub AS idResp,
+            u.nome AS userResp,
+            rp.texto AS textResp
+        FROM Post p
+        LEFT JOIN RespostaPost rp ON p.id = rp.id_post
+        LEFT JOIN Usuario u ON u.id = rp.id_usuario
+        WHERE p.id = ${idBotao};
+        `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
 
 // function listarPorUsuario(idUsuario) {
 //     console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listarPorUsuario()");
@@ -142,6 +137,7 @@ module.exports = {
     rankingTag,
     // listarPorUsuario,
     // pesquisarTag,
+    detalhes,
     publicar,
     // insertTag,
     mudarStatus
