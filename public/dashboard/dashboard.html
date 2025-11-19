@@ -94,12 +94,16 @@
                     <span class="dash-kpi-number" id="kpi_totalduvida"></span>
                 </li>
                 <li class="dash-kpis-item">
-                    <span class="dash-kpi-title">Total de publicações</span>
+                    <span class="dash-kpi-title">Total de posts</span>
                     <span class="dash-kpi-number" id="kpi_totalpost"></span>
                 </li>
                 <li class="dash-kpis-item">
-                    <span class="dash-kpi-title">Dúvidas por publicações</span>
+                    <span class="dash-kpi-title">Perguntas não resolvidas</span>
                     <span class="dash-kpi-number" id="kpi_duvidasporpost"></span>
+                </li>
+                <li class="dash-kpis-item">
+                    <span class="dash-kpi-title">Média de posts por usuário</span>
+                    <span class="dash-kpi-number" id="kpi_postporuser"></span>
                 </li>
                 <!-- <li class="dash-kpis-item">
                     <span class="dash-kpi-title">Novos usuários</span>
@@ -111,13 +115,16 @@
             <p class="dash-titles">Todos os tempos</p>
             <ul class="dash-kpis">
                 <li class="dash-kpis-item">
+                    <h3>Tags mais populares</h3>
                     <canvas id="myChartCanvas_rankingTags"></canvas>
                 </li>
                 <li class="dash-kpis-item">
+                    <h3>Gênero dos usuários</h3>
                     <canvas id="myChartCanvas_gender"></canvas>
                 </li>
                 <li class="dash-kpis-item">
-                    <!-- <canvas id="barra-horizontal"></canvas> -->
+                    <h3>Idade dos usuários</h3>
+                    <canvas id="myChartCanvas_idade"></canvas>
                 </li>
             </ul>
         </div>
@@ -145,7 +152,7 @@
 
     let proximaAtualizacao;
 
-    window.onload = obterDadosGrafico();
+    window.onload = obterDadosTag(), obterDadosUser(), obterDadosKpi();
 
     // function exibirAquariosDoUsuario() {
     //     var aquarios = JSON.parse(sessionStorage.AQUARIOS);
@@ -168,7 +175,7 @@
     //             </div>
     //         `
 
-    //         obterDadosGrafico(item.id)
+    //         obterDadosTag(item.id)
     //     });
 
     //     if (aquarios.length > 0) {
@@ -215,29 +222,86 @@
     // }
 
     // O gráfico é construído com três funções:
-    // 1. obterDadosGrafico -> Traz dados do Banco de Dados para montar o gráfico da primeira vez
-    // 2. plotarGrafico -> Monta o gráfico com os dados trazidos e exibe em tela
+    // 1. obterDadosTag -> Traz dados do Banco de Dados para montar o gráfico da primeira vez
+    // 2. plotarGraficoTag -> Monta o gráfico com os dados trazidos e exibe em tela
     // 3. atualizarGrafico -> Atualiza o gráfico, trazendo novamente dados do Banco
 
-    // Esta função *obterDadosGrafico* busca os últimos dados inseridos em tabela de medidas.
+    // Esta função *obterDadosTag* busca os últimos dados inseridos em tabela de medidas.
     // para, quando carregar o gráfico da primeira vez, já trazer com vários dados.
-    // A função *obterDadosGrafico* também invoca a função *plotarGrafico*
+    // A função *obterDadosTag* também invoca a função *plotarGraficoTag*
 
     //     Se quiser alterar a busca, ajuste as regras de negócio em src/controllers
     //     Para ajustar o "select", ajuste o comando sql em src/models
 
-    function obterDadosGrafico() {
-        // alterarTitulo(idAquario)
+    //GRÁFICO DOS TAGS
+    function obterDadosTag() {
         if (proximaAtualizacao != undefined) {
             clearTimeout(proximaAtualizacao);
         }
 
-        fetch(`/medidas/ultimas`, { cache: 'no-store' }).then(function (response) {
+        fetch("/avisos/rankingTag", { cache: 'no-store' }).then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) {
+                    throw "Nenhum resultado encontrado!!";
+                }
+                resposta.json().then(function (resposta) {
+                    plotarGraficoTag(resposta);
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+        });
+    }
+
+    function plotarGraficoTag(resposta) {
+        console.log('iniciando plotagem do gráfico...');
+        // Criando estrutura para plotar gráfico - labels
+        let labelsTag = [];
+
+        // Criando estrutura para plotar gráfico - dados
+        let dadosTag = {
+            labels: labelsTag,
+            datasets: [{
+                label: 'Tag',
+                data: [],
+                fill: true,
+                backgroundColor: 'rgba(101, 14, 130)',
+                tension: 0.1,
+            }]
+        };
+
+        for (let i = 0; i < 8; i++) {
+            var rankingList = resposta[i];
+            labelsTag.push(rankingList.nome);
+            dadosTag.datasets[0].data.push(rankingList.qtdtag);
+        }
+        const config = {
+            type: 'bar',
+            data: dadosTag,
+            options: {
+                indexAxis: 'y',
+            }
+        };
+        let myChart1 = new Chart(
+            document.getElementById(`myChartCanvas_rankingTags`),
+            config
+        );
+        // setTimeout(() => atualizarGrafico(dados, myChart1), 2000);
+    }
+
+    function obterDadosUser() {
+        if (proximaAtualizacao != undefined) {
+            clearTimeout(proximaAtualizacao);
+        }
+
+        fetch(`/medidas/dadosusuario`).then(function (response) {
             if (response.ok) {
                 response.json().then(function (resposta) {
                     console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
-                    resposta.reverse();
-                    plotarGrafico(resposta);
+                    // resposta.reverse();
+                    plotarGraficoUser(resposta);
                 });
             } else {
                 console.error('Nenhum dado encontrado ou erro na API');
@@ -248,154 +312,152 @@
             });
     }
 
-    // Esta função *plotarGrafico* usa os dados capturados na função anterior para criar o gráfico
-    // Configura o gráfico (cores, tipo, etc), materializa-o na página e, 
-    // A função *plotarGrafico* também invoca a função *atualizarGrafico*
-    function plotarGrafico(resposta) {
-        console.log('iniciando plotagem do gráfico...');
-        // Criando estrutura para plotar gráfico - labels
-        let labels1 = [], labels2 = [];
-
-        // Criando estrutura para plotar gráfico - dados
-        let dados1 = {
-            labels: labels1,
-            datasets: [{
-                label: 'Tag',
-                data: [],
-                fill: true,
-                backgroundColor: 'rgba(101, 14, 130)',
-                tension: 0.1,
-            }]
-        };
-
-        console.log('----------------------------------------------')
-        console.log('Estes dados foram recebidos pela funcao "obterDadosGrafico" e passados para "plotarGrafico":')
-        console.log(resposta)
-
-        //Dados para utilizar:
-        let totalUser = resposta[0].totalUser;
-        let totalPost = resposta[0].totalPost;
-        let totalDuvidas = 0;
-        let totalUserEngj = []; // Todos os usuários que postaram algo
-        let totalUserPost = []; // Quantidade total de post por usuário
-        let totalGenero = [];
-        let contadorF = 0;
-        let contadorM = 0;
-        let totalIdade = [];
-        let totalTag = [];
-
-        // Inserindo valores recebidos em estrutura para plotar o gráfico
-        for (i = 0; i < resposta.length; i++) {
-            var registro = resposta[i];
-            if (totalUserEngj.includes(resposta[i].userId) == false) {
-                totalUserEngj.push(resposta[i].userId);
-                totalUserPost.push({
-                    idUser: resposta[i].userId,
-                    qtdPost: resposta[i].totalPostDoUsuario
-                });
-            }
-            if (resposta[i].postResolvido == 0) {
-                totalDuvidas++;
-            }
-            totalGenero.push(resposta[i].userGenero);
-            if (resposta[i].userGenero = 'F') {
-                contadorF++;
-            } else {
-                contadorM++;
-            }
-            totalIdade.push(resposta[i].userIdade);
-            totalTag.push(resposta[i].postTag);
+    function plotarGraficoUser(resposta) {
+        // Extraindo informações e guardando em variáveis
+        let grupoGeneros = {
+            totalFem: 0,
+            totalMasc: 0,
+            totalOut: 0,
         }
-        console.log(contadorF, contadorM)
 
-        kpi_totalduvida.innerHTML = `${totalDuvidas}`;
-        kpi_totalpost.innerHTML = `${totalPost}`;
-        kpi_duvidasporpost.innerHTML = `${((totalDuvidas / totalPost) * 100).toFixed(2)}%`;
+        let grupoIdades = {
+            idade11a20: 0,
+            idade21a30: 0,
+            idade31a40: 0,
+            idade41a50: 0,
+            idade51a60: 0,
+            idadeMais60: 0
+        }
 
-        //GRÁFICO DOS TAGS
-        fetch("/avisos/rankingTag").then(function (resposta) {
-            if (resposta.ok) {
-                if (resposta.status == 204) {
-                    throw "Nenhum resultado encontrado!!";
-                }
-                resposta.json().then(function (resposta) {
-                    for (let i = 0; i < 8; i++) {
-                        var rankingList = resposta[i];
-                        labels1.push(rankingList.nome);
-                        dados1.datasets[0].data.push(rankingList.qtdtag);
-                    }
-                    const config = {
-                        type: 'bar',
-                        data: dados1,
-                        options: {
-                            indexAxis: 'y',
-                        }
-                    };
-                    let myChart1 = new Chart(
-                        document.getElementById(`myChartCanvas_rankingTags`),
-                        config
-                    );
-                });
+        for (let i = 0; i < resposta.length; i++) {
+            var userInfos = resposta[i];
+            //QUANTIDADE TOTAL DE CADA GÊNERO
+            if (userInfos.genero == 'F') {
+                grupoGeneros.totalFem++
+            } else if (userInfos.genero == 'H') {
+                grupoGeneros.totalMasc++
             } else {
-                throw ('Houve um erro na API!');
+                grupoGeneros.totalOut++
             }
-        }).catch(function (resposta) {
-            console.error(resposta);
-        });
-        //GRÁFICO DO GÊNERO
-        let dados2 = {
-            labels: ['Feminino', 'Masculino'],
+
+            //QUANTIDADE TOTAL DE CADA GÊNERO
+            if (userInfos.idade >= 11 && userInfos.idade <= 20) {
+                grupoIdades.idade11a20++;
+            } else if (userInfos.idade >= 21 && userInfos.idade <= 30) {
+                grupoIdades.idade21a30++;
+            } else if (userInfos.idade >= 31 && userInfos.idade <= 40) {
+                grupoIdades.idade31a40++;
+            } else if (userInfos.idade >= 41 && userInfos.idade <= 50) {
+                grupoIdades.idade41a50++;
+            } else if (userInfos.idade >= 51 && userInfos.idade <= 60) {
+                grupoIdades.idade51a60++;
+            } else {
+                grupoIdades.idadeMais60++;
+            }
+        }
+
+        let dadosGen = {
+            labels: ['Feminino', 'Masculino', 'Outros'],
             datasets: [{
                 label: 'Gênero',
-                data: [contadorF, contadorM],
+                data: [grupoGeneros.totalFem, grupoGeneros.totalMasc, grupoGeneros.totalOut],
                 fill: true,
-                backgroundColor: ['rgba(101, 14, 130)', 'rgba(154, 241, 125)'],
+                backgroundColor: ['rgba(101, 14, 130)', 'rgb(238,130,238)', 'rgb(128,0,128)'],
                 tension: 0.1,
             }]
         };
-        // dados2.datasets[0].data.push(contadorM);
-        const config2 = {
-            type: 'doughnut',
-            data: dados2
+
+        let dadosIdade = {
+            labels: ['11-20', '21-30', '31-40', '41-50', '51-60', '60+'],
+            datasets: [{
+                label: 'Idade',
+                data: [grupoIdades.idade11a20, grupoIdades.idade21a30, grupoIdades.idade31a40, grupoIdades.idade41a50, grupoIdades.idade51a60, grupoIdades.idadeMais60],
+                fill: true,
+                backgroundColor: ['rgba(101, 14, 130)', 'rgb(139,0,139)', 'rgb(238,130,238)', 'rgba(101, 14, 130)', 'rgb(123,104,238)', 'rgb(218,112,214)'],
+                tension: 0.1,
+            }]
         };
-        let myChart2 = new Chart(
+
+        // labelsGen.push(rankingList.nome);
+        // dadosGen.datasets[0].data.push(rankingList.qtdtag);
+
+        const configGen = {
+            type: 'doughnut',
+            data: dadosGen,
+        };
+        let myChartGen = new Chart(
             document.getElementById(`myChartCanvas_gender`),
-            config2
+            configGen
         );
 
-        // labels.push(registro.momento_grafico);
-        // dados.datasets[0].data.push(registro.umidade);
-        // dados.datasets[1].data.push(registro.temperatura);
-
-        // console.log('----------------------------------------------')
-        // console.log('O gráfico será plotado com os respectivos valores:')
-        // console.log('Labels:')
-        // console.log(labels)
-        // console.log('Dados:')
-        // console.log(dados.datasets)
-        // console.log('----------------------------------------------')
-
-        // Criando estrutura para plotar gráfico - config
-        // const config = {
-        //     type: 'bar',
-        //     data: dados,
-        // };
-
-        // // Adicionando gráfico criado em div na tela
-        // let myChart1 = new Chart(
-        //     document.getElementById(`myChartCanvas_rankingTags`),
-        //     config
-        // );
-
+        const configIdade = {
+            type: 'bar',
+            data: dadosIdade,
+        };
+        let myChartIdade = new Chart(
+            document.getElementById(`myChartCanvas_idade`),
+            configIdade
+        );
         // setTimeout(() => atualizarGrafico(dados, myChart1), 2000);
     }
 
+    function obterDadosKpi() {
+        if (proximaAtualizacao != undefined) {
+            clearTimeout(proximaAtualizacao);
+        }
 
-    // Esta função *atualizarGrafico* atualiza o gráfico que foi renderizado na página,
-    // buscando a última medida inserida em tabela contendo as capturas, 
+        fetch(`/medidas/dadoskpi`).then(function (response) {
+            if (response.ok) {
+                response.json().then(function (resposta) {
+                    console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                    resposta.reverse();
+                    plotarGraficoKpi(resposta);
+                });
+            } else {
+                console.error('Nenhum dado encontrado ou erro na API');
+            }
+        })
+            .catch(function (error) {
+                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            });
+    }
 
-    //     Se quiser alterar a busca, ajuste as regras de negócio em src/controllers
-    //     Para ajustar o "select", ajuste o comando sql em src/models
+    function plotarGraficoKpi(resposta) {
+        // Extraindo informações e guardando em variáveis
+        let totalDuvidas = 0;
+        let totalPublicacao = resposta[resposta.length - 1].postId;
+
+        for (let i = 0; i < resposta.length; i++) {
+            var userInfos = resposta[i];
+            if (userInfos.resolvido == 0) {
+                totalDuvidas++;
+            }
+        }
+
+        kpi_totalduvida.innerHTML = `${totalDuvidas}`;
+        kpi_totalpost.innerHTML = `${totalPublicacao}`;
+        kpi_duvidasporpost.innerHTML = `${((totalDuvidas / totalPublicacao) * 100).toFixed(2)}%`;
+
+        fetch(`/medidas/postporuser`).then(function (response) {
+            if (response.ok) {
+                response.json().then(function (resposta) {
+                    console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                    resposta.reverse();
+                    let totalUsuarios = resposta[0].userID;
+                    let totalPost = 0;
+                    for (let i = 0; i < resposta.length; i++) {
+                        totalPost += resposta[i].totalPost;
+                    }
+
+                    kpi_postporuser.innerHTML = `${(totalPost / totalUsuarios).toFixed(1)}`
+                });
+            } else {
+                console.error('Nenhum dado encontrado ou erro na API');
+            }
+        }).catch(function (error) { console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`); });
+        // setTimeout(() => atualizarGrafico(dados, myChart1), 2000);
+    }
+
     function atualizarGrafico(idAquario, dados, myChart) {
         fetch(`/medidas/tempo-real/${idAquario}`, { cache: 'no-store' }).then(function (response) {
             if (response.ok) {

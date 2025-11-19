@@ -117,39 +117,6 @@
 <script>
     b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
     postUsuario.innerHTML = sessionStorage.NOME_USUARIO;
-    
-    // let idAtual = 0;
-
-    // function publicar() {
-    //     var idUsuario = sessionStorage.ID_USUARIO;
-
-    //     var corpo = {
-    //         descricao: textarea_descricao.value,
-    //         tag: textarea_tag.value
-    //     }
-
-    //     fetch(`/avisos/publicar/${idUsuario}`, {
-    //         method: "post",
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify(corpo)
-    //     }).then(function (resposta) {
-    //         console.log("resposta: ", resposta);
-    //         if (resposta.ok) {
-    //             // insertTag(corpo.tag);
-    //             window.alert("Post realizado com sucesso pelo usuario de ID: " + idUsuario + "!");
-    //             window.location = "/dashboard/mural.html";
-    //         } else if (resposta.status == 404) {
-    //             window.alert("Deu 404!");
-    //         } else {
-    //             throw ("Houve um erro ao tentar realizar a postagem! Código da resposta: " + resposta.status);
-    //         }
-    //     }).catch(function (resposta) {
-    //         console.log(`#ERRO: ${resposta}`);
-    //     });
-    //     return false;
-    // }
 
     function atualizarFeed() {
         var idUsuario = sessionStorage.ID_USUARIO;
@@ -165,8 +132,6 @@
                 }
 
                 resposta.json().then(function (resposta) {
-                    // console.log("Dados recebidos: ", JSON.stringify(resposta));
-                    // idAtual = (resposta[0].idPost) + 1;
                     var feed = document.getElementById("social-post");
                     feed.innerHTML = '';
                     for (let i = 0; i < resposta.length; i++) {
@@ -260,8 +225,6 @@
                 }
 
                 resposta.json().then(function (resposta) {
-                    // console.log("Dados recebidos: ", JSON.stringify(resposta));
-                    // idAtual = (resposta[0].idPost) + 1;
                     var feed = document.getElementById("social-post");
                     feed.innerHTML = '';
                     for (let i = 0; i < resposta.length; i++) {
@@ -342,33 +305,6 @@
         });
     }
 
-    // function insertTag(corpo) {
-    //     let idAtualizado = idAtual + 1;
-    //     console.log(`ID atual:${idAtualizado}`)
-    //     fetch(`/avisos/inserttag`, {
-    //         method: "post",
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify({
-    //             ...corpo,
-    //             idAtualizado
-    //         })
-    //     }).then(function (resposta) {
-    //         console.log("resposta: ", resposta);
-
-    //         if (resposta.ok) {
-    //             return true;
-    //         } else if (resposta.status == 404) {
-    //             window.alert("Deu 404!");
-    //         } else {
-    //             throw ("Houve um erro ao tentar realizar o insert! Código da resposta: " + resposta.status);
-    //         }
-    //     }).catch(function (resposta) {
-    //         console.log(`#ERRO: ${resposta}`);
-    //     });
-    // }
-
     function mudarStatus(botaoId, botaoStatus) {
         if (botaoStatus == 0) {
             botaoStatus = 1;
@@ -446,11 +382,6 @@
                         `;
         return dataNova;
     }
-    // function fechar() {
-    //     publicar_div.style.display = 'none';
-    // }
-    // function exibir() {
-    //     publicar_div.style.display = 'flex';
-    // }
+
 
 </script>

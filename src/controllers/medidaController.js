@@ -1,12 +1,9 @@
 var medidaModel = require("../models/medidaModel");
 
-function buscarUltimasMedidas(req, res) {
-    
-    // const limite_linhas = 7;
-
+function obterDadosUser(req, res) {
     console.log(`Recuperando as últimas medidas`);
 
-    medidaModel.buscarUltimasMedidas().then(function (resultado) {
+    medidaModel.obterDadosUser().then(function (resultado) {
         if (resultado.length > 0) {
             res.status(200).json(resultado);
         } else {
@@ -19,6 +16,34 @@ function buscarUltimasMedidas(req, res) {
     });
 }
 
+function obterDadosKpi(req, res) {
+    medidaModel.obterDadosKpi().then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar as Kpis.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function obterPostPorUser(req, res) {
+
+    medidaModel.obterPostPorUser().then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar as Kpis.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
 
 function buscarMedidasEmTempoReal(req, res) {
 
@@ -40,7 +65,8 @@ function buscarMedidasEmTempoReal(req, res) {
 }
 
 module.exports = {
-    buscarUltimasMedidas,
+    obterDadosUser,
+    obterDadosKpi,
+    obterPostPorUser,
     buscarMedidasEmTempoReal
-
 }

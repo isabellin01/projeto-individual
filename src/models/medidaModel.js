@@ -1,21 +1,35 @@
 var database = require("../database/config");
 
-function buscarUltimasMedidas() {
+function obterDadosUser() {
     var instrucaoSql = `
-        SELECT (SELECT COUNT(id) FROM Usuario) AS totalUser,
-                (SELECT COUNT(id) FROM Post) AS totalPost,
-                u.id AS userId,
-                u.genero AS userGenero,
-                u.idade AS userIdade,
-                p.texto AS postTexto,
-                p.datahora AS postDatahora,
-                p.resolvido AS postResolvido,
-                p.tag AS postTag
-            FROM Post p
-            INNER JOIN Usuario u ON u.id = p.id_usuario
-            ORDER BY p.datahora DESC;
+        SELECT nome AS nomeCompleto, user, email, idade, genero FROM Usuario;
         `;
 
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function obterDadosKpi() {
+    var instrucaoSql = `
+        SELECT p.id AS postId,
+            u.id AS userID,
+            p.resolvido AS resolvido
+        FROM Post p
+        INNER JOIN Usuario u ON u.id = p.id_usuario
+        ORDER BY p.datahora DESC;
+        `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function obterPostPorUser() {
+    var instrucaoSql = `
+        SELECT u.id AS userID,
+            COUNT(p.id) AS totalPost 
+        FROM Post p
+        RIGHT JOIN Usuario u ON u.id = p.id_usuario
+        GROUP BY u.id;
+        `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
@@ -34,6 +48,8 @@ function buscarMedidasEmTempoReal(idAquario) {
 }
 
 module.exports = {
-    buscarUltimasMedidas,
+    obterDadosUser,
+    obterDadosKpi,
+    obterPostPorUser,
     buscarMedidasEmTempoReal
 }
