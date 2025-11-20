@@ -33,6 +33,16 @@ function obterPostPorUser() {
     return database.executar(instrucaoSql);
 }
 
+function obterTotalPost() {
+    var instrucaoSql = `
+            SELECT id, count(idRespostaPub)
+            FROM post JOIN respostaPost
+            ON post.id = id_post GROUP BY id;
+        `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 function buscarMedidasEmTempoReal(idAquario) {
     var instrucaoSql = `SELECT 
         dht11_temperatura as temperatura, 
@@ -50,5 +60,6 @@ module.exports = {
     obterDadosUser,
     obterDadosKpi,
     obterPostPorUser,
+    obterTotalPost,
     buscarMedidasEmTempoReal
 }

@@ -131,3 +131,5 @@ INSERT INTO RespostaPost (id_post, id_usuario, texto) VALUES
 (9, 4, 'Recomendo sempre criar branches para cada feature.'),
 (10, 5, 'React tem mais mercado, mas ambos são bons.'),
 (12, 7, 'Evite valores fixos demais. Prefira flexbox.');
+
+select * from usuario;

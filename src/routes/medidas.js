@@ -15,6 +15,10 @@ router.get("/postporuser", function (req, res) {
     medidaController.obterPostPorUser(req, res);
 });
 
+router.get("/dadospost", function (req, res) {
+    medidaController.obterTotalPost(req, res);
+})
+
 router.get("/tempo-real/:idAquario", function (req, res) {
     medidaController.buscarMedidasEmTempoReal(req, res);
 })

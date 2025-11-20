@@ -31,8 +31,21 @@ function obterDadosKpi(req, res) {
 }
 
 function obterPostPorUser(req, res) {
-
     medidaModel.obterPostPorUser().then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar as Kpis.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function obterTotalPost(req, res) {
+    medidaModel.obterTotalPost().then(function (resultado) {
         if (resultado.length > 0) {
             res.status(200).json(resultado);
         } else {
@@ -68,5 +81,6 @@ module.exports = {
     obterDadosUser,
     obterDadosKpi,
     obterPostPorUser,
+    obterTotalPost,
     buscarMedidasEmTempoReal
 }

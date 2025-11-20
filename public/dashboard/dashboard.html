@@ -152,7 +152,7 @@
 
     let proximaAtualizacao;
 
-    window.onload = obterDadosTag(), obterDadosUser(), obterDadosKpi();
+    window.onload = obterDadosTag(), obterDadosUser(), obterDadosKpi(), obterTotalPost();
 
     // function exibirAquariosDoUsuario() {
     //     var aquarios = JSON.parse(sessionStorage.AQUARIOS);
@@ -234,6 +234,7 @@
     //     Para ajustar o "select", ajuste o comando sql em src/models
 
     //GRÁFICO DOS TAGS
+
     function obterDadosTag() {
         if (proximaAtualizacao != undefined) {
             clearTimeout(proximaAtualizacao);
@@ -437,6 +438,51 @@
         kpi_totalduvida.innerHTML = `${totalDuvidas}`;
         kpi_totalpost.innerHTML = `${totalPublicacao}`;
         kpi_duvidasporpost.innerHTML = `${((totalDuvidas / totalPublicacao) * 100).toFixed(2)}%`;
+
+        fetch(`/medidas/postporuser`).then(function (response) {
+            if (response.ok) {
+                response.json().then(function (resposta) {
+                    console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                    resposta.reverse();
+                    let totalUsuarios = resposta[0].userID;
+                    let totalPost = 0;
+                    for (let i = 0; i < resposta.length; i++) {
+                        totalPost += resposta[i].totalPost;
+                    }
+
+                    kpi_postporuser.innerHTML = `${(totalPost / totalUsuarios).toFixed(1)}`
+                });
+            } else {
+                console.error('Nenhum dado encontrado ou erro na API');
+            }
+        }).catch(function (error) { console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`); });
+        // setTimeout(() => atualizarGrafico(dados, myChart1), 2000);
+    }
+
+    function obterTotalPost() {
+        if (proximaAtualizacao != undefined) {
+            clearTimeout(proximaAtualizacao);
+        }
+        fetch(`/medidas/dadospost`).then(function (response) {
+            if (response.ok) {
+                response.json().then(function (resposta) {
+                    console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                    resposta.reverse();
+                    // plotarGraficoKpi(resposta);
+                });
+            } else {
+                console.error('Nenhum dado encontrado ou erro na API');
+            }
+        })
+            .catch(function (error) {
+                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            });
+    }
+
+    function plotarTotalPost(resposta) {
+        // Extraindo informações e guardando em variáveis
+        let totalResposta = 0;
+        let totalPublicacao = resposta[resposta.length - 1].postId;
 
         fetch(`/medidas/postporuser`).then(function (response) {
             if (response.ok) {
