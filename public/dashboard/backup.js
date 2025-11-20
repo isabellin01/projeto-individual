@@ -61,3 +61,11 @@ let contadorM = 0;
 let contadorO = 0;
 let totalIdade = [];
 let totalTag = [];
+
+<li class="resposta-user">
+    <div class="user-resposta">
+        <span>nomeUsuario</span>
+        <span>@usuario</span>
+    </div>
+    <p>Texto</p>
+</li>

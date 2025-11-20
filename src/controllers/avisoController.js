@@ -41,7 +41,7 @@ function rankingTag(req, res) {
         res.status(500).json(erro.sqlMessage);
     });
 }
-//detalhes/:idBotao
+
 function detalhes(req, res) {
     let idBotao = req.params.idBotao;
 
@@ -57,52 +57,6 @@ function detalhes(req, res) {
         res.status(500).json(erro.sqlMessage);
     });
 }
-
-// function listarPorUsuario(req, res) {
-//     var idUsuario = req.params.idUsuario;
-
-//     avisoModel.listarPorUsuario(idUsuario)
-//         .then(
-//             function (resultado) {
-//                 if (resultado.length > 0) {
-//                     res.status(200).json(resultado);
-//                 } else {
-//                     res.status(204).send("Nenhum resultado encontrado!");
-//                 }
-//             }
-//         )
-//         .catch(
-//             function (erro) {
-//                 console.log(erro);
-//                 console.log(
-//                     "Houve um erro ao buscar os avisos: ",
-//                     erro.sqlMessage
-//                 );
-//                 res.status(500).json(erro.sqlMessage);
-//             }
-//         );
-// }
-
-// function pesquisarTag(req, res) {
-//     var descricao = req.params.descricao;
-
-//     avisoModel.pesquisarTag(descricao)
-//         .then(
-//             function (resultado) {
-//                 if (resultado.length > 0) {
-//                     res.status(200).json(resultado);
-//                 } else {
-//                     res.status(204).send("Nenhum resultado encontrado!");
-//                 }
-//             }
-//         ).catch(
-//             function (erro) {
-//                 console.log(erro);
-//                 console.log("Houve um erro ao buscar os avisos: ", erro.sqlMessage);
-//                 res.status(500).json(erro.sqlMessage);
-//             }
-//         );
-// }
 
 function publicar(req, res) {
     var descricao = req.body.descricao;
@@ -130,30 +84,33 @@ function publicar(req, res) {
     }
 }
 
-// function insertTag(req, res) {
-//     var nomeTag = req.body.tag;
-//     var idPost = req.body.idAtualizado;
+function enviarresposta(req, res) {
+    var idUsuario = req.params.idUsuario;
+    var descricao = req.body.descricao;
+    var idBotao = req.body.idBotao;
 
-//     if (nomeTag == undefined) {
-//         res.status(400).send("A descrição está indefinido!");
-//     } else if (idPost == undefined) {
-//         res.status(400).send("A idPost está indefinido!");
-//     } else {
-//         avisoModel.insertTag(nomeTag, idPost)
-//             .then(
-//                 function (resultado) {
-//                     res.json(resultado);
-//                 }
-//             )
-//             .catch(
-//                 function (erro) {
-//                     console.log(erro);
-//                     console.log("Houve um erro ao realizar o post: ", erro.sqlMessage);
-//                     res.status(500).json(erro.sqlMessage);
-//                 }
-//             );
-//     }
-// }
+    if (descricao == undefined) {
+        res.status(400).send("A descrição está indefinido!");
+    } else if (idUsuario == undefined) {
+        res.status(400).send("O usuário está indefinido!");
+    } else if (idBotao == undefined) {
+        res.status(400).send("O idBotao está indefinido!");
+    } else {
+        avisoModel.enviarresposta(idUsuario, descricao, idBotao)
+            .then(
+                function (resultado) {
+                    res.json(resultado);
+                }
+            )
+            .catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log("Houve um erro ao realizar o post: ", erro.sqlMessage);
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+}
 
 function mudarStatus(req, res) {
     var botaoId = req.params.botaoId;
@@ -196,12 +153,8 @@ module.exports = {
     listar,
     listarduvida,
     rankingTag,
-    // listarPorUsuario,
-    // pesquisarTag,
     detalhes,
     publicar,
-    // insertTag,
+    enviarresposta,
     mudarStatus
-    // editar,
-    // deletar
 }

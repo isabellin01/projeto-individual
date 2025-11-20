@@ -27,6 +27,21 @@
     padding: 10px;
 }
 
+.verdetalhes {
+    color: #C2ADCA;
+    background-color: #fff;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    height: 70vh;
+    width: 70vw;
+}
+
+.postdono .social-post-user {
+    width: 70%;
+    box-shadow: 3px 3px 3px .5px rgb(8, 10, 12, 0.4);
+}
+
 .publicarinfos {
     width: 95%;
     display: flex;
@@ -48,14 +63,20 @@
     resize: none;
 }
 
-.textarea-tag {
+.textarea-tag,
+.textarea-reply {
     font-size: 16px;
     padding: 10px;
     width: 80%;
     resize: none;
 }
 
-.publicarmensagem button, .verdetalhes button {
+.textarea-reply {
+    height: 80%;
+}
+
+.publicarmensagem button,
+.verdetalhes button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -71,9 +92,17 @@
     text-decoration: none;
 }
 
-.publicarmensagem button:hover {
+.verdetalhes button {
     background-color: #650E82;
     color: #fff;
+}
+
+.verdetalhes button:hover {
+    background-color: #8c3da7;
+}
+
+.publicarmensagem button:hover {
+    background-color: #8c3da7;
 }
 
 .publicarmensagem button:active {
@@ -84,7 +113,50 @@
     outline: none;
 }
 
-.postdono{
+.postdono {
     width: 100%;
-    background-color: #fff;
+    display: flex;
+    justify-content: center;
+}
+
+.postrespostas {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.social-resposta-user {
+    flex: 1;
+}
+
+.send-reply {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    height: 100%;
+}
+
+.textarea-reply {
+    height: 40%;
+    margin-bottom: 10px;
+}
+
+.resposta-user {
+    text-align: left;
+    background-color: #650E82;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin: 10px 0;
+    width: 100%;
+}
+
+.social-resposta-user h3 {
+    padding: 5px;
+    color: #650E82;
+    font-size: 20px;
+    font-weight: 800;
 }

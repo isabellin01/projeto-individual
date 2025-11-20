@@ -6,7 +6,7 @@ function listar() {
         SELECT
             p.id AS idPost,
             p.texto AS textoPost,
-            p.datahora,
+            DATE_FORMAT(p.datahora,'%H:%i %d/%m') AS dataHora,
             p.resolvido,
             u.id AS idUser,
             u.nome AS nomeUsuario,
@@ -29,7 +29,7 @@ function listarduvida() {
         SELECT
             p.id AS idPost,
             p.texto AS textoPost,
-            p.datahora,
+            DATE_FORMAT(p.datahora,'%H:%i %d/%m') AS dataHora,
             p.resolvido,
             u.id AS idUser,
             u.nome AS nomeUsuario,
@@ -63,7 +63,8 @@ function detalhes(idBotao) {
     var instrucaoSql = `
         SELECT 
             rp.idRespostaPub AS idResp,
-            u.nome AS userResp,
+            u.nome AS nomeResp,
+            u.user AS userResp,
             rp.texto AS textResp
         FROM Post p
         LEFT JOIN RespostaPost rp ON p.id = rp.id_post
@@ -104,6 +105,16 @@ function publicar(descricao, idUsuario, tagNome) {
     return database.executar(instrucaoSql);
 }
 
+function enviarresposta(idUsuario, descricao, idBotao) {
+    console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function enviarresposta(): ", idUsuario, descricao, idBotao);
+    var instrucaoSql = `
+        INSERT INTO RespostaPost (id_post, id_usuario, texto) VALUES ('${idBotao}', '${idUsuario}', '${descricao}');
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+
 // function insertTag(nomeTag, idPost) {
 //     console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function insertTag(): ", nomeTag, idPost);
 //     var instrucaoSql = `
@@ -139,6 +150,7 @@ module.exports = {
     // pesquisarTag,
     detalhes,
     publicar,
+    enviarresposta,
     // insertTag,
     mudarStatus
     // editar,

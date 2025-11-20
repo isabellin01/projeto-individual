@@ -27,8 +27,8 @@ router.put("/mudarStatus/:botaoId", function (req, res) {
     avisoController.mudarStatus(req, res);
 });
 
-// router.delete("/deletar/:idAviso", function (req, res) {
-//     avisoController.deletar(req, res);
-// });
+router.post("/responder/:idUsuario", function (req, res) {
+    avisoController.enviarresposta(req, res);
+});
 
 module.exports = router;

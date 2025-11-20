@@ -2,8 +2,16 @@ function exibir() {
     publicar_div.style.display = 'flex';
 }
 
+function exibirdetalhes() {
+    publicar_div.style.display = 'flex';
+}
+
 function fechar() {
     publicar_div.style.display = 'none';
+}
+
+function fechardetalhes() {
+    abrirdetalhes.style.display = 'none';
 }
 
 function publicar() {

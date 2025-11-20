@@ -60,26 +60,7 @@
         </div>
     </div>
 
-    <div id="abrirdetalhes" class="abrirdetalhes">
-        <div id="verdetalhes" class="verdetalhes">
-            <button onclick="fechar()">x</button>
-            <div class="postdono">
-                <li class="social-post-user">
-                    <div class="user-infos">
-                        <span>nomeUsuario</span>
-                        <span>@usuario</span>
-                        <span>datahora</span>
-                    </div>
-                    <p>Texto</p>
-                    <div class="post-infos">
-                        <span>tag</span>
-                    </div>
-                </li>
-            </div>
-            <div class="postinfos">
-
-            </div>
-        </div>
+    <div id="abrirdetalhes" class="abrirdetalhes" style="display: none;">
     </div>
 
     <section class="social social-text">
@@ -167,7 +148,6 @@
                         var textoP = document.createElement("p"); //
                         var postInfos = document.createElement("div");
 
-
                         var TagInfos = document.createElement("div"); //
                         var TagName = document.createElement("span");
 
@@ -179,7 +159,7 @@
 
                         spanNome.innerHTML = publicacao.nomeUsuario;
                         spanUser.innerHTML = '@' + publicacao.userUsuario;
-                        spanData.innerHTML = arrumarData(publicacao.datahora)
+                        spanData.innerHTML = publicacao.dataHora;
                         infobutton.innerHTML = `+Detalhes`
                         textoP.innerHTML = publicacao.textoPost;
                         TagName.innerHTML = `#${publicacao.nomeTag}`;
@@ -196,10 +176,11 @@
                         infobutton.className = 'infobutton';
 
                         //CONFIGURANDO BOTÕES
-                        let idBotao = publicacao.idPost;
-                        infobutton.id = `btninfo_${idBotao}`
+                        let publicacaocopia = publicacao;
+                        let publicacaoid = publicacao.idPost;
+                        infobutton.id = `btninfo_${publicacaoid}`
                         infobutton.onclick = function () {
-                            detalhes(idBotao, publicacao);
+                            detalhes(publicacaoid, publicacaocopia);
                         };
 
                         TagInfos.appendChild(TagName);
@@ -251,10 +232,52 @@
                     throw "Nenhum resultado encontrado!!";
                 }
                 resposta.json().then(function (resposta) {
-                    // console.log("Dados recebidos: ", JSON.stringify(resposta));
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+                    abrirdetalhes.style.display = 'flex';
+                    let listaresposta = ``;
                     if (resposta[0].idResp == null) {
-                        console.log("Nenhuma resposta")
+                        listaresposta = `<p style="color: rgba(101, 14, 130); padding: 5px">Nenhuma resposta no momento</p>`;
+                    } else {
+                        for (let i = 0; i < resposta.length; i++) {
+                            listaresposta += `
+                                <li class="resposta-user">
+                                    <div class="user-resposta">
+                                        <span>${resposta[i].nomeResp}</span>
+                                        <span>${resposta[i].userResp}</span>
+                                    </div>
+                                    <p>${resposta[i].textResp}</p>
+                                </li>
+                            `;
+                        }
                     }
+                    let detalhes =
+                        `<div id="verdetalhes" class="verdetalhes">
+                                    <button onclick="fechardetalhes()">x</button>
+                                    <div class="postdono">
+                                        <li class="social-post-user">
+                                            <div class="user-infos">
+                                                <span>${publicacao.nomeUsuario}</span>
+                                                <span>@${publicacao.userUsuario}</span>
+                                                <span>${publicacao.dataHora}</span>
+                                            </div>
+                                            <p>${publicacao.textoPost}</p>
+                                            <div class="post-infos">
+                                                <span>#${publicacao.nomeTag}</span>
+                                            </div>
+                                        </li>
+                                    </div>
+                                    <div class="postrespostas" style="overflow:auto;">
+                                        <ul class="social-resposta-user" id="social_resposta_user">
+                                            <h3>Respostas</h3>
+                                            ${listaresposta}
+                                        </ul>
+                                        <div class="send-reply">
+                                            <textarea class="textarea-reply" id="textarea_reply" maxlength="300" placeholder="Escreva uma mensagem"></textarea>
+                                            <button onclick="enviarresposta(${idBotao})">Enviar</button>
+                                        </div>
+                                    </div>
+                                </div>`
+                    abrirdetalhes.innerHTML = detalhes;
                 });
             } else {
                 throw ('Houve um erro na API!');
@@ -262,6 +285,36 @@
         }).catch(function (resposta) {
             console.error(resposta);
         });
+    }
+
+    function enviarresposta(idBotao) {
+        var idUsuario = sessionStorage.ID_USUARIO;
+
+        var corpo = {
+            idBotao: idBotao,
+            descricao: textarea_reply.value
+        }
+
+        fetch(`/avisos/responder/${idUsuario}`, {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(corpo)
+        }).then(function (resposta) {
+            console.log("resposta: ", resposta);
+            if (resposta.ok) {
+                window.alert("Resposta enviada com sucesso pelo usuario de ID: " + idUsuario + "!");
+                window.location = "/dashboard/mural.html";
+            } else if (resposta.status == 404) {
+                window.alert("Deu 404!");
+            } else {
+                throw ("Houve um erro ao tentar enviar a resposta! Código da resposta: " + resposta.status);
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+        return false;
     }
 
     function listarduvida() {
@@ -288,6 +341,7 @@
                         var spanNome = document.createElement("span"); //
                         var spanUser = document.createElement("span"); //
                         var spanData = document.createElement("span"); //
+                        var infobutton = document.createElement("button"); //
                         var textoP = document.createElement("p"); //
                         var postInfos = document.createElement("div");
 
@@ -302,7 +356,8 @@
 
                         spanNome.innerHTML = publicacao.nomeUsuario;
                         spanUser.innerHTML = '@' + publicacao.userUsuario;
-                        spanData.innerHTML = arrumarData(publicacao.datahora)
+                        spanData.innerHTML = publicacao.dataHora;
+                        infobutton.innerHTML = `+Detalhes`
                         textoP.innerHTML = publicacao.textoPost;
                         TagName.innerHTML = `#${publicacao.nomeTag}`;
                         EngjInfosImg1.src = `../assets/imgs/check.svg`;
@@ -310,12 +365,20 @@
                         EngjInfosImg2.src = `../assets/imgs/comentarios.svg`;
                         EngjInfosRepost.innerHTML = publicacao.quantidadeResp;
 
-                        // console.log(publicacao)
                         SocialPostUser.className = "social-post-user" // social-post-user
                         userInfos.className = "user-infos" // feed-user
                         postInfos.className = "post-infos" // feed-infos
                         EngjInfos.className = "engj-infos" // feed-infos-users
                         EngjInfos.id = "EngjInfos";
+                        infobutton.className = 'infobutton';
+
+                        //CONFIGURANDO BOTÕES
+                        let publicacaocopia = publicacao;
+                        let publicacaoid = publicacao.idPost;
+                        infobutton.id = `btninfo_${publicacaoid}`
+                        infobutton.onclick = function () {
+                            detalhes(publicacaoid, publicacaocopia);
+                        };
 
                         TagInfos.appendChild(TagName);
                         EngjInfos.appendChild(EngjInfosImg1);
@@ -329,6 +392,7 @@
                         userInfos.appendChild(spanNome);
                         userInfos.appendChild(spanUser);
                         userInfos.appendChild(spanData);
+                        userInfos.appendChild(infobutton);
 
                         SocialPostUser.appendChild(userInfos);
                         SocialPostUser.appendChild(textoP);
@@ -339,8 +403,8 @@
                         if (idUsuario == publicacao.idUser) {
                             let idParam = publicacao.idPost;
                             let statusParam = publicacao.resolvido;
-                            botaoDiv = document.createElement("button"),
-                                botaoDiv.id = `btn_${idParam}`
+                            botaoDiv = document.createElement("button");
+                            botaoDiv.id = `btn_${idParam}`
                             botaoDiv.className = 'statusButton';
                             botaoDiv.innerHTML = `${check(statusParam)}`;
                             botaoDiv.onclick = function () {
@@ -429,12 +493,5 @@
             return `Com dúvida`;
         }
     }
-    function arrumarData(datahora) {
-        let dataNova = `${datahora[11]}${datahora[12]}${datahora[13]}${datahora[14]}${datahora[15]}
-                        ${datahora[8]}${datahora[9]}/${datahora[5]}${datahora[6]}/${datahora[2]}${datahora[3]}
-                        `;
-        return dataNova;
-    }
-
 
 </script>
