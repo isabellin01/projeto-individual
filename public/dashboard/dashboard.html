@@ -105,10 +105,6 @@
                     <span class="dash-kpi-title">Média de posts por usuário</span>
                     <span class="dash-kpi-number" id="kpi_postporuser"></span>
                 </li>
-                <!-- <li class="dash-kpis-item">
-                    <span class="dash-kpi-title">Novos usuários</span>
-                    <span class="dash-kpi-number"></span>
-                </li> -->
             </ul>
         </div>
         <div class="dash-divs">
@@ -116,30 +112,19 @@
             <ul class="dash-kpis">
                 <li class="dash-kpis-item">
                     <h3>Tags mais populares</h3>
-                    <canvas id="myChartCanvas_rankingTags"></canvas>
+                    <canvas id="myChartCanvas_rankingTags" class="myChartCanvas_rankingTags"></canvas>
                 </li>
                 <li class="dash-kpis-item">
-                    <h3>Gênero dos usuários</h3>
-                    <canvas id="myChartCanvas_gender"></canvas>
+                    <h3>Publicações x Respostas</h3>
+                    <!-- <canvas id="myChartCanvas_gender" class="myChartCanvas_gender"></canvas> -->
+                    <canvas id="myChartCanvas_engj" class="myChartCanvas_engj"></canvas>
                 </li>
                 <li class="dash-kpis-item">
                     <h3>Idade dos usuários</h3>
-                    <canvas id="myChartCanvas_idade"></canvas>
+                    <canvas id="myChartCanvas_idade" class="myChartCanvas_idade"></canvas>
                 </li>
             </ul>
         </div>
-        <div class="dash-divs">
-            <p class="dash-titles">Todos os tempos</p>
-            <ul class="dash-kpis">
-                <li class="dash-kpis-item">
-                    <!-- <canvas id="barra-vertical"></canvas> -->
-                </li>
-                <li class="dash-kpis-item">
-                    <!-- <canvas id="pizza"></canvas> -->
-                </li>
-            </ul>
-        </div>
-
     </section>
 
 
@@ -282,7 +267,7 @@
             type: 'bar',
             data: dadosTag,
             options: {
-                indexAxis: 'y',
+                indexAxis: 'y'
             }
         };
         let myChart1 = new Chart(
@@ -314,13 +299,6 @@
     }
 
     function plotarGraficoUser(resposta) {
-        // Extraindo informações e guardando em variáveis
-        let grupoGeneros = {
-            totalFem: 0,
-            totalMasc: 0,
-            totalOut: 0,
-        }
-
         let grupoIdades = {
             idade11a20: 0,
             idade21a30: 0,
@@ -332,14 +310,6 @@
 
         for (let i = 0; i < resposta.length; i++) {
             var userInfos = resposta[i];
-            //QUANTIDADE TOTAL DE CADA GÊNERO
-            if (userInfos.genero == 'F') {
-                grupoGeneros.totalFem++
-            } else if (userInfos.genero == 'H' || userInfos.genero == 'M') {
-                grupoGeneros.totalMasc++
-            } else {
-                grupoGeneros.totalOut++
-            }
 
             //QUANTIDADE TOTAL DE CADA GÊNERO
             if (userInfos.idade >= 11 && userInfos.idade <= 20) {
@@ -357,17 +327,6 @@
             }
         }
 
-        let dadosGen = {
-            labels: ['Feminino', 'Masculino', 'Outros'],
-            datasets: [{
-                label: 'Gênero',
-                data: [grupoGeneros.totalFem, grupoGeneros.totalMasc, grupoGeneros.totalOut],
-                fill: true,
-                backgroundColor: ['rgba(101, 14, 130)', 'rgb(238,130,238)', 'rgb(128,0,128)'],
-                tension: 0.1,
-            }]
-        };
-
         let dadosIdade = {
             labels: ['11-20', '21-30', '31-40', '41-50', '51-60', '60+'],
             datasets: [{
@@ -378,18 +337,6 @@
                 tension: 0.1,
             }]
         };
-
-        // labelsGen.push(rankingList.nome);
-        // dadosGen.datasets[0].data.push(rankingList.qtdtag);
-
-        const configGen = {
-            type: 'doughnut',
-            data: dadosGen,
-        };
-        let myChartGen = new Chart(
-            document.getElementById(`myChartCanvas_gender`),
-            configGen
-        );
 
         const configIdade = {
             type: 'bar',
@@ -468,7 +415,7 @@
                 response.json().then(function (resposta) {
                     console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
                     resposta.reverse();
-                    // plotarGraficoKpi(resposta);
+                    plotarTotalPost(resposta);
                 });
             } else {
                 console.error('Nenhum dado encontrado ou erro na API');
@@ -482,25 +429,64 @@
     function plotarTotalPost(resposta) {
         // Extraindo informações e guardando em variáveis
         let totalResposta = 0;
-        let totalPublicacao = resposta[resposta.length - 1].postId;
+        let totalPublicacao = resposta[resposta.length - 1].idPost;
 
-        fetch(`/medidas/postporuser`).then(function (response) {
-            if (response.ok) {
-                response.json().then(function (resposta) {
-                    console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
-                    resposta.reverse();
-                    let totalUsuarios = resposta[0].userID;
-                    let totalPost = 0;
-                    for (let i = 0; i < resposta.length; i++) {
-                        totalPost += resposta[i].totalPost;
-                    }
+        for (let i = 0; i < resposta.length; i++) {
+            totalResposta += resposta[i].totalResposta;
+        }
 
-                    kpi_postporuser.innerHTML = `${(totalPost / totalUsuarios).toFixed(1)}`
-                });
+        let labelsEngj = [];
+
+        let dadosEngj = {
+            labels: labelsEngj,
+            datasets: [{
+                label: 'Respostas',
+                data: [],
+                borderColor: ['rgb(238,130,238)'],
+                borderWidth: 5,
+                pointBorderWidth: 0,
+                tension: .3,
+                type: 'line',
+                order: 0
+            }, {
+                label: 'Publicações',
+                data: [],
+                fill: true,
+                backgroundColor: ['rgba(101, 14, 130)'],
+                tension: 0.1,
+                order: 1
+            }]
+        };
+
+
+        let countPublicacao = 1;
+        for (let i = 0; i < resposta.length - 1; i++) {
+            let countRepost = resposta[i].totalResposta;
+
+            if (resposta[i].datahora == resposta[i + 1].datahora) {
+                console.log(`Datas iguais`)
+                countRepost += resposta[i + 1].totalResposta
+                countPublicacao += 1;
+                console.log(`count atualizado: ${countPublicacao}`)
+
             } else {
-                console.error('Nenhum dado encontrado ou erro na API');
+                console.log(`Fez push`)
+                labelsEngj.push(resposta[i].datahora);
+                dadosEngj.datasets[0].data.push(countRepost);
+                dadosEngj.datasets[1].data.push(countPublicacao);
+                countPublicacao = 1;
             }
-        }).catch(function (error) { console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`); });
+        }
+
+        const configEngj = {
+            type: 'bar',
+            data: dadosEngj
+        };
+
+        let myChartEngj = new Chart(
+            document.getElementById(`myChartCanvas_engj`),
+            configEngj
+        );
         // setTimeout(() => atualizarGrafico(dados, myChart1), 2000);
     }
 

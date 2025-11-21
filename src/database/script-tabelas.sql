@@ -133,3 +133,4 @@ INSERT INTO RespostaPost (id_post, id_usuario, texto) VALUES
 (12, 7, 'Evite valores fixos demais. Prefira flexbox.');
 
 select * from usuario;
+
