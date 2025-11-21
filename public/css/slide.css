@@ -51,7 +51,6 @@
 .slide-header li:nth-child(2):hover,
 .slide-header li:nth-child(3):hover,
 .slide-header li:nth-child(4):hover {
-    color: #fff;
     background-color: #650E82;
     border-radius: 10px;
 }
@@ -60,10 +59,25 @@
     margin-bottom: 50px;
     display: flex;
     align-items: center;
+    padding: 10px 10px;
     justify-content: center;
+    transition: all 0.1s ease-in-out;
 }
 
 .slide-header-item img {
     width: 1.5rem;
     margin-right: 2px;
+}
+
+.slide-header-item:hover{
+    color: #fff;
+}
+
+.slide-header-item a {
+    color: #650E82;
+    transition: color 0.2s ease;
+}
+
+.slide-header-item:hover a {
+    color: #fff;
 }
