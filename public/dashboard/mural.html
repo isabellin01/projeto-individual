@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loop()Social | Cadastro</title>
+    <title>Gameloop | Cadastro</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="../css/forum.css">
     <script src="../js/sessao.js"></script>
     <script src="./../js/publicar.js"></script>
+
 </head>
 
 <body onload="validarSessao(), atualizarFeed(), rankingTag()">
@@ -31,16 +32,13 @@
                 </button>
             </li>
             <li class="slide-header-item">
-                <img src="../assets/icon/gameloop.png">
-                <a href="./mural.html">Gameloop</a>
+                <a href="./mural.html"><img src="../assets/icon/gameloop.png">Gameloop</a>
             </li>
             <li class="slide-header-item">
-                <img src="../assets/icon/dashboard.png">
-                <a href="./dashboard.html">Dashboard</a>
+                <a href="./dashboard.html"><img src="../assets/icon/dashboard.png">Dashboard</a>
             </li>
             <li class="slide-header-item">
-                <img src="../assets/icon/saida.png">
-                <a onclick="limparSessao()">Sair</a>
+                <a onclick="limparSessao()"><img src="../assets/icon/saida.png">Sair</a>
             </li>
         </ul>
     </header>
@@ -83,6 +81,7 @@
             </div>
             <div class="social-feed">
                 <ul class="social-post" id="social-post">
+                    <span id="naoencontrado"></span>
                 </ul>
             </div>
         </div>
@@ -96,19 +95,18 @@
                 </ul>
             </div>
             <div class="social-news">
-                <h3>O que está acontecendo essa semana?</h3>
+                <h3>Últimas notícias</h3>
                 <ul class="social-news-list">
                     <li class="social-news-item">
-                        <img src="https://placehold.co/150x100">
-                        <p>Queda da AWS derruba parte da internet e causa caos nas empresas</p>
+                        <img src="../assets/news1.jpg">
+                        <p>Equipes brasileiras recebem prêmio em cerimônia da NASA nos EUA - <a
+                                href="https://hackathonbrasil.com.br/equipes-brasileiras-recebem-premio-em-cerimonia-da-nasa-nos-eua/">Link
+                                da notícia</a></p>
                     </li>
                     <li class="social-news-item">
-                        <img src="https://placehold.co/150x100">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, voluptatum?</p>
-                    </li>
-                    <li class="social-news-item">
-                        <img src="https://placehold.co/150x100">
-                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing.</p>
+                        <img src="../assets/news2.webp">
+                        <p>Conheça o Festival HackTown: um dos maiores festivais de inovação da América Latina - <a
+                                href="https://hacktown.com.br/">Link</a></p>
                     </li>
                 </ul>
             </div>
@@ -126,40 +124,38 @@
     postUsuario.innerHTML = sessionStorage.NOME_USUARIO;
 
     function atualizarFeed() {
-        var idUsuario = sessionStorage.ID_USUARIO;
+        let idUsuario = sessionStorage.ID_USUARIO;
         fetch("/avisos/listar").then(function (resposta) {
             if (resposta.ok) {
                 if (resposta.status == 204) {
-                    var feed = document.getElementById("social-post");
-                    var mensagem = document.createElement("span");
-                    mensagem.innerHTML = "Nenhum resultado encontrado."
-                    feed.appendChild(mensagem);
+                    let naoencontrado = document.getElementById("naoencontrado")
+                    naoencontrado.innerHTML = "Nenhum resultado encontrado."
                     throw "Nenhum resultado encontrado!!";
                 }
 
                 resposta.json().then(function (resposta) {
-                    var feed = document.getElementById("social-post");
+                    let feed = document.getElementById("social-post");
                     feed.innerHTML = '';
                     for (let i = 0; i < resposta.length; i++) {
-                        var publicacao = resposta[i];
+                        let publicacao = resposta[i];
 
-                        var SocialPostUser = document.createElement("li");
-                        var userInfos = document.createElement("div");
-                        var spanNome = document.createElement("span"); //
-                        var spanUser = document.createElement("span"); //
-                        var spanData = document.createElement("span"); //
-                        var infobutton = document.createElement("button"); //
-                        var textoP = document.createElement("p"); //
-                        var postInfos = document.createElement("div");
+                        let SocialPostUser = document.createElement("li");
+                        let userInfos = document.createElement("div");
+                        let spanNome = document.createElement("span"); //
+                        let spanUser = document.createElement("span"); //
+                        let spanData = document.createElement("span"); //
+                        let infobutton = document.createElement("button"); //
+                        let textoP = document.createElement("p"); //
+                        let postInfos = document.createElement("div");
 
-                        var TagInfos = document.createElement("div"); //
-                        var TagName = document.createElement("span");
+                        let TagInfos = document.createElement("div"); //
+                        let TagName = document.createElement("span");
 
-                        var EngjInfos = document.createElement("div");
-                        var EngjInfosImg1 = document.createElement("img"); //
-                        var EngjInfosResolv = document.createElement("span"); //
-                        var EngjInfosImg2 = document.createElement("img"); //
-                        var EngjInfosRepost = document.createElement("span"); //
+                        let EngjInfos = document.createElement("div");
+                        let EngjInfosImg1 = document.createElement("img"); //
+                        let EngjInfosResolv = document.createElement("span"); //
+                        let EngjInfosImg2 = document.createElement("img"); //
+                        let EngjInfosRepost = document.createElement("span"); //
 
                         spanNome.innerHTML = publicacao.nomeUsuario;
                         spanUser.innerHTML = '@' + publicacao.userUsuario;
@@ -172,10 +168,10 @@
                         EngjInfosImg2.src = `../assets/icon/reply_branco.png`;
                         EngjInfosRepost.innerHTML = publicacao.quantidadeResp;
 
-                        SocialPostUser.className = "social-post-user" // social-post-user
-                        userInfos.className = "user-infos" // feed-user
-                        postInfos.className = "post-infos" // feed-infos
-                        EngjInfos.className = "engj-infos" // feed-infos-users
+                        SocialPostUser.className = "social-post-user"
+                        userInfos.className = "user-infos"
+                        postInfos.className = "post-infos"
+                        EngjInfos.className = "engj-infos"
                         EngjInfos.id = "EngjInfos";
                         infobutton.className = 'infobutton';
 
@@ -292,9 +288,9 @@
     }
 
     function enviarresposta(idBotao) {
-        var idUsuario = sessionStorage.ID_USUARIO;
+        let idUsuario = sessionStorage.ID_USUARIO;
 
-        var corpo = {
+        let corpo = {
             idBotao: idBotao,
             descricao: textarea_reply.value
         }
@@ -322,41 +318,39 @@
     }
 
     function listarduvida() {
-        var idUsuario = sessionStorage.ID_USUARIO;
+        let idUsuario = sessionStorage.ID_USUARIO;
 
         fetch("/avisos/listarduvida").then(function (resposta) {
             if (resposta.ok) {
                 if (resposta.status == 204) {
-                    var feed = document.getElementById("social-post");
-                    var mensagem = document.createElement("span");
-                    mensagem.innerHTML = "Nenhum resultado encontrado."
-                    feed.appendChild(mensagem);
+                    let naoencontrado = document.getElementById("naoencontrado")
+                    naoencontrado.innerHTML = "Nenhum resultado encontrado."
                     throw "Nenhum resultado encontrado!!";
                 }
 
                 resposta.json().then(function (resposta) {
-                    var feed = document.getElementById("social-post");
+                    let feed = document.getElementById("social-post");
                     feed.innerHTML = '';
                     for (let i = 0; i < resposta.length; i++) {
-                        var publicacao = resposta[i];
+                        let publicacao = resposta[i];
 
-                        var SocialPostUser = document.createElement("li");
-                        var userInfos = document.createElement("div");
-                        var spanNome = document.createElement("span"); //
-                        var spanUser = document.createElement("span"); //
-                        var spanData = document.createElement("span"); //
-                        var infobutton = document.createElement("button"); //
-                        var textoP = document.createElement("p"); //
-                        var postInfos = document.createElement("div");
+                        let SocialPostUser = document.createElement("li");
+                        let userInfos = document.createElement("div");
+                        let spanNome = document.createElement("span"); //
+                        let spanUser = document.createElement("span"); //
+                        let spanData = document.createElement("span"); //
+                        let infobutton = document.createElement("button"); //
+                        let textoP = document.createElement("p"); //
+                        let postInfos = document.createElement("div");
 
-                        var TagInfos = document.createElement("div"); //
-                        var TagName = document.createElement("span");
+                        let TagInfos = document.createElement("div"); //
+                        let TagName = document.createElement("span");
 
-                        var EngjInfos = document.createElement("div");
-                        var EngjInfosImg1 = document.createElement("img"); //
-                        var EngjInfosResolv = document.createElement("span"); //
-                        var EngjInfosImg2 = document.createElement("img"); //
-                        var EngjInfosRepost = document.createElement("span"); //
+                        let EngjInfos = document.createElement("div");
+                        let EngjInfosImg1 = document.createElement("img"); //
+                        let EngjInfosResolv = document.createElement("span"); //
+                        let EngjInfosImg2 = document.createElement("img"); //
+                        let EngjInfosRepost = document.createElement("span"); //
 
                         spanNome.innerHTML = publicacao.nomeUsuario;
                         spanUser.innerHTML = '@' + publicacao.userUsuario;
@@ -453,7 +447,7 @@
         });
     }
 
-    function rankingTag() {
+function rankingTag() {
         fetch("/avisos/rankingTag").then(function (resposta) {
             if (resposta.ok) {
                 if (resposta.status == 204) {

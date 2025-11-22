@@ -79,14 +79,6 @@ body {
     align-items: center;
 }
 
-.user-infos span:nth-child(1) {
-    color: #fff;
-}
-
-.user-resposta span:nth-child(1) {
-    color: #fff;
-}
-
 .user-infos span,
 .user-resposta span {
     margin-right: 5px;
@@ -227,12 +219,14 @@ body {
     margin-bottom: 15px;
 }
 
-.social-news-item img {
-    margin: 10px 0;
+.social-news-item a {
+    margin-bottom: 15px;
+    color: #fff;
 }
 
-.social-news-list li:nth-child(3) {
-    border-bottom: none;
+.social-news-item img {
+    margin: 10px 0;
+    width: 300px;
 }
 
 .statusButton,
@@ -278,3 +272,4 @@ body {
 .infobutton:active {
     transform: translateY(2px);
 }
+

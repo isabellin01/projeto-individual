@@ -1,4 +1,4 @@
-<title>Loop()Social | Cadastro</title>
+<title>Gameloop | Cadastro</title>
 
 <script src="./js/sessao.js"></script>
 
@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="./css/header.css">
 <link rel="stylesheet" href="./css/text.css">
 <link rel="stylesheet" href="./css/cadastro.css">
-<link rel="icon" href="./assets/icon/favicon2.ico" />
+<link rel="icon" href="./assets/icon/gameloop.png">
 </head>
 
 <body>
@@ -187,12 +187,10 @@
           console.log("Dados recebidos: ", JSON.stringify(resposta));
           for (let i = 0; i < resposta.length; i++) {
             if (resposta[i].user == usuario) {
-              console.log(`Usuário já existe!`);
               span_usuario.innerHTML = `Usuário já existe`
               validarUsuario = false;
             }
             if (resposta[i].email == email) {
-              console.log(`Email já existe!`);
               span_email.innerHTML = `E-mail já existe`
               validarEmail = false;
             }

@@ -23,6 +23,18 @@
     margin-left: 50px;
 }
 
+.header_navbar a {
+    padding: 10px;
+    transition: all 0.1s ease-in-out;
+    border-radius: 5px;
+}
+
+.header_navbar a:hover {
+    background-color: #fff;
+    color: #650E82;
+}
+
+
 /*!FOOTER*/
 .footer{
     display: flex;

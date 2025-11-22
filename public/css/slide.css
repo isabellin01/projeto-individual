@@ -60,7 +60,6 @@
     margin-bottom: 50px;
     display: flex;
     align-items: center;
-    padding: 10px 10px;
     justify-content: center;
     transition: all 0.1s ease-in-out;
 }
@@ -75,8 +74,12 @@
 }
 
 .slide-header-item a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: #650E82;
     transition: color 0.2s ease;
+    padding: 10px;
 }
 
 .slide-header-item:hover a {

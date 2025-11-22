@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loop()Social | Dashboards</title>
+    <title>Gameloop | Dashboards</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,6 +19,7 @@
     <script src="../js/sessao.js"></script>
     <script src="./../js/alerta.js"></script>
     <script src="./../js/publicar.js"></script>
+    <link rel="icon" href="./assets/icon/gameloop.png">
 
     <!-- scripts do Chart.js - 2022-1 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -126,7 +127,6 @@
     let proximaAtualizacao;
 
     window.onload = obterDadosTag(), obterDadosUser(), obterDadosKpi(), obterTotalPost();
-    //GRÁFICO DOS TAGS
 
     function obterDadosTag() {
         if (proximaAtualizacao != undefined) {
@@ -150,11 +150,8 @@
     }
 
     function plotarGraficoTag(resposta) {
-        // console.log('iniciando plotagem do gráfico...');
-        // Criando estrutura para plotar gráfico - labels
         let labelsTag = [];
 
-        // Criando estrutura para plotar gráfico - dados
         let dadosTag = {
             labels: labelsTag,
             datasets: [{
@@ -193,8 +190,6 @@
         fetch(`/medidas/dadosusuario`).then(function (response) {
             if (response.ok) {
                 response.json().then(function (resposta) {
-                    // console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
-                    // resposta.reverse();
                     plotarGraficoUser(resposta);
                 });
             } else {
@@ -265,7 +260,6 @@
         fetch(`/medidas/dadoskpi`).then(function (response) {
             if (response.ok) {
                 response.json().then(function (resposta) {
-                    // console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
                     resposta.reverse();
                     plotarGraficoKpi(resposta);
                 });

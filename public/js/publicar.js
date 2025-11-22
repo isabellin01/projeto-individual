@@ -39,6 +39,7 @@ function publicar() {
         } else {
             tag = tag.replace('#', '')
             tag = tag.replace(' ', '')
+            tag = tag.toUpperCase()
         }
     }
 
