@@ -54,11 +54,13 @@
             <div class="cadastro-form-campos">
               <p>Usuário</p>
               <input type="text" id="user_input" />
+              <span id="span_usuario"></span>
             </div>
           </div>
           <div class="cadastro-form-campos">
             <p>E-mail</p>
             <input type="text" id="email_input" />
+            <span id="span_email"></span>
           </div>
           <div class="dupla">
             <div class="cadastro-form-campos">
@@ -69,16 +71,19 @@
                 <option value="M">Masculino</option>
                 <option value="O">Outro</option>
               </select>
+              <span id="span_genero"></span>
             </div>
             <div class="cadastro-form-campos">
               <p>Idade</p>
               <input type="number" id="idade_input" />
+              <span id="span_idade"></span>
             </div>
           </div>
           <div class="dupla">
             <div class="cadastro-form-campos">
               <p>Senha</p>
               <input type="password" id="senha_input" />
+              <span id="span_senha"></span>
             </div>
             <div class="cadastro-form-campos">
               <p>Confirmar senha</p>
@@ -93,6 +98,9 @@
       </div>
     </div>
   </section>
+  <footer class="footer">
+    <h3>Isabel Lin &hearts; SPTech &copy; 2025</h3>
+  </footer>
 </body>
 
 </html>
@@ -107,22 +115,15 @@
     var senhaVar = senha_input.value;
     var confirmacaoSenhaVar = confirmacao_senha_input.value;
 
-    if (
-      nomeVar == "" || userVar == "" ||
-      emailVar == "" || generoVar == "" ||
-      idadeVar == "" || senhaVar == "" ||
-      confirmacaoSenhaVar == ""
-    ) {
+    if (validacao(userVar, emailVar, generoVar, idadeVar, senhaVar, confirmacaoSenhaVar) == false) {
       cardErro.style.display = "block";
       mensagem_erro.innerHTML =
-        "(Mensagem de erro para todos os campos em branco)";
+        "Insira corretamente todos os campos";
       return false;
     } else {
       setInterval(sumirMensagem, 5000);
     }
 
-    console.log("caminho0")
-    // Enviando o valor da nova input
     fetch("/usuarios/cadastrar", {
       method: "POST",
       headers: {
@@ -160,9 +161,127 @@
       });
 
     return false;
+
   }
 
   function sumirMensagem() {
     cardErro.style.display = "none";
   }
+
+  function validacao(usuario, email, genero, idade, senha, confirmacaoSenha) {
+    span_usuario.innerHTML = ``, span_email.innerHTML = ``, span_genero.innerHTML = ``, span_idade.innerHTML = ``, span_senha.innerHTML = ``;
+
+    let validarUsuario = true, validarEmail = true, validarGenero = true, validarIdade = true, validarSenha = true;
+    let temCharEspecialSenha = false, temCharMaiusculoSenha = false, temCharMinusculoSenha = false;
+
+    let charEspecial = "!@#$%¨&*()-_=+[]{}\\|;:\"'<>,.?/";
+    let letrasMaiusculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let letrasMinusculas = "abcdefghijklmnopqrstuvwxyz";
+
+    fetch("/usuarios/validacao").then(function (resposta) {
+      if (resposta.ok) {
+        if (resposta.status == 204) {
+          throw "Nenhum resultado encontrado!!";
+        }
+        resposta.json().then(function (resposta) {
+          console.log("Dados recebidos: ", JSON.stringify(resposta));
+          for (let i = 0; i < resposta.length; i++) {
+            if (resposta[i].user == usuario) {
+              console.log(`Usuário já existe!`);
+              span_usuario.innerHTML = `Usuário já existe`
+              validarUsuario = false;
+            }
+            if (resposta[i].email == email) {
+              console.log(`Email já existe!`);
+              span_email.innerHTML = `E-mail já existe`
+              validarEmail = false;
+            }
+          }
+
+          if (usuario == '') {
+            span_usuario.innerHTML = `Preencha o usuário`
+            validarUsuario = false;
+          }
+
+          if (email.includes('@') == false) {
+            span_email.innerHTML = `Insira um e-mail válido`
+            validarEmail = false;
+          }
+        });
+      } else {
+        throw ('Houve um erro na API!');
+      }
+    }).catch(function (resposta) {
+      console.error(resposta);
+    });
+
+    // ------- VALIDAR GÊNERO ------- //
+    if (genero == 0 || genero == '') {
+      validarGenero = false;
+    }
+
+    // ------- VALIDAR IDADE ------- //
+    if (idade < 12 || idade == '') {
+      validarIdade = false;
+    }
+
+    // ------- VALIDAR SENHA ------- //
+    for (let i = 0; i < senha.length; i++) {
+      for (let n = 0; n < charEspecial.length; n++) {
+        if (senha[i] == charEspecial[n]) {
+          temCharEspecialSenha = true;
+        }
+      }
+      for (let j = 0; j < letrasMaiusculas.length; j++) {
+        if (senha[i] == letrasMaiusculas[j]) {
+          temCharMaiusculoSenha = true;
+        }
+      }
+      for (let j = 0; j < letrasMinusculas.length; j++) {
+        if (senha[i] == letrasMinusculas[j]) {
+          temCharMinusculoSenha = true;
+        }
+      }
+    }
+
+    let senhaMsg = ``;
+
+    if (senha.length < 12 || temCharEspecialSenha == false ||
+      temCharMaiusculoSenha == false || temCharMinusculoSenha == false ||
+      senha != confirmacaoSenha) {
+      validarSenha = false;
+      if (senha.length < 12) {
+        senhaMsg += `Precisa ter mais de 12 dígitos<br>`
+      }
+      if (temCharEspecialSenha == false) {
+        senhaMsg += `Precisa ter um caracter especial<br>`
+      }
+      if (temCharMaiusculoSenha == false) {
+        senhaMsg += `Precisa ter uma letra maiúscula<br>`
+      }
+      if (temCharMinusculoSenha == false) {
+        senhaMsg += `Precisa ter uma letra minúscula<br>`
+      }
+      if (senha != confirmacaoSenha) {
+        senhaMsg += `As senhas devem ser iguais<br>`;
+      }
+    }
+
+    if (validarUsuario == true && validarEmail == true && validarGenero == true &&
+      validarIdade == true && validarSenha == true) {
+      return true;
+    } else {
+      if (validarGenero == false) {
+        span_genero.innerHTML = `Selecione um gênero`
+      }
+      if (validarIdade == false) {
+        span_idade.innerHTML = `Precisa ter no mínimo 12 anos`
+      }
+      if (validarSenha == false) {
+        span_senha.innerHTML = senhaMsg
+      }
+      return false;
+    }
+  }
+
 </script>

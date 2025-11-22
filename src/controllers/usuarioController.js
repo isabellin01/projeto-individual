@@ -44,6 +44,20 @@ function autenticar(req, res) {
 
 }
 
+function validar(req, res) {
+    usuarioModel.validar().then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar usuários.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 function cadastrar(req, res) {
     var nome = req.body.nomeServer;
     var user = req.body.userServer;
@@ -86,5 +100,6 @@ function cadastrar(req, res) {
 
 module.exports = {
     autenticar,
+    validar,
     cadastrar
 }

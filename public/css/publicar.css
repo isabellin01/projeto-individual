@@ -21,7 +21,7 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    height: 50vh;
+    height: 70vh;
     width: 60vw;
     border-radius: 10px;
     padding: 10px;
@@ -159,4 +159,9 @@
     color: #650E82;
     font-size: 20px;
     font-weight: 800;
+}
+
+.publicarmensagem span{
+    color: #fff;
+    font-size: 20px;
 }
