@@ -42,21 +42,34 @@ function obterTotalPost() {
             FROM post p
             LEFT JOIN respostaPost rp ON p.id = rp.id_post
             GROUP BY p.datahora, p.id 
-            ORDER BY p.datahora DESC;
+            ORDER BY p.datahora DESC LIMIT 7;
         `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-function buscarMedidasEmTempoReal(idAquario) {
-    var instrucaoSql = `SELECT 
-        dht11_temperatura as temperatura, 
-        dht11_umidade as umidade,
-                        DATE_FORMAT(momento,'%H:%i:%s') as momento_grafico, 
-                        fk_aquario 
-                        FROM medida WHERE fk_aquario = ${idAquario} 
-                    ORDER BY id DESC LIMIT 1`;
+function atualizarTag() {
+    var instrucaoSql = `
+        SELECT tag AS nome, count(tag) AS qtdtag
+        FROM post GROUP BY tag
+        ORDER BY count(tag) DESC, tag ASC;
+        `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
 
+function temporealEngj() {
+    var instrucaoSql = `
+            SELECT 
+                DATE_FORMAT(p.datahora, '%d/%m') AS datahora,
+                p.id AS idPost,
+                COUNT(rp.idRespostaPub) AS totalResposta
+            FROM post p
+            LEFT JOIN respostaPost rp ON p.id = rp.id_post
+            GROUP BY p.datahora, p.id 
+            ORDER BY p.datahora DESC
+            LIMIT 1;
+        `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
@@ -66,5 +79,6 @@ module.exports = {
     obterDadosKpi,
     obterPostPorUser,
     obterTotalPost,
-    buscarMedidasEmTempoReal
+    atualizarTag,
+    temporealEngj
 }

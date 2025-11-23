@@ -19,8 +19,12 @@ router.get("/dadospost", function (req, res) {
     medidaController.obterTotalPost(req, res);
 })
 
-router.get("/tempo-real/:idAquario", function (req, res) {
-    medidaController.buscarMedidasEmTempoReal(req, res);
+router.get("/temporealtag", function (req, res) {
+    medidaController.atualizarTag(req, res);
+})
+
+router.get("/temporealengj", function (req, res) {
+    medidaController.temporealEngj(req, res);
 })
 
 module.exports = router;

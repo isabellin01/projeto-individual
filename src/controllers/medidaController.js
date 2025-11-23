@@ -58,13 +58,28 @@ function obterTotalPost(req, res) {
     });
 }
 
-function buscarMedidasEmTempoReal(req, res) {
+function atualizarTag(req, res) {
 
-    var idAquario = req.params.idAquario;
+    console.log(`Recuperando tags em tempo real`);
 
-    console.log(`Recuperando medidas em tempo real`);
+    medidaModel.atualizarTag().then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar as ultimas medidas.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
 
-    medidaModel.buscarMedidasEmTempoReal(idAquario).then(function (resultado) {
+function temporealEngj(req, res) {
+
+    console.log(`Recuperando engajamento em tempo real`);
+
+    medidaModel.temporealEngj().then(function (resultado) {
         if (resultado.length > 0) {
             res.status(200).json(resultado);
         } else {
@@ -82,5 +97,6 @@ module.exports = {
     obterDadosKpi,
     obterPostPorUser,
     obterTotalPost,
-    buscarMedidasEmTempoReal
+    atualizarTag,
+    temporealEngj
 }

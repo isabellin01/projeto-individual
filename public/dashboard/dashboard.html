@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="../css/publicar.css">
     <link rel="stylesheet" href="../css/dashboard.css">
     <script src="../js/sessao.js"></script>
-    <script src="./../js/alerta.js"></script>
     <script src="./../js/publicar.js"></script>
     <link rel="icon" href="./assets/icon/gameloop.png">
 
@@ -173,11 +172,11 @@
                 indexAxis: 'y'
             }
         };
-        let myChart1 = new Chart(
+        let myChartTag = new Chart(
             document.getElementById(`myChartCanvas_rankingTags`),
             config
         );
-        // setTimeout(() => atualizarGrafico(dados, myChart1), 2000);
+        setTimeout(() => atualizarTag(dadosTag, myChartTag), 10000);
     }
 
     function obterDadosUser() {
@@ -247,7 +246,7 @@
             document.getElementById(`myChartCanvas_idade`),
             configIdade
         );
-        // setTimeout(() => atualizarGrafico(dados, myChart1), 2000);
+        // setTimeout(() => atualizarGrafico(dados, myChart1), 10000);
     }
 
     function obterDadosKpi() {
@@ -303,7 +302,7 @@
                 console.error('Nenhum dado encontrado ou erro na API');
             }
         }).catch(function (error) { console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`); });
-        // setTimeout(() => atualizarGrafico(dados, myChart1), 2000);
+        // setTimeout(() => atualizarGrafico(dados, myChart1), 10000);
     }
 
     function obterTotalPost() {
@@ -357,8 +356,6 @@
                 order: 1
             }]
         };
-
-
         let countPublicacao = 1;
         let countRepost = resposta[0].totalResposta;
 
@@ -386,52 +383,45 @@
             document.getElementById(`myChartCanvas_engj`),
             configEngj
         );
-        // setTimeout(() => atualizarGrafico(dados, myChart1), 2000);
+        // setTimeout(() => atualizarEngj(dadosEngj, myChartEngj), 10000);
     }
 
-    function atualizarGrafico(idAquario, dados, myChart) {
-        fetch(`/medidas/tempo-real/${idAquario}`, { cache: 'no-store' }).then(function (response) {
+    function atualizarTag(dadosTag, myChartTag) {
+        fetch(`/medidas/temporealtag`, { cache: 'no-store' }).then(function (response) {
             if (response.ok) {
                 response.json().then(function (novoRegistro) {
-
-                    obterdados(idAquario);
                     // console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
-                    console.log(`Dados atuais do gráfico:`);
-                    console.log(dados);
+                    // console.log(`Dados atuais do gráfico:`);
+                    // console.log(dadosTag);
+                    let dataMudou = false;
+                    let labelMudou = false;
 
-                    let avisoCaptura = document.getElementById(`avisoCaptura${idAquario}`)
-                    avisoCaptura.innerHTML = ""
-
-                    if (novoRegistro[0].momento_grafico == dados.labels[dados.labels.length - 1]) {
-                        console.log("---------------------------------------------------------------")
-                        console.log("Como não há dados novos para captura, o gráfico não atualizará.")
-                        avisoCaptura.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Foi trazido o dado mais atual capturado pelo sensor. <br> Como não há dados novos a exibir, o gráfico não atualizará."
-                        console.log("Horário do novo dado capturado:")
-                        console.log(novoRegistro[0].momento_grafico)
-                        console.log("Horário do último dado capturado:")
-                        console.log(dados.labels[dados.labels.length - 1])
-                        console.log("---------------------------------------------------------------")
-                    } else {
-                        // tirando e colocando valores no gráfico
-                        dados.labels.shift(); // apagar o primeiro
-                        dados.labels.push(novoRegistro[0].momento_grafico); // incluir um novo momento
-
-                        dados.datasets[0].data.shift();  // apagar o primeiro de umidade
-                        dados.datasets[0].data.push(novoRegistro[0].umidade); // incluir uma nova medida de umidade
-
-                        dados.datasets[1].data.shift();  // apagar o primeiro de temperatura
-                        dados.datasets[1].data.push(novoRegistro[0].temperatura); // incluir uma nova medida de temperatura
-
-                        myChart.update();
+                    for (let i = 0; i < dadosTag.datasets[0].data.length; i++) {
+                        if (novoRegistro[i].nome != dadosTag.labels[i]) {
+                            labelMudou = true;
+                        }
+                        if (novoRegistro[i].qtdtag != dadosTag.datasets[0].data[i]) {
+                            dataMudou = true;
+                        }
                     }
 
-                    // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                    proximaAtualizacao = setTimeout(() => atualizarGrafico(idAquario, dados, myChart), 2000);
+                    if (dataMudou == false && labelMudou == false) {
+                        console.log("---------------------------------------------------------------")
+                        console.log("Como não há dados novos para captura, o gráfico não atualizará.")
+                        console.log("---------------------------------------------------------------")
+                    } else {
+                        for (let i = 0; i < dadosTag.datasets[0].data.length; i++) {
+                            dadosTag.labels[i] = novoRegistro[i].nome;
+                            dadosTag.datasets[0].data[i] = novoRegistro[i].qtdtag;
+                        }
+                        myChartTag.update();
+                    }
+
+                    proximaAtualizacao = setTimeout(() => atualizarTag(dadosTag, myChartTag), 10000);
                 });
             } else {
                 console.error('Nenhum dado encontrado ou erro na API');
-                // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                proximaAtualizacao = setTimeout(() => atualizarGrafico(idAquario, dados, myChart), 2000);
+                proximaAtualizacao = setTimeout(() => atualizarTag(dadosTag, myChartTag), 10000);
             }
         })
             .catch(function (error) {
@@ -439,4 +429,45 @@
             });
 
     }
+
+    // function atualizarEngj(dadosEngj, myChartEngj) {
+    //     fetch(`/medidas/temporealengj`, { cache: 'no-store' }).then(function (response) {
+    //         if (response.ok) {
+    //             response.json().then(function (novoRegistro) {
+
+    //                 console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
+
+    //                 console.log(`Dados atuais do gráfico:`);
+    //                 console.log(dadosEngj);
+
+
+    //                 console.log(`novo registro: ${novoRegistro[0].idPost}`)
+    //                 console.log(`dados: ${dadosEngj.datasets[1].data[dadosEngj.datasets[1].data.length - 1]}`)
+
+    //                 console.log(`data: ${dataMudou}`)
+
+    //                 // if (dataMudou == false && labelMudou == false) {
+    //                 //     console.log("---------------------------------------------------------------")
+    //                 //     console.log("Como não há dados novos para captura, o gráfico não atualizará.")
+    //                 //     console.log("---------------------------------------------------------------")
+    //                 // } else {
+    //                 //     for (let i = 0; i < dadosEngj.datasets[0].data.length; i++) {
+    //                 //         dadosEngj.labels[i] = novoRegistro[i].nome;
+    //                 //         dadosEngj.datasets[0].data[i] = novoRegistro[i].qtdtag;
+    //                 //     }
+    //                 //     myChartEngj.update();
+    //                 // }
+
+    //                 proximaAtualizacao = setTimeout(() => atualizarEngj(dadosEngj, myChartEngj), 10000);
+    //             });
+    //         } else {
+    //             console.error('Nenhum dado encontrado ou erro na API');
+    //             proximaAtualizacao = setTimeout(() => atualizarEngj(dadosEngj, myChartEngj), 10000);
+    //         }
+    //     })
+    //         .catch(function (error) {
+    //             console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+    //         });
+
+    // }
 </script>
