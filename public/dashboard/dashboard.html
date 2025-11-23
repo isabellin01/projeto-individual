@@ -8,8 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gameloop | Dashboards</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/text.css">
@@ -25,7 +23,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body>
+<body onload="validarSessao()">
     <header class="slide">
         <span id="b_usuario"></span>
         <ul class="slide-header">
@@ -163,7 +161,7 @@
             }]
         };
 
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < resposta.length; i++) {
             var rankingList = resposta[i];
             labelsTag.push(rankingList.nome);
             dadosTag.datasets[0].data.push(rankingList.qtdtag);

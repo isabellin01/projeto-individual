@@ -19,6 +19,10 @@ router.get("/detalhes/:idBotao", function (req, res) {
     avisoController.detalhes(req, res);
 });
 
+router.get("/listarusuario/:idUsuario", function (req, res) {
+    avisoController.listarusuario(req, res);
+});
+
 router.post("/publicar/:idUsuario", function (req, res) {
     avisoController.publicar(req, res);
 });
@@ -29,6 +33,14 @@ router.put("/mudarStatus/:botaoId", function (req, res) {
 
 router.post("/responder/:idUsuario", function (req, res) {
     avisoController.enviarresposta(req, res);
+});
+
+router.delete("/deletar/:publicacaoid", function (req, res) {
+    avisoController.deletar(req, res);
+});
+
+router.delete("/deletarRespostas/:publicacaoid", function (req, res) {
+    avisoController.deletarRespostas(req, res);
 });
 
 module.exports = router;

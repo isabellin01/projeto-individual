@@ -230,7 +230,8 @@ body {
 }
 
 .statusButton,
-.infobutton {
+.infobutton,
+.delete-button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -273,3 +274,20 @@ body {
     transform: translateY(2px);
 }
 
+.delete-button {
+    padding: 5px 10px;
+    margin-left: 5px;
+    background-color: #6f188b;
+    color: #fff;
+}
+
+.delete-button:hover{
+    background-color: #8c3da7;
+}
+
+.delete-button:active {
+    transform: translateY(2px);
+}
+.delete-button img {
+    width: 20px;
+}

@@ -8,8 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gameloop | Cadastro</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/text.css">
@@ -77,6 +75,7 @@
                 <ul class="social-filter-list">
                     <button onclick="atualizarFeed()">Recentes</button>
                     <button onclick="listarduvida()">Com dúvidas</button>
+                    <button onclick="listarusuario()">Meus posts</button>
                 </ul>
             </div>
             <div class="social-feed">
@@ -160,7 +159,7 @@
                         spanNome.innerHTML = publicacao.nomeUsuario;
                         spanUser.innerHTML = '@' + publicacao.userUsuario;
                         spanData.innerHTML = publicacao.dataHora;
-                        infobutton.innerHTML = `+Detalhes`
+                        infobutton.innerHTML = `+Detalhes`;
                         textoP.innerHTML = publicacao.textoPost;
                         TagName.innerHTML = `#${publicacao.nomeTag}`;
                         EngjInfosImg1.src = `../assets/icon/check_branco.png`;
@@ -178,7 +177,7 @@
                         //CONFIGURANDO BOTÕES
                         let publicacaocopia = publicacao;
                         let publicacaoid = publicacao.idPost;
-                        infobutton.id = `btninfo_${publicacaoid}`
+                        infobutton.id = `btninfo_${publicacaoid}`;
                         infobutton.onclick = function () {
                             detalhes(publicacaoid, publicacaocopia);
                         };
@@ -214,6 +213,15 @@
                                 mudarStatus(idParam, statusParam);
                             };
                             EngjInfos.appendChild(botaoDiv);
+
+                            let deletebutton = document.createElement("button"); //
+                            deletebutton.innerHTML = `<img src="../assets/icon/delete.png"> Deletar`
+                            deletebutton.className = `delete-button`
+                            deletebutton.id = `delete_${publicacaoid}`;
+                            deletebutton.onclick = function () {
+                                deletar(publicacaoid);
+                            };
+                            userInfos.appendChild(deletebutton);
                         }
                     }
                 });
@@ -304,7 +312,7 @@
         }).then(function (resposta) {
             console.log("resposta: ", resposta);
             if (resposta.ok) {
-                window.alert("Resposta enviada com sucesso pelo usuario de ID: " + idUsuario + "!");
+                window.alert("Resposta enviada com sucesso pelo usuario de email: " + sessionStorage.getItem("EMAIL_USUARIO") + "!");
                 window.location = "/dashboard/mural.html";
             } else if (resposta.status == 404) {
                 window.alert("Deu 404!");
@@ -409,6 +417,129 @@
                                 mudarStatus(idParam, statusParam);
                             };
                             EngjInfos.appendChild(botaoDiv);
+
+                            let deletebutton = document.createElement("button"); //
+                            deletebutton.innerHTML = `<img src="../assets/icon/delete.png"> Deletar`
+                            deletebutton.className = `delete-button`
+                            deletebutton.id = `delete_${publicacaoid}`;
+                            deletebutton.onclick = function () {
+                                deletar(publicacaoid);
+                            };
+                            userInfos.appendChild(deletebutton);
+                        }
+                    }
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+        });
+    }
+
+    function listarusuario() {
+        let idUsuario = sessionStorage.ID_USUARIO;
+
+        fetch(`/avisos/listarusuario/${idUsuario}`).then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) {
+                    let naoencontrado = document.getElementById("naoencontrado")
+                    naoencontrado.innerHTML = "Nenhum resultado encontrado."
+                    throw "Nenhum resultado encontrado!!";
+                }
+
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+                    let feed = document.getElementById("social-post");
+                    feed.innerHTML = '';
+                    for (let i = 0; i < resposta.length; i++) {
+                        let publicacao = resposta[i];
+
+                        let SocialPostUser = document.createElement("li");
+                        let userInfos = document.createElement("div");
+                        let spanNome = document.createElement("span");
+                        let spanUser = document.createElement("span");
+                        let spanData = document.createElement("span");
+                        let infobutton = document.createElement("button");
+                        let textoP = document.createElement("p");
+                        let postInfos = document.createElement("div");
+
+                        let TagInfos = document.createElement("div");
+                        let TagName = document.createElement("span");
+
+                        let EngjInfos = document.createElement("div");
+                        let EngjInfosImg1 = document.createElement("img");
+                        let EngjInfosResolv = document.createElement("span");
+                        let EngjInfosImg2 = document.createElement("img");
+                        let EngjInfosRepost = document.createElement("span");
+
+                        spanNome.innerHTML = publicacao.nomeUsuario;
+                        spanUser.innerHTML = '@' + publicacao.userUsuario;
+                        spanData.innerHTML = publicacao.dataHora;
+                        infobutton.innerHTML = `+Detalhes`
+                        textoP.innerHTML = publicacao.textoPost;
+                        TagName.innerHTML = `#${publicacao.nomeTag}`;
+                        EngjInfosImg1.src = `../assets/icon/check_branco.png`;
+                        EngjInfosResolv.innerHTML = check(publicacao.resolvido);
+                        EngjInfosImg2.src = `../assets/icon/reply_branco.png`;
+                        EngjInfosRepost.innerHTML = publicacao.quantidadeResp;
+
+                        SocialPostUser.className = "social-post-user" // social-post-user
+                        userInfos.className = "user-infos" // feed-user
+                        postInfos.className = "post-infos" // feed-infos
+                        EngjInfos.className = "engj-infos" // feed-infos-users
+                        EngjInfos.id = "EngjInfos";
+                        infobutton.className = 'infobutton';
+
+                        //CONFIGURANDO BOTÕES
+                        let publicacaocopia = publicacao;
+                        let publicacaoid = publicacao.idPost;
+                        infobutton.id = `btninfo_${publicacaoid}`
+                        infobutton.onclick = function () {
+                            detalhes(publicacaoid, publicacaocopia);
+                        };
+
+                        TagInfos.appendChild(TagName);
+                        EngjInfos.appendChild(EngjInfosImg1);
+                        EngjInfos.appendChild(EngjInfosResolv);
+                        EngjInfos.appendChild(EngjInfosImg2);
+                        EngjInfos.appendChild(EngjInfosRepost);
+
+                        postInfos.appendChild(TagInfos);
+                        postInfos.appendChild(EngjInfos);
+
+                        userInfos.appendChild(spanNome);
+                        userInfos.appendChild(spanUser);
+                        userInfos.appendChild(spanData);
+                        userInfos.appendChild(infobutton);
+
+                        SocialPostUser.appendChild(userInfos);
+                        SocialPostUser.appendChild(textoP);
+                        SocialPostUser.appendChild(postInfos);
+
+                        feed.appendChild(SocialPostUser);
+
+                        if (idUsuario == publicacao.idUser) {
+                            let idParam = publicacao.idPost;
+                            let statusParam = publicacao.resolvido;
+                            botaoDiv = document.createElement("button");
+                            botaoDiv.id = `btn_${idParam}`
+                            botaoDiv.className = 'statusButton';
+                            botaoDiv.innerHTML = `${check(statusParam)}`;
+                            botaoDiv.onclick = function () {
+                                mudarStatus(idParam, statusParam);
+                            };
+                            EngjInfos.appendChild(botaoDiv);
+
+                            let deletebutton = document.createElement("button"); //
+                            deletebutton.innerHTML = `<img src="../assets/icon/delete.png"> Deletar`
+                            deletebutton.className = `delete-button`
+                            deletebutton.id = `delete_${publicacaoid}`;
+                            deletebutton.onclick = function () {
+                                deletar(publicacaoid);
+                            };
+                            userInfos.appendChild(deletebutton);
                         }
                     }
                 });
@@ -435,7 +566,7 @@
         }).then(function (resposta) {
 
             if (resposta.ok) {
-                window.alert("Botão atualizado com sucesso pelo usuario de email: " + sessionStorage.getItem("EMAIL_USUARIO") + "!");
+                window.alert("Mudança de status atualizado com sucesso pelo usuario de email: " + sessionStorage.getItem("EMAIL_USUARIO") + "!");
                 window.location = "/dashboard/mural.html"
             } else if (resposta.status == 404) {
                 window.alert("Deu 404!");
@@ -447,7 +578,7 @@
         });
     }
 
-function rankingTag() {
+    function rankingTag() {
         fetch("/avisos/rankingTag").then(function (resposta) {
             if (resposta.ok) {
                 if (resposta.status == 204) {
@@ -481,6 +612,47 @@ function rankingTag() {
             }
         }).catch(function (resposta) {
             console.error(resposta);
+        });
+    }
+
+    function deletar(publicacaoid) {
+        console.log("Criar função de apagar post escolhido - ID" + publicacaoid);
+        fetch(`/avisos/deletar/${publicacaoid}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                deletarRespostas(publicacaoid)
+                window.alert("Post deletado com sucesso pelo usuario de email: " + sessionStorage.getItem("EMAIL_USUARIO") + "!");
+                window.location = "/dashboard/mural.html"
+            } else if (resposta.status == 404) {
+                window.alert("Deu 404!");
+            } else {
+                throw ("Houve um erro ao tentar deletar as postagens! Código da resposta: " + resposta.status);
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+    }
+
+    function deletarRespostas(publicacaoid) {
+        fetch(`/avisos/deletarRespostas/${publicacaoid}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                window.location = "/dashboard/mural.html"
+            } else if (resposta.status == 404) {
+                window.alert("Deu 404!");
+            } else {
+                throw ("Houve um erro ao tentar realizar deletar as respostas! Código da resposta: " + resposta.status);
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
         });
     }
 

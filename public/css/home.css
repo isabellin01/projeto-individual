@@ -5,7 +5,7 @@
     align-items: center;
     width: 100%;
     min-height: 80vh;
-    background-image: linear-gradient(to top, #650E82, #F2E1F8);
+    background-color: #650E82;
     padding: 50px 50px;
 }
 
@@ -81,24 +81,3 @@
     margin-top: 20px;
     width: 80%;
 }
-
-/*!SECTION4*/
-.section4 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 70vh;
-    background-image: linear-gradient(to top, #650E82, #B189BF);
-}
-
-.section4-ranking-list {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: center;
-}
-
-.section4-ranking-list-item {
-    display: flex;
-}
-

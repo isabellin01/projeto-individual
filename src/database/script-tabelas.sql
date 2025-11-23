@@ -1,5 +1,5 @@
-create database loopsocial;
-use loopsocial;
+create database gameloop;
+use gameloop;
 CREATE TABLE Usuario (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(50),

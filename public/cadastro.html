@@ -2,8 +2,6 @@
 
 <script src="./js/sessao.js"></script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./css/main.css">
 <link rel="stylesheet" href="./css/header.css">
@@ -195,16 +193,6 @@
               validarEmail = false;
             }
           }
-
-          if (usuario == '') {
-            span_usuario.innerHTML = `Preencha o usuário`
-            validarUsuario = false;
-          }
-
-          if (email.includes('@') == false) {
-            span_email.innerHTML = `Insira um e-mail válido`
-            validarEmail = false;
-          }
         });
       } else {
         throw ('Houve um erro na API!');
@@ -212,6 +200,17 @@
     }).catch(function (resposta) {
       console.error(resposta);
     });
+    // ------- VALIDAR USUÁRIO ------- //
+    if (usuario == '') {
+      span_usuario.innerHTML = `Preencha o usuário`
+      validarUsuario = false;
+    }
+    
+    // ------- VALIDAR EMAIL ------- //
+    if (email.includes('@') == false) {
+      span_email.innerHTML = `Insira um e-mail válido`
+      validarEmail = false;
+    }
 
     // ------- VALIDAR GÊNERO ------- //
     if (genero == 0 || genero == '') {
@@ -273,7 +272,7 @@
         span_genero.innerHTML = `Selecione um gênero`
       }
       if (validarIdade == false) {
-        span_idade.innerHTML = `Precisa ter no mínimo 12 anos`
+        span_idade.innerHTML = `Somente a partir dos 12 anos`
       }
       if (validarSenha == false) {
         span_senha.innerHTML = senhaMsg
