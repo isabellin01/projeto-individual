@@ -63,7 +63,7 @@
     </div>
 
     <section class="dash dash-text">
-        <div class="dash-divs">
+        <div class="dash-divs" style="flex-direction: row; padding: 5px 20px;">
             <div class="dash-capa-content">
                 <h1>Bem-vindo à dashboard</h1>
                 <span>Verifique informações sobre a Loop()Social</p>
@@ -176,7 +176,7 @@
             document.getElementById(`myChartCanvas_rankingTags`),
             config
         );
-        setTimeout(() => atualizarTag(dadosTag, myChartTag), 10000);
+        // setTimeout(() => atualizarTag(dadosTag, myChartTag), 10000);
     }
 
     function obterDadosUser() {
@@ -309,11 +309,12 @@
         if (proximaAtualizacao != undefined) {
             clearTimeout(proximaAtualizacao);
         }
-        fetch(`/medidas/dadospost`).then(function (response) {
-            if (response.ok) {
-                response.json().then(function (resposta) {
-                    // console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
-                    resposta.reverse();
+        fetch(`/medidas/dadospost`).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(resposta => {
+                    console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                    // resposta.reverse();
+                    console.log(`Teste`)
                     plotarTotalPost(resposta);
                 });
             } else {
@@ -364,13 +365,14 @@
             if (resposta[i].datahora == resposta[i + 1].datahora) {
                 countRepost += resposta[i + 1].totalResposta
                 countPublicacao += 1;
-
+                console.log(`etapa 1 `+resposta)
             } else {
                 labelsEngj.push(resposta[i].datahora);
                 dadosEngj.datasets[0].data.push(countRepost);
                 dadosEngj.datasets[1].data.push(countPublicacao);
                 countPublicacao = 1;
                 countRepost = resposta[i].totalResposta;
+                console.log(`etapa 2 `+resposta)
             }
         }
 
@@ -386,49 +388,49 @@
         // setTimeout(() => atualizarEngj(dadosEngj, myChartEngj), 10000);
     }
 
-    function atualizarTag(dadosTag, myChartTag) {
-        fetch(`/medidas/temporealtag`, { cache: 'no-store' }).then(function (response) {
-            if (response.ok) {
-                response.json().then(function (novoRegistro) {
-                    // console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
-                    // console.log(`Dados atuais do gráfico:`);
-                    // console.log(dadosTag);
-                    let dataMudou = false;
-                    let labelMudou = false;
+    // function atualizarTag(dadosTag, myChartTag) {
+    //     fetch(`/medidas/temporealtag`, { cache: 'no-store' }).then(function (response) {
+    //         if (response.ok) {
+    //             response.json().then(function (novoRegistro) {
+    //                 // console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
+    //                 // console.log(`Dados atuais do gráfico:`);
+    //                 // console.log(dadosTag);
+    //                 let dataMudou = false;
+    //                 let labelMudou = false;
 
-                    for (let i = 0; i < dadosTag.datasets[0].data.length; i++) {
-                        if (novoRegistro[i].nome != dadosTag.labels[i]) {
-                            labelMudou = true;
-                        }
-                        if (novoRegistro[i].qtdtag != dadosTag.datasets[0].data[i]) {
-                            dataMudou = true;
-                        }
-                    }
+    //                 for (let i = 0; i < dadosTag.datasets[0].data.length; i++) {
+    //                     if (novoRegistro[i].nome != dadosTag.labels[i]) {
+    //                         labelMudou = true;
+    //                     }
+    //                     if (novoRegistro[i].qtdtag != dadosTag.datasets[0].data[i]) {
+    //                         dataMudou = true;
+    //                     }
+    //                 }
 
-                    if (dataMudou == false && labelMudou == false) {
-                        console.log("---------------------------------------------------------------")
-                        console.log("Como não há dados novos para captura, o gráfico não atualizará.")
-                        console.log("---------------------------------------------------------------")
-                    } else {
-                        for (let i = 0; i < dadosTag.datasets[0].data.length; i++) {
-                            dadosTag.labels[i] = novoRegistro[i].nome;
-                            dadosTag.datasets[0].data[i] = novoRegistro[i].qtdtag;
-                        }
-                        myChartTag.update();
-                    }
+    //                 if (dataMudou == false && labelMudou == false) {
+    //                     console.log("---------------------------------------------------------------")
+    //                     console.log("Como não há dados novos para captura, o gráfico não atualizará.")
+    //                     console.log("---------------------------------------------------------------")
+    //                 } else {
+    //                     for (let i = 0; i < dadosTag.datasets[0].data.length; i++) {
+    //                         dadosTag.labels[i] = novoRegistro[i].nome;
+    //                         dadosTag.datasets[0].data[i] = novoRegistro[i].qtdtag;
+    //                     }
+    //                     myChartTag.update();
+    //                 }
 
-                    proximaAtualizacao = setTimeout(() => atualizarTag(dadosTag, myChartTag), 10000);
-                });
-            } else {
-                console.error('Nenhum dado encontrado ou erro na API');
-                proximaAtualizacao = setTimeout(() => atualizarTag(dadosTag, myChartTag), 10000);
-            }
-        })
-            .catch(function (error) {
-                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
-            });
+    //                 proximaAtualizacao = setTimeout(() => atualizarTag(dadosTag, myChartTag), 10000);
+    //             });
+    //         } else {
+    //             console.error('Nenhum dado encontrado ou erro na API');
+    //             proximaAtualizacao = setTimeout(() => atualizarTag(dadosTag, myChartTag), 10000);
+    //         }
+    //     })
+    //         .catch(function (error) {
+    //             console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+    //         });
 
-    }
+    // }
 
     // function atualizarEngj(dadosEngj, myChartEngj) {
     //     fetch(`/medidas/temporealengj`, { cache: 'no-store' }).then(function (response) {

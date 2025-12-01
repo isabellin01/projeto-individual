@@ -73,9 +73,9 @@
             </div>
             <div class="social-filter">
                 <ul class="social-filter-list">
-                    <button onclick="atualizarFeed()">Recentes</button>
-                    <button onclick="listarduvida()">Com dúvidas</button>
-                    <button onclick="listarusuario()">Meus posts</button>
+                    <button onclick="atualizarFeed()" id="atualizar_feed_btn">Recentes</button>
+                    <button onclick="listarduvida()" id="atualizar_duvida_btn">Com dúvidas</button>
+                    <button onclick="listarusuario()" id="atualizar_usuario_btn">Meus posts</button>
                 </ul>
             </div>
             <div class="social-feed">
@@ -123,6 +123,14 @@
     postUsuario.innerHTML = sessionStorage.NOME_USUARIO;
 
     function atualizarFeed() {
+        atualizar_feed_btn.style.backgroundColor = `#fff`;
+        atualizar_feed_btn.style.color = `#650E82`;
+        atualizar_duvida_btn.style.backgroundColor = `#fff`;
+        atualizar_duvida_btn.style.color = `#650E82`;
+        atualizar_usuario_btn.style.backgroundColor = `#fff`;
+        atualizar_usuario_btn.style.color = `#650E82`;
+
+
         let idUsuario = sessionStorage.ID_USUARIO;
         fetch("/avisos/listar").then(function (resposta) {
             if (resposta.ok) {

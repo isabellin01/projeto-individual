@@ -74,7 +74,7 @@ function rankingTag() {
     console.log("ACESSEI O AVISO  MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function rankingTag()");
     var instrucaoSql = `
         SELECT tag AS nome, count(tag) AS qtdtag
-        FROM post GROUP BY tag
+        FROM Post GROUP BY tag
         ORDER BY count(tag) DESC, tag ASC;
         `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);

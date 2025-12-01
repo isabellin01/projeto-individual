@@ -53,7 +53,7 @@ function obterTotalPost(req, res) {
         }
     }).catch(function (erro) {
         console.log(erro);
-        console.log("Houve um erro ao buscar as Kpis.", erro.sqlMessage);
+        console.log("Houve um erro ao buscar total de Post.", erro.sqlMessage);
         res.status(500).json(erro.sqlMessage);
     });
 }

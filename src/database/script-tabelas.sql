@@ -27,3 +27,11 @@ CREATE TABLE RespostaPost (
     FOREIGN KEY (id_post) REFERENCES Post(id),
     FOREIGN KEY (id_usuario) REFERENCES Usuario(id)
 );
+
+insert into Post (id_usuario, texto, datahora, resolvido, tag) VALUES
+(1, 'teste3', '2025-10-15 14:00', 0, 'TESTE3');
+show databases;
+
+SELECT id, count(idRespostaPub)
+            FROM Post JOIN RespostaPost 
+            ON Post.id = id_post GROUP BY id;
