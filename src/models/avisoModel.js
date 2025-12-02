@@ -16,7 +16,7 @@ function listar() {
             FROM RespostaPost rp
             WHERE rp.id_post = p.id) AS quantidadeResp
         FROM Post p
-        INNER JOIN Usuario u ON u.id = p.id_usuario
+        JOIN Usuario u ON u.id = p.id_usuario
         ORDER BY p.datahora DESC LIMIT 10;
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -39,7 +39,7 @@ function listarduvida() {
             FROM RespostaPost rp
             WHERE rp.id_post = p.id) AS quantidadeResp
         FROM Post p
-        INNER JOIN Usuario u ON u.id = p.id_usuario
+        JOIN Usuario u ON u.id = p.id_usuario
         WHERE p.resolvido = 0 ORDER BY p.datahora DESC
         LIMIT 10;
     `;
@@ -63,7 +63,7 @@ function listarusuario(idUsuario) {
             FROM RespostaPost rp
             WHERE rp.id_post = p.id) AS quantidadeResp
         FROM Post p
-        INNER JOIN Usuario u ON u.id = p.id_usuario
+        JOIN Usuario u ON u.id = p.id_usuario
         WHERE u.id = ${idUsuario} ORDER BY p.datahora DESC;
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);

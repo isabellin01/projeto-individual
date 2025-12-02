@@ -1,5 +1,20 @@
 function exibir() {
     publicar_div.style.display = 'flex';
+    publicar_div.innerHTML = `
+        <div class="publicarmensagem">
+            <div id="publicarinfos" class="publicarinfos">
+                <span class="publicar_usuario" id="postUsuario"></span>
+                <button onclick="fechar()">x</button>
+            </div>
+            <label>Descrição (máximo de 300 caracteres)</label>
+            <textarea class="textarea-descricao" id="textarea_descricao" maxlength="300"
+                placeholder="Escreva sua dúvida"></textarea>
+            <label>Tag (máximo um tag)</label>
+            <textarea class="textarea-tag" id="textarea_tag" maxlength="30" placeholder="#exemplo"></textarea>
+            <span id="publica_erro"></span>
+            <button onclick="publicar()">Enviar</button>
+        </div>
+    `;
 }
 
 function exibirdetalhes() {

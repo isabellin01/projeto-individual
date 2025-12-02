@@ -19,7 +19,7 @@
 
 </head>
 
-<body onload="validarSessao(), atualizarFeed(), rankingTag(), forumbtn()">
+<body>
 
     <header class="slide">
         <span id="b_usuario"></span>
@@ -47,24 +47,9 @@
         </ul>
     </header>
 
-    <div class="publicar" id="publicar_div" style="display: none;">
-        <div class="publicarmensagem">
-            <div id="publicarinfos" class="publicarinfos">
-                <span class="publicar_usuario" id="postUsuario"></span>
-                <button onclick="fechar()">x</button>
-            </div>
-            <label>Descrição (máximo de 300 caracteres)</label>
-            <textarea class="textarea-descricao" id="textarea_descricao" maxlength="300"
-                placeholder="Escreva sua dúvida"></textarea>
-            <label>Tag (máximo um tag)</label>
-            <textarea class="textarea-tag" id="textarea_tag" maxlength="30" placeholder="#exemplo"></textarea>
-            <span id="publica_erro"></span>
-            <button onclick="publicar()">Enviar</button>
-        </div>
-    </div>
+    <div class="publicar" id="publicar_div" style="display: none;"></div>
 
-    <div id="abrirdetalhes" class="abrirdetalhes" style="display: none;">
-    </div>
+    <div id="abrirdetalhes" class="abrirdetalhes" style="display: none;"></div>
 
     <section class="social social-text">
         <div class="social-div1">
@@ -118,13 +103,15 @@
         </div>
     </section>
     <footer class="footer">
-        <h3>Isabel Lin &hearts; SPTech &copy; 2025</h3>
+        <h3>Isabel Lin - SPTech &copy; 2025</h3>
     </footer>
 </body>
 
 </html>
 
 <script>
+    window.onload = validarSessao(), atualizarFeed(), rankingTag(), forumbtn();
+
     b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
     postUsuario.innerHTML = sessionStorage.NOME_USUARIO;
 

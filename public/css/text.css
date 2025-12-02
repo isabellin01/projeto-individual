@@ -39,6 +39,7 @@
 /*!SECTION2*/
 .section2-text,
 .section3-text,
+.section4,
 .login-text,
 .cadastro-text,
 .social-text,
@@ -58,6 +59,7 @@
 
 /*!SECTION3*/
 .section3-text h3,
+.section4 h3,
 .social-ranking h3,
 .social-news h3 {
     font-size: 25px;
