@@ -64,7 +64,7 @@
                     </div>
                     <button class="button" onclick="entrar()">Entrar</button>
                     <div id="div_aguardar" class="loading-div">
-                        <img src="./assets/circle-loading.gif" id="loading-gif">
+                        <img src="./assets/circle-loading.gif" id="loading-gif" style="margin-top: 15px;">
                     </div>
                 </div>
 
@@ -126,7 +126,7 @@
                     sessionStorage.ID_USUARIO = json.id;
 
                     setTimeout(function () {
-                        window.location = "./dashboard/mural.html";
+                        window.location = "./dashboard/forum.html";
                     }, 1000);
 
                 });

@@ -5,7 +5,8 @@
     align-items: center;
     width: 100%;
     min-height: 80vh;
-    background-color: #650E82;
+    background-image: url('../assets/herobackground.png');
+    background-size: cover;
     padding: 50px 50px;
 }
 
@@ -19,7 +20,7 @@
     justify-content: space-around;
     align-items: center;
     min-height: 60vh;
-    background-color: #650E82;
+    background-color: #650e82;
     padding: 50px 50px;
 }
 

@@ -59,8 +59,8 @@ function publicar() {
             console.log("resposta: ", resposta);
             if (resposta.ok) {
                 // insertTag(corpo.tag);
-                window.alert("Post realizado com sucesso pelo usuario de ID: " + idUsuario + "!");
-                window.location = "/dashboard/mural.html";
+                window.alert("Post realizado com sucesso pelo usuario de email: " + sessionStorage.getItem("EMAIL_USUARIO") + "!");
+                window.location = "./forum.html";
             } else if (resposta.status == 404) {
                 window.alert("Deu 404!");
             } else {

@@ -1,5 +1,6 @@
 .cadastro {
-    background-color: #650E82;
+    background-image: url('../assets/herobackground.png');
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;

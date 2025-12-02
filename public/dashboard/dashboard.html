@@ -22,26 +22,31 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body onload="validarSessao()">
+<body>
     <header class="slide">
         <span id="b_usuario"></span>
         <ul class="slide-header">
             <li class="slide-header-item">
-                <button href="./forum.html" onclick="exibir()">
+                <button class="publicar_btn" href="./forum.html" onclick="exibir()">
                     <img src="../assets/icon/postar_roxo.png">Publicar
                 </button>
             </li>
             <li class="slide-header-item">
-                <img src="../assets/icon/gameloop.png">
-                <a href="./mural.html">Gameloop</a>
+                <button class="slide_btn" id="forum_btn" onclick="forumbtn()">
+                    <a href="./forum.html" id="forum_a"><img id="forum_img"
+                            src="../assets/icon/gameloop.png">Gameloop</a>
+                </button>
             </li>
             <li class="slide-header-item">
-                <img src="../assets/icon/dashboard.png">
-                <a href="./dashboard.html">Dashboard</a>
+                <button class="slide_btn" id="dash_btn" onclick="dashbtn()">
+                    <a href="./dashboard.html" id="dash_a"><img id="dash_img"
+                            src="../assets/icon/dashboard.png">Dashboard</a>
+                </button>
             </li>
             <li class="slide-header-item">
-                <img src="../assets/icon/saida.png">
-                <a onclick="limparSessao()">Sair</a>
+                <button class="slide_btn">
+                    <a onclick="limparSessao()"><img src="../assets/icon/saida.png">Sair</a>
+                </button>
             </li>
         </ul>
     </header>
@@ -123,7 +128,7 @@
 
     let proximaAtualizacao;
 
-    window.onload = obterDadosTag(), obterDadosUser(), obterDadosKpi(), obterTotalPost();
+    window.onload = validarSessao(), obterDadosTag(), obterDadosUser(), obterDadosKpi(), obterTotalPost(), dashbtn();
 
     function obterDadosTag() {
         if (proximaAtualizacao != undefined) {
@@ -176,7 +181,6 @@
             document.getElementById(`myChartCanvas_rankingTags`),
             config
         );
-        // setTimeout(() => atualizarTag(dadosTag, myChartTag), 10000);
     }
 
     function obterDadosUser() {
@@ -250,10 +254,6 @@
     }
 
     function obterDadosKpi() {
-        if (proximaAtualizacao != undefined) {
-            clearTimeout(proximaAtualizacao);
-        }
-
         fetch(`/medidas/dadoskpi`).then(function (response) {
             if (response.ok) {
                 response.json().then(function (resposta) {
@@ -270,7 +270,6 @@
     }
 
     function plotarGraficoKpi(resposta) {
-        // Extraindo informações e guardando em variáveis
         let totalDuvidas = 0;
         let totalPublicacao = resposta[resposta.length - 1].postId;
 
@@ -302,19 +301,14 @@
                 console.error('Nenhum dado encontrado ou erro na API');
             }
         }).catch(function (error) { console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`); });
-        // setTimeout(() => atualizarGrafico(dados, myChart1), 10000);
     }
 
     function obterTotalPost() {
-        if (proximaAtualizacao != undefined) {
-            clearTimeout(proximaAtualizacao);
-        }
         fetch(`/medidas/dadospost`).then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then(resposta => {
                     console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
                     // resposta.reverse();
-                    console.log(`Teste`)
                     plotarTotalPost(resposta);
                 });
             } else {
@@ -327,7 +321,6 @@
     }
 
     function plotarTotalPost(resposta) {
-        // Extraindo informações e guardando em variáveis
         let totalResposta = 0;
         let totalPublicacao = resposta[resposta.length - 1].idPost;
 
@@ -361,18 +354,15 @@
         let countRepost = resposta[0].totalResposta;
 
         for (let i = 0; i < resposta.length - 1; i++) {
-
-            if (resposta[i].datahora == resposta[i + 1].datahora) {
+            if (resposta[i].data == resposta[i + 1].data) {
                 countRepost += resposta[i + 1].totalResposta
                 countPublicacao += 1;
-                console.log(`etapa 1 `+resposta)
             } else {
-                labelsEngj.push(resposta[i].datahora);
+                labelsEngj.push(resposta[i].data);
                 dadosEngj.datasets[0].data.push(countRepost);
                 dadosEngj.datasets[1].data.push(countPublicacao);
                 countPublicacao = 1;
                 countRepost = resposta[i].totalResposta;
-                console.log(`etapa 2 `+resposta)
             }
         }
 
@@ -386,6 +376,12 @@
             configEngj
         );
         // setTimeout(() => atualizarEngj(dadosEngj, myChartEngj), 10000);
+    }
+
+    function dashbtn() {
+        dash_btn.style.backgroundColor = `#650E82`;
+        dash_a.style.color = `#fff`;
+        dash_img.src = `../assets/icon/dashboard_white.png`;
     }
 
     // function atualizarTag(dadosTag, myChartTag) {

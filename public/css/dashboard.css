@@ -3,6 +3,7 @@ body {
 }
 
 .dash {
+    height: 100vh;
     background-color: #E8E8E8;
     margin-left: 200px;
     padding: 10px;

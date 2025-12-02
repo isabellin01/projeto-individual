@@ -19,24 +19,30 @@
 
 </head>
 
-<body onload="validarSessao(), atualizarFeed(), rankingTag()">
+<body onload="validarSessao(), atualizarFeed(), rankingTag(), forumbtn()">
 
     <header class="slide">
         <span id="b_usuario"></span>
         <ul class="slide-header">
             <li class="slide-header-item">
-                <button href="./forum.html" onclick="exibir()">
+                <button class="publicar_btn" href="./forum.html" onclick="exibir()">
                     <img src="../assets/icon/postar_roxo.png">Publicar
                 </button>
             </li>
             <li class="slide-header-item">
-                <a href="./mural.html"><img src="../assets/icon/gameloop.png">Gameloop</a>
+                <button class="slide_btn" id="forum_btn" onclick="forumbtn()">
+                    <a href="./forum.html" id="forum_a"><img id="forum_img" src="../assets/icon/gameloop.png">Gameloop</a>
+                </button>
             </li>
             <li class="slide-header-item">
-                <a href="./dashboard.html"><img src="../assets/icon/dashboard.png">Dashboard</a>
+                <button class="slide_btn" id="dash_btn" onclick="dashbtn()">
+                    <a href="./dashboard.html" id="dash_a"><img id="dash_img" src="../assets/icon/dashboard.png">Dashboard</a>
+                </button>
             </li>
             <li class="slide-header-item">
-                <a onclick="limparSessao()"><img src="../assets/icon/saida.png">Sair</a>
+                <button class="slide_btn">
+                    <a onclick="limparSessao()"><img src="../assets/icon/saida.png">Sair</a>
+                </button>
             </li>
         </ul>
     </header>
@@ -125,11 +131,10 @@
     function atualizarFeed() {
         atualizar_feed_btn.style.backgroundColor = `#fff`;
         atualizar_feed_btn.style.color = `#650E82`;
-        atualizar_duvida_btn.style.backgroundColor = `#fff`;
-        atualizar_duvida_btn.style.color = `#650E82`;
-        atualizar_usuario_btn.style.backgroundColor = `#fff`;
-        atualizar_usuario_btn.style.color = `#650E82`;
-
+        atualizar_duvida_btn.style.backgroundColor = `#650E82`;
+        atualizar_duvida_btn.style.color = `#fff`;
+        atualizar_usuario_btn.style.backgroundColor = `#650E82`;
+        atualizar_usuario_btn.style.color = `#fff`;
 
         let idUsuario = sessionStorage.ID_USUARIO;
         fetch("/avisos/listar").then(function (resposta) {
@@ -216,7 +221,7 @@
                             botaoDiv = document.createElement("button");
                             botaoDiv.id = `btn_${idParam}`
                             botaoDiv.className = 'statusButton';
-                            botaoDiv.innerHTML = `${check(statusParam)}`;
+                            botaoDiv.innerHTML = `${checkBtn(statusParam)}`;
                             botaoDiv.onclick = function () {
                                 mudarStatus(idParam, statusParam);
                             };
@@ -289,6 +294,7 @@
                                         </ul>
                                         <div class="send-reply">
                                             <textarea class="textarea-reply" id="textarea_reply" maxlength="300" placeholder="Escreva uma mensagem"></textarea>
+                                            <span id="resposta_erro" style="color: rgba(101, 14, 130); padding: 15px"></span>
                                             <button onclick="enviarresposta(${idBotao})">Enviar</button>
                                         </div>
                                     </div>
@@ -311,29 +317,41 @@
             descricao: textarea_reply.value
         }
 
-        fetch(`/avisos/responder/${idUsuario}`, {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(corpo)
-        }).then(function (resposta) {
-            console.log("resposta: ", resposta);
-            if (resposta.ok) {
-                window.alert("Resposta enviada com sucesso pelo usuario de email: " + sessionStorage.getItem("EMAIL_USUARIO") + "!");
-                window.location = "/dashboard/mural.html";
-            } else if (resposta.status == 404) {
-                window.alert("Deu 404!");
-            } else {
-                throw ("Houve um erro ao tentar enviar a resposta! Código da resposta: " + resposta.status);
-            }
-        }).catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
-        });
-        return false;
+        if (corpo.descricao == "") {
+            resposta_erro.innerHTML = `Escreva uma resposta!`
+        } else {
+            fetch(`/avisos/responder/${idUsuario}`, {
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(corpo)
+            }).then(function (resposta) {
+                console.log("resposta: ", resposta);
+                if (resposta.ok) {
+                    window.alert("Resposta enviada com sucesso pelo usuario de email: " + sessionStorage.getItem("EMAIL_USUARIO") + "!");
+                    window.location = "./forum.html";
+                } else if (resposta.status == 404) {
+                    window.alert("Deu 404!");
+                } else {
+                    throw ("Houve um erro ao tentar enviar a resposta! Código da resposta: " + resposta.status);
+                }
+            }).catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+            return false;
+        }
+
     }
 
     function listarduvida() {
+        atualizar_feed_btn.style.backgroundColor = `#650E82`;
+        atualizar_feed_btn.style.color = `#fff`;
+        atualizar_duvida_btn.style.backgroundColor = `#fff`;
+        atualizar_duvida_btn.style.color = `#650E82`;
+        atualizar_usuario_btn.style.backgroundColor = `#650E82`;
+        atualizar_usuario_btn.style.color = `#fff`;
+
         let idUsuario = sessionStorage.ID_USUARIO;
 
         fetch("/avisos/listarduvida").then(function (resposta) {
@@ -420,7 +438,7 @@
                             botaoDiv = document.createElement("button");
                             botaoDiv.id = `btn_${idParam}`
                             botaoDiv.className = 'statusButton';
-                            botaoDiv.innerHTML = `${check(statusParam)}`;
+                            botaoDiv.innerHTML = `${checkBtn(statusParam)}`;
                             botaoDiv.onclick = function () {
                                 mudarStatus(idParam, statusParam);
                             };
@@ -446,6 +464,13 @@
     }
 
     function listarusuario() {
+        atualizar_feed_btn.style.backgroundColor = `#650E82`;
+        atualizar_feed_btn.style.color = `#fff`;
+        atualizar_duvida_btn.style.backgroundColor = `#650E82`;
+        atualizar_duvida_btn.style.color = `#fff`;
+        atualizar_usuario_btn.style.backgroundColor = `#fff`;
+        atualizar_usuario_btn.style.color = `#650E82`;
+
         let idUsuario = sessionStorage.ID_USUARIO;
 
         fetch(`/avisos/listarusuario/${idUsuario}`).then(function (resposta) {
@@ -534,7 +559,7 @@
                             botaoDiv = document.createElement("button");
                             botaoDiv.id = `btn_${idParam}`
                             botaoDiv.className = 'statusButton';
-                            botaoDiv.innerHTML = `${check(statusParam)}`;
+                            botaoDiv.innerHTML = `${checkBtn(statusParam)}`;
                             botaoDiv.onclick = function () {
                                 mudarStatus(idParam, statusParam);
                             };
@@ -575,7 +600,7 @@
 
             if (resposta.ok) {
                 window.alert("Mudança de status atualizado com sucesso pelo usuario de email: " + sessionStorage.getItem("EMAIL_USUARIO") + "!");
-                window.location = "/dashboard/mural.html"
+                window.location = "./forum.html"
             } else if (resposta.status == 404) {
                 window.alert("Deu 404!");
             } else {
@@ -598,7 +623,6 @@
                 }
 
                 resposta.json().then(function (resposta) {
-                    // console.log("Dados recebidos: ", JSON.stringify(resposta));
 
                     var feedRanking = document.getElementById("social_ranking_content");
                     for (let i = 0; i < 3; i++) {
@@ -634,7 +658,7 @@
             if (resposta.ok) {
                 deletarRespostas(publicacaoid)
                 window.alert("Post deletado com sucesso pelo usuario de email: " + sessionStorage.getItem("EMAIL_USUARIO") + "!");
-                window.location = "/dashboard/mural.html"
+                window.location = "./forum.html"
             } else if (resposta.status == 404) {
                 window.alert("Deu 404!");
             } else {
@@ -653,7 +677,7 @@
             }
         }).then(function (resposta) {
             if (resposta.ok) {
-                window.location = "/dashboard/mural.html"
+                window.location = "./forum.html"
             } else if (resposta.status == 404) {
                 window.alert("Deu 404!");
             } else {
@@ -666,10 +690,24 @@
 
     function check(num) {
         if (num == 1) {
-            return `Resolvido`;
+            return `Status: Resolvido`;
         } else {
-            return `Com dúvida`;
+            return `Status: Dúvida`;
         }
+    }
+
+    function checkBtn(num) {
+        if (num == 1) {
+            return `Estou com dúvida`;
+        } else {
+            return `Resolvi a dúvida`;
+        }
+    }
+
+    function forumbtn() {
+        forum_btn.style.backgroundColor = `#650E82`;
+        forum_a.style.color = `#fff`;
+        forum_img.src = `../assets/icon/gameloop_white.png`;
     }
 
 </script>

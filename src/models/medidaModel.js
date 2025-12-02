@@ -35,9 +35,11 @@ function obterPostPorUser() {
 
 function obterTotalPost() {
     var instrucaoSql = `
-            SELECT id, count(idRespostaPub)
-            FROM Post JOIN RespostaPost 
-            ON Post.id = id_post GROUP BY id;
+            SELECT 	p.id as id,
+                    count(rp.idRespostaPub) as totalResposta, 
+                    DATE_FORMAT(p.datahora, '%d/%m/%y') AS 'data'
+            FROM Post p LEFT JOIN RespostaPost rp
+            ON p.id = rp.id_post GROUP BY p.id ORDER BY p.datahora DESC;
         `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
