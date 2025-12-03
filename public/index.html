@@ -104,8 +104,46 @@
     </div>
   </section>
 
-  <section class="section4" id="section4"></section>
-  <section class="section5" id="section5"></section>
+  <section class="section4 section4-text" id="section4">
+    <div class="section4-titles">
+      <h3>Quais as principais etapas para criar um jogo?</h3>
+      <p>
+        Para desenvolver um jogo, principalmente em 3D, seguimos um conjunto de etapas: tudo começa na fase de conceito
+        e design, onde surgem a história, a estética e as mecânicas principais. Em seguida, parte-se para a modelagem e
+        animação 3D, responsável por criar personagens, objetos, cenários e todos os elementos visuais do mundo do jogo.
+        Com os modelos prontos, entra a etapa de texturização de materiais que adiciona cores e superfícies que tornam
+        tudo mais realista. Depois, o foco vai para a programação e uso de engines, onde o jogo ganha vida: sistemas,
+        controles, física e lógica começam a funcionar de verdade.
+        A parte auditiva é construída na criação de sons e trilhas musicais, essenciais para reforçar imersão. Por fim,
+        todo o conjunto passa por testes para garantir que tudo esteja funcionando em conjunto.
+      </p>
+    </div>
+    <div style="text-align: center;">
+      <img src="./assets/pipeline.jpg" class="section4-img">
+      <p>Fonte: Tekrevol</p>
+    </div>
+  </section>
+  <section class="section5" id="section5">
+    <h3>Selecione os integrantes para seu grupo de uma game jam!</h3>
+    <div class="section5-div">
+      <div class="section5-info">
+        <img id="section5_info_img">
+        <p id="section5_info_p" style="font-size: 18px;"></p>
+      </div>
+      <div class="section5-button">
+        <button id="sec5_gamedesigner" onclick="gamedesigner()" style="border-top-right-radius: 15px;">Game
+          Designer</button>
+        <button id="sec5_artista3d" onclick="artista3d()">Artista 3D</button>
+        <button id="sec5_animador3d" onclick="animador3d()">Animador 3D</button>
+        <button id="sec5_desenvolvedor" onclick="desenvolvedor()">Desenvolvedor</button>
+        <button id="sec5_sounddesigner" onclick="sounddesigner()">Sound designer</button>
+        <button id="sec5_gametester" onclick="gametester()"
+          style="border-bottom-right-radius: 15px; border-bottom: none">
+          Game tester QA
+        </button>
+      </div>
+    </div>
+  </section>
 
   <footer class="footer">
     <h3>Isabel Lin - SPTech &copy; 2025</h3>
@@ -113,36 +151,78 @@
 </body>
 
 <script>
-  window.onload = gameSection();
+  window.onload = gamedesigner();
 
-  function gameSection() {
-    section4.innerHTML = `
-    <h3>Qual é a pipeline para criar um jogo 3D?</h3>
-      <div class="section4-div">
-        <div class="section4-photo">
-          <img src="./assets/pipeline.jpg" class="section4-img">
-        </div>
-        <div class="section4-text">
-          <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nesciunt non excepturi obcaecati accusamus nostrum animi voluptatibus laudantium praesentium temporibus, aliquid necessitatibus autem numquam possimus? Rerum, sapiente eligendi! Quidem eligendi nemo earum dolores maiores ad placeat neque at deleniti! Voluptatum veritatis laborum est. Nemo omnis perferendis labore ullam, officiis quisquam consequuntur!
-          </p>
-        </div>
-      </div>
-    `
-    section5.innerHTML = `
-      <h3>Como escolher seu time?</h3>
-      <div class="section4-div">
-        <div class="section4-photo">
-          <img src="./assets/pipeline.jpg" class="section4-img">
-        </div>
-        <div class="section4-text">
-          <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nesciunt non excepturi obcaecati accusamus nostrum animi voluptatibus laudantium praesentium temporibus, aliquid necessitatibus autem numquam possimus? Rerum, sapiente eligendi! Quidem eligendi nemo earum dolores maiores ad placeat neque at deleniti! Voluptatum veritatis laborum est. Nemo omnis perferendis labore ullam, officiis quisquam consequuntur!
-          </p>
-        </div>
-      </div>
-    `
+  function gamedesigner() {
+    sec5_gamedesigner.style.backgroundColor = `#650e82`
+    sec5_artista3d.style.backgroundColor = `#823c97`
+    sec5_animador3d.style.backgroundColor = `#823c97`
+    sec5_desenvolvedor.style.backgroundColor = `#823c97`
+    sec5_sounddesigner.style.backgroundColor = `#823c97`
+    sec5_gametester.style.backgroundColor = `#823c97`
 
+    section5_info_p.innerHTML = `O game designer é o responsável por estruturar a experiência do jogo. Ele define as regras,
+    mecânicas, objetivos, desafios, progressão e a forma como o jogador interage com o mundo. Também cria documentos e protótipos
+    que orientam a equipe de desenvolvimento, garantindo que arte, programação, som e narrativa trabalhem juntos para entregar uma
+    experiência divertida e coerente.`
+    section5_info_img.src="./assets/icon/idea.svg";
+  }
+  function artista3d() {
+    sec5_gamedesigner.style.backgroundColor = `#823c97`
+    sec5_artista3d.style.backgroundColor = `#650e82`
+    sec5_animador3d.style.backgroundColor = `#823c97`
+    sec5_desenvolvedor.style.backgroundColor = `#823c97`
+    sec5_sounddesigner.style.backgroundColor = `#823c97`
+    sec5_gametester.style.backgroundColor = `#823c97`
+    
+    section5_info_p.innerHTML = `O artista 3D cria modelos, cenários, personagens e objetos que compõem o mundo visual do jogo. Ele
+    trabalha com formas, texturas e materiais para dar vida ao universo estético do projeto.`
+    section5_info_img.src="./assets/icon/3d.svg";
+  }
+  function animador3d() {
+    sec5_gamedesigner.style.backgroundColor = `#823c97`
+    sec5_artista3d.style.backgroundColor = `#823c97`
+    sec5_animador3d.style.backgroundColor = `#650e82`
+    sec5_desenvolvedor.style.backgroundColor = `#823c97`
+    sec5_sounddesigner.style.backgroundColor = `#823c97`
+    sec5_gametester.style.backgroundColor = `#823c97`
+    section5_info_p.innerHTML = `O animador 3D transforma modelos estáticos em personagens e elementos cheios de movimento. Ele cria
+    animações de caminhada, expressões, ações e qualquer movimento que torne o jogo mais dinâmico e realista.`
+    section5_info_img.src="./assets/icon/animation.svg";
+  }
+  function desenvolvedor() {
+    sec5_gamedesigner.style.backgroundColor = `#823c97`
+    sec5_artista3d.style.backgroundColor = `#823c97`
+    sec5_animador3d.style.backgroundColor = `#823c97`
+    sec5_desenvolvedor.style.backgroundColor = `#650e82`
+    sec5_sounddesigner.style.backgroundColor = `#823c97`
+    sec5_gametester.style.backgroundColor = `#823c97`
+    
+    section5_info_p.innerHTML = `O desenvolvedor implementa as mecânicas, sistemas e funcionalidades do jogo. Ele utiliza uma engine
+    e linguagens de programação para fazer tudo funcionar — desde controles até inteligência artificial e física.`
+    section5_info_img.src="./assets/icon/dev.svg";
+  }
+  function sounddesigner() {
+    sec5_gamedesigner.style.backgroundColor = `#823c97`
+    sec5_artista3d.style.backgroundColor = `#823c97`
+    sec5_animador3d.style.backgroundColor = `#823c97`
+    sec5_desenvolvedor.style.backgroundColor = `#823c97`
+    sec5_sounddesigner.style.backgroundColor = `#650e82`
+    sec5_gametester.style.backgroundColor = `#823c97`
+    section5_info_p.innerHTML = `O sound designer produz os efeitos sonoros, ambientes acústicos e trilhas que reforçam a imersão do
+    jogo. Sua função é criar sons que combinem com a atmosfera, as ações e o ritmo da experiência.`
+    section5_info_img.src="./assets/icon/sound.svg";
+  }
+  function gametester() {
+    sec5_gamedesigner.style.backgroundColor = `#823c97`
+    sec5_artista3d.style.backgroundColor = `#823c97`
+    sec5_animador3d.style.backgroundColor = `#823c97`
+    sec5_desenvolvedor.style.backgroundColor = `#823c97`
+    sec5_sounddesigner.style.backgroundColor = `#823c97`
+    sec5_gametester.style.backgroundColor = `#650e82`
+    section5_info_p.innerHTML = `O game tester, ou profissional de QA, testa o jogo em busca de bugs, falhas e problemas na jogabilidade.
+    Ele registra erros, verifica a qualidade geral e garante que o jogador final receba um produto estável e bem-polido.`
+    section5_info_img.src="./assets/icon/testing.svg";
   }
 
 </script>

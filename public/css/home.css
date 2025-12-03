@@ -84,29 +84,77 @@
 }
 
 .section4 {
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    background-color: #650e82;
 }
 
-.section4-div {
+.section4-img {
+    width: 500px;
+    margin-left: 15px;
+}
+
+.section4-titles {
+    width: 50%;
+}
+
+.section5 {
+    width: 100%;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.section5-div {
+    width: 70%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.section4-text {
+.section5-info {
+    width: 60%;
+    height: 300px;
+    background-color: #650e82;
+    color: #fff;
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px;
     display: flex;
-    justify-content: space-around;
     align-items: center;
-    min-height: 60vh;
-    background-color: #fff;
-    width: 50%;
+    justify-content: center;
+    padding: 20px;
 }
 
-.section4-text p {
-    text-align: left;
-    margin-left: 15px;
+.section5-info p {
+    padding: 10px;
 }
 
-.section4-img {
-    width: 500px;
+.section5-button {
+    width: 40%;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.section5-button button {
+    height: 50px;
+    font-size: 15px;
+    color: #fff;
+    background-color: #823c97;
+    transition: all 0.1s ease-in-out;
+    border: none;
+    border-bottom: 2px solid #650e82;
+}
+
+.section5-button button:hover {
+    background-color: #650e82;
+}
+
+.section5-info img{
+    width: 80px;
+    margin: 10px;
 }
