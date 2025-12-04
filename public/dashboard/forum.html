@@ -31,12 +31,14 @@
             </li>
             <li class="slide-header-item">
                 <button class="slide_btn" id="forum_btn" onclick="forumbtn()">
-                    <a href="./forum.html" id="forum_a"><img id="forum_img" src="../assets/icon/gameloop.png">Gameloop</a>
+                    <a href="./forum.html" id="forum_a"><img id="forum_img"
+                            src="../assets/icon/gameloop.png">Gameloop</a>
                 </button>
             </li>
             <li class="slide-header-item">
                 <button class="slide_btn" id="dash_btn" onclick="dashbtn()">
-                    <a href="./dashboard.html" id="dash_a"><img id="dash_img" src="../assets/icon/dashboard.png">Dashboard</a>
+                    <a href="./dashboard.html" id="dash_a"><img id="dash_img"
+                            src="../assets/icon/dashboard.png">Dashboard</a>
                 </button>
             </li>
             <li class="slide-header-item">
@@ -71,7 +73,6 @@
             </div>
             <div class="social-feed">
                 <ul class="social-post" id="social-post">
-                    <span id="naoencontrado"></span>
                 </ul>
             </div>
         </div>
@@ -127,8 +128,8 @@
         fetch("/avisos/listar").then(function (resposta) {
             if (resposta.ok) {
                 if (resposta.status == 204) {
-                    let naoencontrado = document.getElementById("naoencontrado")
-                    naoencontrado.innerHTML = "Nenhum resultado encontrado."
+                    let social_post = document.getElementById("social-post")
+                    social_post.innerHTML = `Nenhum resultado encontrado.`;
                     throw "Nenhum resultado encontrado!!";
                 }
 
@@ -344,8 +345,8 @@
         fetch("/avisos/listarduvida").then(function (resposta) {
             if (resposta.ok) {
                 if (resposta.status == 204) {
-                    let naoencontrado = document.getElementById("naoencontrado")
-                    naoencontrado.innerHTML = "Nenhum resultado encontrado."
+                    let social_post = document.getElementById("social-post")
+                    social_post.innerHTML = `Nenhum resultado encontrado.`;
                     throw "Nenhum resultado encontrado!!";
                 }
 
@@ -463,8 +464,8 @@
         fetch(`/avisos/listarusuario/${idUsuario}`).then(function (resposta) {
             if (resposta.ok) {
                 if (resposta.status == 204) {
-                    let naoencontrado = document.getElementById("naoencontrado")
-                    naoencontrado.innerHTML = "Nenhum resultado encontrado."
+                    let social_post = document.getElementById("social-post")
+                    social_post.innerHTML = `Nenhum resultado encontrado.`;
                     throw "Nenhum resultado encontrado!!";
                 }
 

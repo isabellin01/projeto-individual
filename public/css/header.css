@@ -34,14 +34,12 @@
     color: #650E82;
 }
 
-
-/*!FOOTER*/
 .footer{
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 30px;
-    background-color: #650E82;
+    padding: 20px;
+    background-color: #620e7e;
     color: #fff;
-    font-weight: 800;
+    font-size: 12px;
 }

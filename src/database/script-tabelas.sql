@@ -1,4 +1,7 @@
 create database gameloop;
+CREATE USER 'gameloop'@'%' IDENTIFIED BY '789456123#Lin';
+GRANT ALL PRIVILEGES ON gameloop.* TO 'gameloop'@'%';
+FLUSH PRIVILEGES;
 use gameloop;
 CREATE TABLE Usuario (
     id INT PRIMARY KEY AUTO_INCREMENT,

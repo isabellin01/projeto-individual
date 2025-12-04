@@ -30,16 +30,17 @@
 }
 
 .cadastro-img h1 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    font-size: 25px;
 }
 
 .cadastro-img img {
-    width: 350px;
+    width: 300px;
 }
 
 .cadastro-form-campos input {
     font-size: 16px;
-    padding: 9px;
+    padding: 4px;
     border-radius: 8px;
     border-color: #650E82;
     border-width: 3px;
@@ -55,7 +56,7 @@
 
 .cadastro-form-campos select {
     font-size: 16px;
-    padding: 9px;
+    padding: 4px;
     border-radius: 8px;
     border-color: #650E82;
     border-width: 3px;
