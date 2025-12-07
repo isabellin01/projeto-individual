@@ -39,7 +39,7 @@ function obterTotalPost() {
                     count(rp.idRespostaPub) as totalResposta, 
                     DATE_FORMAT(p.datahora, '%d/%m/%y') AS 'data'
             FROM Post p LEFT JOIN RespostaPost rp
-            ON p.id = rp.id_post GROUP BY p.id ORDER BY p.datahora DESC;
+            ON p.id = rp.id_post GROUP BY p.id ORDER BY p.datahora DESC LIMIT 10;
         `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);

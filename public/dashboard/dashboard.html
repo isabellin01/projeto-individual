@@ -57,7 +57,6 @@
         <div class="dash-divs" style="flex-direction: row; padding: 5px 20px;">
             <div class="dash-capa-content">
                 <h1>Bem-vindo à dashboard</h1>
-                <span>Verifique informações sobre a Loop()Social</p>
             </div>
             <div class="dash-capa-img">
                 <img src="../assets/imgs/pc.png">
@@ -92,7 +91,7 @@
                     <canvas id="myChartCanvas_rankingTags" class="myChartCanvas_rankingTags"></canvas>
                 </li>
                 <li class="dash-kpis-item">
-                    <h3 class="dash-kpi-title">Publicações x Respostas</h3>
+                    <h3 class="dash-kpi-title">Posts&Respostas por dia</h3>
                     <canvas id="myChartCanvas_engj" class="myChartCanvas_engj"></canvas>
                 </li>
                 <li class="dash-kpis-item">
@@ -102,9 +101,6 @@
             </ul>
         </div>
     </section>
-    <footer class="footer">
-        <h3>Isabel Lin - SPTech &copy; 2025</h3>
-    </footer>
 </body>
 
 </html>
@@ -268,6 +264,7 @@
 
         kpi_totalduvida.innerHTML = `${totalDuvidas}`;
         kpi_totalpost.innerHTML = `${totalPublicacao}`;
+
         kpi_duvidasporpost.innerHTML = `${((totalDuvidas / totalPublicacao) * 100).toFixed(2)}%`;
 
         fetch(`/medidas/postporuser`).then(function (response) {
@@ -338,6 +335,7 @@
         };
         let countPublicacao = 1;
         let countRepost = resposta[0].totalResposta;
+        console.log(`teste 1: ${resposta[0].data}`)
 
         for (let i = 0; i < resposta.length - 1; i++) {
             if (resposta[i].data == resposta[i + 1].data) {
@@ -351,6 +349,10 @@
                 countRepost = resposta[i].totalResposta;
             }
         }
+
+        labelsEngj.push(resposta[resposta.length - 1].data);
+        dadosEngj.datasets[0].data.push(countRepost);
+        dadosEngj.datasets[1].data.push(countPublicacao);
 
         const configEngj = {
             type: 'bar',

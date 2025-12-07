@@ -93,6 +93,7 @@
         if (emailVar == "" || senhaVar == "") {
             cardErro.style.display = "block"
             mensagem_erro.innerHTML = "Insira todos os campos corretamente";
+            setInterval(sumirMensagem, 4000);
             finalizarAguardar();
             return false;
         }

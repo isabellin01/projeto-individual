@@ -85,17 +85,24 @@
 .dash-titles {
     font-size: 18px;
     font-weight: 600;
-    margin-bottom: 18px;
+    margin-bottom: 10px;
 }
+
 .dash-kpi-title {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 500;
 }
+
 .dash-kpi-number {
     font-size: 26px;
     font-weight: 500;
 }
 
 .section5 h3 {
-    color:#650E82;
+    color: #650E82;
+}
+
+.dash-text h1 {
+    font-size: 23px;
+    font-weight: 500;
 }

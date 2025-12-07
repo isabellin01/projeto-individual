@@ -1,7 +1,6 @@
 var medidaModel = require("../models/medidaModel");
 
 function obterDadosUser(req, res) {
-    console.log(`Recuperando as últimas medidas`);
 
     medidaModel.obterDadosUser().then(function (resultado) {
         if (resultado.length > 0) {
@@ -60,8 +59,6 @@ function obterTotalPost(req, res) {
 
 function atualizarTag(req, res) {
 
-    console.log(`Recuperando tags em tempo real`);
-
     medidaModel.atualizarTag().then(function (resultado) {
         if (resultado.length > 0) {
             res.status(200).json(resultado);
@@ -76,8 +73,6 @@ function atualizarTag(req, res) {
 }
 
 function temporealEngj(req, res) {
-
-    console.log(`Recuperando engajamento em tempo real`);
 
     medidaModel.temporealEngj().then(function (resultado) {
         if (resultado.length > 0) {

@@ -31,17 +31,21 @@ function listarduvida(req, res) {
 function listarusuario(req, res) {
     let idUsuario = req.params.idUsuario;
 
-    avisoModel.listarusuario(idUsuario).then(function (resultado) {
-        if (resultado.length > 0) {
-            res.status(200).json(resultado);
-        } else {
-            res.status(204).send("Nenhum resultado encontrado!")
-        }
-    }).catch(function (erro) {
-        console.log(erro);
-        console.log("Houve um erro ao buscar os posts por usuário: ", erro.sqlMessage);
-        res.status(500).json(erro.sqlMessage);
-    });
+    if (idUsuario == undefined) {
+        res.status(400).send("O usuário está indefinido!");
+    } else {
+        avisoModel.listarusuario(idUsuario).then(function (resultado) {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(function (erro) {
+            console.log(erro);
+            console.log("Houve um erro ao buscar os posts por usuário: ", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+    }
 }
 
 function rankingTag(req, res) {
@@ -61,17 +65,21 @@ function rankingTag(req, res) {
 function detalhes(req, res) {
     let idBotao = req.params.idBotao;
 
-    avisoModel.detalhes(idBotao).then(function (resultado) {
-        if (resultado.length > 0) {
-            res.status(200).json(resultado);
-        } else {
-            res.status(204).send("Nenhum resultado encontrado!")
-        }
-    }).catch(function (erro) {
-        console.log(erro);
-        console.log("Houve um erro ao buscar mais detalhes do post: ", erro.sqlMessage);
-        res.status(500).json(erro.sqlMessage);
-    });
+    if (idBotao == undefined) {
+        res.status(400).send("O id do botão está indefinido!");
+    } else {
+        avisoModel.detalhes(idBotao).then(function (resultado) {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(function (erro) {
+            console.log(erro);
+            console.log("Houve um erro ao buscar mais detalhes do post: ", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+    }
 }
 
 function publicar(req, res) {
@@ -157,36 +165,46 @@ function mudarStatus(req, res) {
 
 function deletar(req, res) {
     var publicacaoid = req.params.publicacaoid;
-    avisoModel.deletar(publicacaoid)
-        .then(
-            function (resultado) {
-                res.json(resultado);
-            }
-        )
-        .catch(
-            function (erro) {
-                console.log(erro);
-                console.log("Houve um erro ao deletar o post: ", erro.sqlMessage);
-                res.status(500).json(erro.sqlMessage);
-            }
-        );
+
+    if (publicacaoid == undefined) {
+        res.status(400).send("A publicação está indefinida!");
+    } else {
+        avisoModel.deletar(publicacaoid)
+            .then(
+                function (resultado) {
+                    res.json(resultado);
+                }
+            )
+            .catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log("Houve um erro ao deletar o post: ", erro.sqlMessage);
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
 }
 
 function deletarRespostas(req, res) {
     var publicacaoid = req.params.publicacaoid;
-    avisoModel.deletarRespostas(publicacaoid)
-        .then(
-            function (resultado) {
-                res.json(resultado);
-            }
-        )
-        .catch(
-            function (erro) {
-                console.log(erro);
-                console.log("Houve um erro ao deletar as respostas do post: ", erro.sqlMessage);
-                res.status(500).json(erro.sqlMessage);
-            }
-        );
+
+    if (publicacaoid == undefined) {
+        res.status(400).send("A publicação está indefinida!");
+    } else {
+        avisoModel.deletarRespostas(publicacaoid)
+            .then(
+                function (resultado) {
+                    res.json(resultado);
+                }
+            )
+            .catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log("Houve um erro ao deletar as respostas do post: ", erro.sqlMessage);
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
 }
 
 module.exports = {

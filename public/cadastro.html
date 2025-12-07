@@ -117,9 +117,10 @@
       cardErro.style.display = "block";
       mensagem_erro.innerHTML =
         "Insira corretamente todos os campos";
+      setInterval(sumirMensagem, 5000);
       return false;
     } else {
-      setInterval(sumirMensagem, 5000);
+      setInterval(sumirMensagem, 4000)
     }
 
     fetch("/usuarios/cadastrar", {
@@ -272,7 +273,7 @@
         span_genero.innerHTML = `Selecione um gênero`
       }
       if (validarIdade == false) {
-        span_idade.innerHTML = `Somente a partir dos 12 anos`
+        span_idade.innerHTML = `Somente a partir dos 16 anos`
       }
       if (validarSenha == false) {
         span_senha.innerHTML = senhaMsg
